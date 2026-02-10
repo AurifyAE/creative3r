@@ -14,30 +14,6 @@ const Navbar = () => {
         setSelected(item);
     };
 
-    useEffect(() => {
-        const unlockAudio = () => {
-          if (!hoverSoundRef.current) {
-            hoverSoundRef.current = new Audio('/assets/sounds/tick.mp3');
-            hoverSoundRef.current.volume = 0.3;
-      
-            // Play & immediately pause to unlock
-            hoverSoundRef.current.play().then(() => {
-              hoverSoundRef.current.pause();
-              hoverSoundRef.current.currentTime = 0;
-            }).catch(() => {});
-          }
-      
-          window.removeEventListener('pointerdown', unlockAudio);
-        };
-      
-        window.addEventListener('pointerdown', unlockAudio);
-      
-        return () => {
-          window.removeEventListener('pointerdown', unlockAudio);
-        };
-      }, []);
-      
-
     const playHoverSound = () => {
         // Create audio on first hover if it doesn't exist
         if (!hoverSoundRef.current) {

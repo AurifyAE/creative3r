@@ -337,8 +337,8 @@ export default function PortfolioPage() {
       {/* Modal */}
       <div
         ref={modalRef}
-        className="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto hidden"
-        // style={{ display: 'none' }}
+        className="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto"
+        style={{ display: 'none' }}
       >
         {/* Overlay */}
         <div
@@ -392,7 +392,7 @@ export default function PortfolioPage() {
                         priority
                       />
                       {/* Subtle gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
                     </>
                   )}
                 </div>
@@ -419,7 +419,7 @@ export default function PortfolioPage() {
                       <h2 className="text-2xl md:text-3xl xl:text-4xl text-white leading-tight">
                         {selectedItem.title}
                       </h2>
-                      <div className="h-px w-24 bg-gradient-to-r from-white/40 to-transparent mt-6" />
+                      <div className="h-px w-24 bg-linear-to-r from-white/40 to-transparent mt-6" />
                     </div>
 
                     {/* Description */}
@@ -458,7 +458,7 @@ export default function PortfolioPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                           </svg>
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute inset-0 bg-linear-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity" />
                       </button>
                     </div>
                   </>

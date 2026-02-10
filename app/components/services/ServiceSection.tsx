@@ -733,7 +733,7 @@ export default function ServicesPage() {
                         {item.serviceName}
                       </span>
                       <ChevronDown
-                        className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 text-gray-200 ${
+                        className={`w-5 h-5 shrink-0 transition-transform duration-300 text-gray-200 ${
                           expandedItems.includes(index) ? 'rotate-180' : ''
                         }`}
                       />

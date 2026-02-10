@@ -285,7 +285,7 @@ export default function OurSuperpowers() {
             tspan.setAttribute('dy', i === 0 ? `${-(arr.length - 1) * config.fontSize * 0.1}` : `${config.fontSize * 1.1}`);
             textElement.appendChild(tspan);
           });
-        }, null, 0.3);
+        }, [], 0.3);
         
         // 6. Fade in new text
         masterTl.to(textElement, {
