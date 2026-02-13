@@ -24,13 +24,16 @@
         <section className="bg-[#1F1E1E] py-24 px-6">
             <div className="mx-auto max-w-6xl">
                 {/* Title */}
-                <div className="flex justify-center italic uppercase">
-                    <h2 className="mb-16 text-4xl tracking-wide text-white">
-                    Our
-                    <span className="mt-2 block text-4xl font-semibold">
-                        Collaborators
-                    </span>
-                    </h2>
+                <div className="flex justify-start md:justify-center uppercase text-white gap-3 md:gap-10 mb-16">
+                    <div className="h-20 w-2 rounded-full bg-[#E76F51]" />
+                    <div className="space-y-2">
+                        <p className="text-2xl tracking-[0.2em] uppercase text-neutral-300">
+                            Our
+                        </p>
+                        <h2 className="text-4xl italic font-ivyora font-semibold">
+                            Collaborators
+                        </h2>
+                    </div>
                 </div>
 
                 {/* Logos Grid */}

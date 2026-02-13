@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
@@ -128,16 +128,247 @@ const TimelineItem = ({
   </div>
 );
 
+// Mobile Card Component - trigger item (invisible spacer)
+const MobileSuperpowerCard = ({ 
+  shape, 
+  title, 
+  desc, 
+  color,
+  index
+}: SuperpowerItem & { index: number }) => (
+  <div 
+    className="mobile-trigger-item min-h-[60vh]"
+    data-mobile-index={index}
+  />
+);
+
 export default function OurSuperpowers() {
   const morphingShapeRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const mobileMorphingShapeRef = useRef<HTMLDivElement>(null);
+  const mobileTimelineRef = useRef<HTMLDivElement>(null);
+  const mobileTlRef = useRef<gsap.core.Timeline | null>(null);
   const activeTlRef = useRef<gsap.core.Timeline | null>(null);
   const currentShapeIndexRef = useRef(0);
   const animationQueueRef = useRef<number[]>([]);
   const isProcessingRef = useRef(false);
+  const currentMobileIndexRef = useRef(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  // Detect mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Detect scrolling state for mobile
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      setIsScrolling(true);
+      
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 150); // Content shows 150ms after scroll stops
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [isMobile]);
+
+  // Mobile ScrollTrigger Animation (shape morphs on scroll down, content slides on scroll up)
+  useEffect(() => {
+    if (!isMobile || !mobileMorphingShapeRef.current || !mobileTimelineRef.current) return;
+
+    const mobileTriggers = document.querySelectorAll('.mobile-trigger-item');
+    const contentElement = document.querySelector('.mobile-content-area');
+    if (mobileTriggers.length === 0 || !contentElement) return;
+
+    // Create triggers for each mobile item
+    mobileTriggers.forEach((trigger, index) => {
+      ScrollTrigger.create({
+        trigger: trigger,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: () => {
+          if (currentMobileIndexRef.current !== index) {
+            const previousIndex = currentMobileIndexRef.current;
+            currentMobileIndexRef.current = index;
+            setMobileActiveIndex(index);
+            // Scrolling down - morph shape and slide content
+            morphToMobileShape(index, 'down');
+            slideContent(index, 'down');
+          }
+        },
+        onEnterBack: () => {
+          if (currentMobileIndexRef.current !== index) {
+            const previousIndex = currentMobileIndexRef.current;
+            currentMobileIndexRef.current = index;
+            setMobileActiveIndex(index);
+            // Scrolling up - keep shape static, only slide content
+            slideContent(index, 'up');
+          }
+        },
+      });
+    });
+
+    function slideContent(index: number, direction: 'up' | 'down') {
+      const contentElement = document.querySelector('.mobile-content-area');
+      if (!contentElement) return;
+
+      const tl = gsap.timeline();
+      
+      // Exit current content to the right
+      tl.to(contentElement, {
+        x: 100,
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in'
+      });
+      
+      // Update content
+      tl.call(() => {
+        setMobileActiveIndex(index);
+      });
+      
+      // Enter new content from the left
+      tl.fromTo(contentElement, 
+        {
+          x: -100,
+          opacity: 0
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.3,
+          ease: 'power2.out'
+        }
+      );
+    }
+
+    function morphToMobileShape(index: number, direction: 'up' | 'down') {
+      const targetShape = superpowers[index];
+      const config = SHAPE_CONFIG[targetShape.shape];
+      
+      const morphingSvg = mobileMorphingShapeRef.current?.querySelector('svg');
+      if (!morphingSvg) return;
+    
+      const shapePath = morphingSvg.querySelector('[data-shape-path]') as SVGPathElement;
+      const textElement = morphingSvg.querySelector('text');
+
+      // Kill any in-flight mobile animation to avoid jitter
+      if (mobileTlRef.current) {
+        mobileTlRef.current.kill();
+        mobileTlRef.current = null;
+      }
+
+      const tl = gsap.timeline();
+      mobileTlRef.current = tl;
+      
+      // 1. Fade out shape text
+      if (textElement) {
+        tl.to(textElement, {
+          opacity: 0,
+          duration: 0.15,
+          ease: 'power2.in'
+        }, 0);
+      }
+      
+      // 2. Morph shape and change color
+      if (shapePath) {
+        tl.to(shapePath, {
+          morphSVG: {
+            shape: SHAPE_PATHS[targetShape.shape],
+          },
+          fill: targetShape.color,
+          duration: 0.6,
+          ease: 'power2.inOut'
+        }, 0.1);
+      }
+      
+      // 3. Update SVG dimensions
+      tl.to(morphingSvg, {
+        attr: { 
+          viewBox: config.viewBox,
+          width: config.width,
+          height: config.height
+        },
+        duration: 0.6,
+        ease: 'power2.inOut'
+      }, 0.1);
+    
+      // 4. Update text content
+      if (textElement) {
+        tl.call(() => {
+          textElement.setAttribute('font-size', config.fontSize.toString());
+          textElement.innerHTML = '';
+          
+          targetShape.title.split(' ').forEach((word, i, arr) => {
+            const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+            tspan.textContent = word;
+            tspan.setAttribute('x', '50%');
+            tspan.setAttribute('dy', i === 0 ? `${-(arr.length - 1) * config.fontSize * 0.55}` : `${config.fontSize * 1.1}`);
+            textElement.appendChild(tspan);
+          });
+        }, [], 0.3);
+      }
+      
+      // 5. Fade in new text
+      if (textElement) {
+        tl.to(textElement, {
+          opacity: 1,
+          duration: 0.2,
+          ease: 'power2.out'
+        }, 0.45);
+      }
+    }
+
+    // Initialize first mobile shape
+    const firstShape = superpowers[0];
+    const morphingSvg = mobileMorphingShapeRef.current?.querySelector('svg');
+    
+    if (morphingSvg) {
+      const shapePath = morphingSvg.querySelector('[data-shape-path]');
+      if (shapePath) {
+        gsap.set(shapePath, {
+          attr: { d: SHAPE_PATHS[firstShape.shape] },
+          fill: firstShape.color
+        });
+      }
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      if (mobileTlRef.current) {
+        mobileTlRef.current.kill();
+        mobileTlRef.current = null;
+      }
+    };
+  }, [isMobile]);
 
   useEffect(() => {
-    if (!morphingShapeRef.current || !timelineRef.current) return;
+    // Desktop GSAP animations
+    if (isMobile || !morphingShapeRef.current || !timelineRef.current) return;
 
     const shapeContainers = document.querySelectorAll('.shape-container');
     
@@ -282,7 +513,7 @@ export default function OurSuperpowers() {
             const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
             tspan.textContent = word;
             tspan.setAttribute('x', '50%');
-            tspan.setAttribute('dy', i === 0 ? `${-(arr.length - 1) * config.fontSize * 0.1}` : `${config.fontSize * 1.1}`);
+            tspan.setAttribute('dy', i === 0 ? `${-(arr.length - 1) * config.fontSize * 0.55}` : `${config.fontSize * 1.1}`);
             textElement.appendChild(tspan);
           });
         }, [], 0.3);
@@ -341,25 +572,88 @@ export default function OurSuperpowers() {
         activeTlRef.current.kill();
       }
     };
-  }, []);
+  }, [isMobile]);
 
   const firstShape = superpowers[0];
   const firstConfig = SHAPE_CONFIG[firstShape.shape];
 
   return (
-    <section className="text-white py-32">
+    <section className="text-white py-16 md:py-32">
       <div className="max-w-4xl mx-auto px-6">
         
         {/* Header */}
-        <div className="flex items-center justify-center gap-6 mb-20">
-          <div className="w-2 h-32 rounded-full bg-[#F4A261]" />
-          <h2 className="text-4xl font-semibold italic leading-tight">
+        <div className="flex items-center justify-center gap-4 md:gap-6 mb-12 md:mb-20">
+          <div className="w-1.5 md:w-2 h-20 md:h-32 rounded-full bg-[#F4A261]" />
+          <h2 className="text-3xl md:text-4xl font-semibold italic leading-tight">
             <span className="font-normal">OUR</span> <br /> SUPERPOWERS
           </h2>
         </div>
 
-        {/* Timeline */}
-        <div className="relative" ref={timelineRef}>
+        {/* Mobile Layout - Sticky Shape with Scroll Morphing */}
+        <div className="md:hidden relative" ref={mobileTimelineRef}>
+          {/* Sticky Container for Shape and Content */}
+          <div className="sticky top-1/4 z-10 mb-8">
+            {/* Morphing Shape */}
+            <div 
+              ref={mobileMorphingShapeRef}
+              className="flex justify-center mb-6"
+            >
+              <svg
+                width={firstConfig.width}
+                height={firstConfig.height}
+                viewBox={firstConfig.viewBox}
+                className="shrink-0"
+              >
+                <path
+                  data-shape-path
+                  d={SHAPE_PATHS[firstShape.shape]}
+                  fill={firstShape.color}
+                />
+                <text
+                  x="50%"
+                  y="50%"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="#fff"
+                  fontSize={firstConfig.fontSize}
+                  fontWeight="600"
+                  className="font-ivyora italic"
+                >
+                  {firstShape.title.split(' ').map((word, i, arr) => (
+                    <tspan
+                      key={i}
+                      x="50%"
+                      dy={i === 0 ? `${-(arr.length - 1) * firstConfig.fontSize * 0.55}` : `${firstConfig.fontSize * 1.1}`}
+                    >
+                      {word}
+                    </tspan>
+                  ))}
+                </text>
+              </svg>
+            </div>
+
+            {/* Sticky Content Area */}
+            <div className="relative min-h-[6rem] flex items-center justify-center px-6 overflow-hidden">
+              <p 
+                className={`mobile-content-area text-sm leading-relaxed text-gray-300 max-w-sm mx-auto text-center transition-opacity duration-200 ${
+                  isScrolling ? 'opacity-0' : 'opacity-100'
+                }`}
+              >
+                {superpowers[mobileActiveIndex].desc}
+              </p>
+            </div>
+          </div>
+
+          {/* Scrollable Trigger Areas */}
+          <div className="space-y-8">
+            {superpowers.map((power, index) => (
+              <MobileSuperpowerCard key={power.title} {...power} index={index} />
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Layout - Morphing Animation Timeline */}
+        <div className="hidden md:block relative" ref={timelineRef}>
           
           {/* Morphing Shape - absolute positioned */}
           <div 
@@ -392,7 +686,7 @@ export default function OurSuperpowers() {
                   <tspan
                     key={i}
                     x="50%"
-                    dy={i === 0 ? `${-(arr.length - 1) * firstConfig.fontSize * 0.1}` : `${firstConfig.fontSize * 1.1}`}
+                    dy={i === 0 ? `${-(arr.length - 1) * firstConfig.fontSize * 0.55}` : `${firstConfig.fontSize * 1.1}`}
                   >
                     {word}
                   </tspan>

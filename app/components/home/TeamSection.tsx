@@ -5,16 +5,20 @@ const TeamSection = () => {
     <section className="bg-[#1F1E1E] text-white py-16 md:py-24 z-1">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 md:flex-row md:items-start md:px-8 lg:px-0">
         {/* Left label */}
-        <div className="flex flex-col md:w-1/3 p-10">
-          <div className="flex items-center justify-end gap-10">
-            <div className="text-right md:text-left">
-              <h1 className="text-2xl font-medium tracking-[0.3em] uppercase text-neutral-300 text-right">
-                The
-              </h1>
-              <h1 className="mt-1 text-5xl italic font-semibold">
-                TEAM
-              </h1>
+        <div className="w-full md:w-1/3 md:p-10">
+          <div className="flex flex-col md:flex-row items-start md:items-center md:justify-end gap-3 md:gap-10">
+            <div className="flex gap-4">
+              <div className="block md:hidden h-20 w-2 rounded-full bg-[#E76F51]" />
+              <div>
+                <p className="text-lg md:text-xl tracking-[0.3em] uppercase text-neutral-300 md:text-right">
+                  The
+                </p>
+                <h1 className="text-4xl md:text-5xl italic font-semibold">
+                  TEAM
+                </h1>
+              </div>
             </div>
+            {/* <div className="block md:hidden h-1 w-28 rounded-full bg-[#E76F51]" /> */}
             <div className="hidden md:block h-64 w-3 rounded-full bg-[#E76F51]" />
           </div>
         </div>

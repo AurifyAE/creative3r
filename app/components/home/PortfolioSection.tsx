@@ -129,19 +129,22 @@ const PortfolioSection = () => {
     >
       <div className="px-6 md:px-8 lg:px-0">
         {/* Heading row */}
-        <div className="mx-auto max-w-6xl mb-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-end">
-          <div className="space-y-2 text-right">
-            <p className="text-sm tracking-[0.3em] uppercase text-neutral-300">
-              Selected
-            </p>
-            <h2 className="text-3xl md:text-4xl lg:text-[2.4rem] font-semibold italic">
-              PORTFOLIO
-            </h2>
+        <div className="mx-auto max-w-6xl mb-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-end">
+          <div className="text-left md:text-right flex items-center md:items-end gap-5">
+            <div className="block md:hidden h-20 w-2 rounded-full bg-[#E76F51]" />
+              <div className='flex flex-col justify-center'>
+              <p className="text-sm tracking-[0.3em] uppercase text-neutral-300">
+                Selected
+              </p>
+              <h2 className="text-3xl md:text-4xl lg:text-[2.4rem] font-semibold italic">
+                PORTFOLIO
+              </h2>
+            </div>
           </div>
 
-          <div className="flex items-start gap-4 max-w-sm"> 
-            <div className="h-20 w-3 rounded-full bg-[#E76F51]" />
-            <p className="text-xs md:text-sm text-neutral-300 leading-relaxed">
+          <div className="flex items-center gap-4 max-w-sm"> 
+            <div className="hidden md:block h-20 w-3 rounded-full bg-[#E76F51]" />
+            <p className="text-xs text-left md:text-sm text-neutral-300 leading-relaxed">
               Selected elevated products - meticulously rebranded by blending luxury
               visuals with high-conversion digital strategy.
             </p>
