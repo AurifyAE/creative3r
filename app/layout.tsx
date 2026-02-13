@@ -6,6 +6,7 @@ import LenisProvider from "./components/providers/LenisProvider";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import CustomCursor from "./components/ui/CustomCursor";
+// import CustomCursor from "./components/ui/CustomCursor";
 
 
 const ivyOraDisplay = localFont({

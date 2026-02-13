@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 export default function CustomCursor() {
-  const cursorRef = useRef(null);
-  const followerRef = useRef(null);
+  const cursorRef = useRef<HTMLDivElement | null>(null);
+  const followerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -14,7 +14,7 @@ export default function CustomCursor() {
     // Set initial position offscreen
     gsap.set([cursor, follower], { xPercent: -50, yPercent: -50 });
 
-    const moveCursor = (e) => {
+    const moveCursor = (e: MouseEvent) => {
       gsap.to(cursor, {
         x: e.clientX,
         y: e.clientY,
