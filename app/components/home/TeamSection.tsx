@@ -15,7 +15,7 @@ const TeamSection = () => {
                 TEAM
               </h1>
             </div>
-            <div className="h-64 w-3 rounded-full bg-[#E76F51]" />
+            <div className="hidden md:block h-64 w-3 rounded-full bg-[#E76F51]" />
           </div>
         </div>
 

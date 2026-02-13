@@ -5,6 +5,7 @@ import "./globals.css";
 import LenisProvider from "./components/providers/LenisProvider";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
+import CustomCursor from "./components/ui/CustomCursor";
 
 
 const ivyOraDisplay = localFont({
@@ -83,8 +84,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${ivyOraDisplay.variable} font-poppins antialiased`}>
+      <body className={`${poppins.variable} ${ivyOraDisplay.variable} font-poppins antialiased bg-[#1F1E1E]`}>
         <LenisProvider>
+          <CustomCursor />
           <Navbar />
           {children}
           <Footer />

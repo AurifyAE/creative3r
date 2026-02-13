@@ -21,3 +21,66 @@
         font-family: var(--font-sans);
     }
 }
+
+/* Hide default cursor globally */
+* {
+    cursor: none !important;
+  }
+  
+  body,
+  html,
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    cursor: none !important;
+  }
+  
+  .cursor {
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    left: 0;
+    top: 0;
+  }
+  
+  .cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    left: 0;
+    top: 0;
+  }
+
+
+  /* Only show custom cursor on desktop */
+@media (hover: hover) and (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
+    
+    .cursor,
+    .cursor-follower {
+      display: block;
+    }
+  }
+  
+  @media (hover: none) or (pointer: coarse) {
+    .cursor,
+    .cursor-follower {
+      display: none;
+    }
+  }

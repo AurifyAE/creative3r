@@ -220,16 +220,15 @@ const PortfolioSection = () => {
             </div>
           </div>
           {/* View all */}
-          <div className="absolute bottom-35 right-40">
+          <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 md:bottom-35 md:right-40 md:left-auto md:translate-x-0 flex justify-center">
             <Link href="/portfolio">
               <button className="rounded-full border border-white/40 px-6 py-2 text-xs md:text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer">
                 View All
               </button>
             </Link>
-          </div>  
+          </div>
         </div>
 
-        
       </div>
     </section>
   );

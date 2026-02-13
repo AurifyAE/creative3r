@@ -147,8 +147,8 @@ export default function OurSuperpowers() {
     shapeContainers.forEach((container, index) => {
       ScrollTrigger.create({
         trigger: container,
-        start: 'top 65%',
-        end: 'top 35%',
+        start: 'top 50%',
+        end: 'top -20%',
         onEnter: () => {
           queueShapeTransition(index);
         },

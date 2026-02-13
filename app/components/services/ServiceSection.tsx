@@ -594,7 +594,7 @@ export default function ServicesPage() {
               {/* Active Background - Fixed positioning to prevent movement */}
               <div
                 ref={activeBgRef}
-                className="absolute left-0 right-0 bg-white/10 border-l-4 rounded-lg pointer-events-none"
+                className="absolute left-0 right-0 bg-white/10 border-l-4 rounded-3xl pointer-events-none"
                 style={{ top: 0, height: 0, willChange: 'transform', borderLeftColor: currentColor }}
               />
 
@@ -615,7 +615,7 @@ export default function ServicesPage() {
                   } ${!isInCurrentGroup ? 'hidden' : ''}`}
                 >
                   <div
-                    className={`flex items-center justify-between p-6 rounded-lg transition-all duration-300 ${
+                    className={`flex items-center justify-between p-6 rounded-2xl transition-all duration-300 ${
                       index === currentIndex
                         ? 'relative z-10 shadow-lg'
                         : 'relative z-10 bg-transparent border-transparent hover:bg-white/5'
