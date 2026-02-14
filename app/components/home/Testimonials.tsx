@@ -249,43 +249,54 @@ const Testimonials: React.FC = () => {
     });
 
     // PHASE 1: Fade out (0s - 0.5s)
-    tlOut.to([testimonialText, authorInfo], {
-      opacity: 0,
-      y: -15,
-      duration: 0.5,
-      ease: 'power2.in',
-      stagger: 0.03
-    }, 0);
+    const textAndAuthor = [testimonialText, authorInfo].filter(Boolean);
+    if (textAndAuthor.length) {
+      tlOut.to(textAndAuthor, {
+        opacity: 0,
+        y: -15,
+        duration: 0.5,
+        ease: 'power2.in',
+        stagger: 0.03
+      }, 0);
+    }
 
-    tlOut.to(quoteMark, {
-      opacity: 0.1,
-      rotation: -10,
-      scale: 0.95,
-      duration: 0.5,
-      ease: 'power2.in'
-    }, 0);
+    if (quoteMark) {
+      tlOut.to(quoteMark, {
+        opacity: 0.1,
+        rotation: -10,
+        scale: 0.95,
+        duration: 0.5,
+        ease: 'power2.in'
+      }, 0);
+    }
 
-    tlOut.to(stars, {
-      scale: 0.85,
-      opacity: 0.4,
-      duration: 0.5,
-      ease: 'power2.in',
-      stagger: 0.02
-    }, 0);
+    if (stars?.length) {
+      tlOut.to(stars, {
+        scale: 0.85,
+        opacity: 0.4,
+        duration: 0.5,
+        ease: 'power2.in',
+        stagger: 0.02
+      }, 0);
+    }
 
-    tlOut.to(avatarWrapper, {
-      scale: 0.9,
-      opacity: 0.4,
-      y: -8,
-      duration: 0.5,
-      ease: 'power2.in'
-    }, 0);
+    if (avatarWrapper) {
+      tlOut.to(avatarWrapper, {
+        scale: 0.9,
+        opacity: 0.4,
+        y: -8,
+        duration: 0.5,
+        ease: 'power2.in'
+      }, 0);
+    }
 
-    tlOut.to(ratingContainer, {
-      opacity: 0.4,
-      duration: 0.5,
-      ease: 'power2.in'
-    }, 0);
+    if (ratingContainer) {
+      tlOut.to(ratingContainer, {
+        opacity: 0.4,
+        duration: 0.5,
+        ease: 'power2.in'
+      }, 0);
+    }
 
   }, [currentIndex, displayedTestimonial]);
 
@@ -307,43 +318,54 @@ const Testimonials: React.FC = () => {
     });
 
     // PHASE 2: Fade in
-    tlIn.to(quoteMark, {
-      opacity: 0.3,
-      rotation: 0,
-      scale: 1,
-      duration: 0.7,
-      ease: 'elastic.out(1, 0.6)'
-    }, 0);
+    if (quoteMark) {
+      tlIn.to(quoteMark, {
+        opacity: 0.3,
+        rotation: 0,
+        scale: 1,
+        duration: 0.7,
+        ease: 'elastic.out(1, 0.6)'
+      }, 0);
+    }
 
-    tlIn.to(stars, {
-      scale: 1,
-      opacity: 1,
-      duration: 0.5,
-      ease: 'back.out(1.7)',
-      stagger: 0.04
-    }, 0);
+    if (stars?.length) {
+      tlIn.to(stars, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.5,
+        ease: 'back.out(1.7)',
+        stagger: 0.04
+      }, 0);
+    }
 
-    tlIn.to([testimonialText, authorInfo], {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.05
-    }, 0.1);
+    const textAndAuthorIn = [testimonialText, authorInfo].filter(Boolean);
+    if (textAndAuthorIn.length) {
+      tlIn.to(textAndAuthorIn, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        stagger: 0.05
+      }, 0.1);
+    }
 
-    tlIn.to(avatarWrapper, {
-      scale: 1,
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      ease: 'back.out(1.7)'
-    }, 0.1);
+    if (avatarWrapper) {
+      tlIn.to(avatarWrapper, {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'back.out(1.7)'
+      }, 0.1);
+    }
 
-    tlIn.to(ratingContainer, {
-      opacity: 1,
-      duration: 0.7,
-      ease: 'power3.out'
-    }, 0);
+    if (ratingContainer) {
+      tlIn.to(ratingContainer, {
+        opacity: 1,
+        duration: 0.7,
+        ease: 'power3.out'
+      }, 0);
+    }
 
   }, [displayedTestimonial]);
 

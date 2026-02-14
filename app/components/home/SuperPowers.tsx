@@ -565,7 +565,7 @@ export default function OurSuperpowers() {
             </div>
 
             {/* Sticky Content Area */}
-            <div className="relative min-h-[6rem] flex items-center justify-center px-6">
+            <div className="relative min-h-24 flex items-center justify-center px-6">
               <p className="text-sm leading-relaxed text-gray-300 max-w-sm mx-auto text-center">
                 {superpowers[mobileActiveIndex].desc}
               </p>
