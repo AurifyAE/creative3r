@@ -1,7 +1,11 @@
- 'use client';
+'use client';
 
 import { ReactNode, useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 type LenisProviderProps = {
   children: ReactNode;
@@ -20,20 +24,21 @@ const LenisProvider = ({ children }: LenisProviderProps) => {
       infinite: false,
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // Sync ScrollTrigger with Lenis scroll
+    lenis.on('scroll', () => {
+      ScrollTrigger.update();
+    });
 
-    requestAnimationFrame(raf);
-
-    // Optional: Add scroll event listener for debugging
-    // lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
-    //   console.log({ scroll, limit, velocity, direction, progress });
-    // });
+    // Use GSAP's ticker as the single RAF loop
+    const ticker = gsap.ticker.add((time) => {
+      // gsap's time is in seconds; Lenis expects ms
+      lenis.raf(time * 1000);
+    });
 
     return () => {
+      gsap.ticker.remove(ticker);
       lenis.destroy();
+      ScrollTrigger.killAll();
     };
   }, []);
 

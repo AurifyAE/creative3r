@@ -175,7 +175,7 @@ const HeroSection = () => {
         </div>
 
         <div className='absolute w-52 md:w-80 bottom-25 right-5 md:bottom-10 md:right-40'>
-          <p className='font-light'>Creative Agency focusing on Precious Metals & Jewellery Industry</p>
+          <p className='font-light text-sm md:text-base'>Creative Agency focusing on Precious Metals & Jewellery Industry</p>
         </div>
 
         <div className="relative flex flex-col justify-center h-full z-10 pl-10 lg:pl-15 xl:pl-40 pt-30">
@@ -217,7 +217,7 @@ const HeroSection = () => {
         {/* Mobile Services cards - Stacked from bottom */}
         <div 
           ref={mobileContainerRef}
-          className="lg:hidden absolute bottom-0 left-0 right-0 z-20 h-[80vh] flex items-center justify-center"
+          className="flex items-center justify-center lg:hidden absolute bottom-0 left-0 right-0 z-20 h-[80vh] "
         >
           <div className="relative w-5/6 h-52">
             {services.map((service, index) => (

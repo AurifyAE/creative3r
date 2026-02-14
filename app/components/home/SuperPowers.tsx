@@ -155,8 +155,6 @@ export default function OurSuperpowers() {
   const currentMobileIndexRef = useRef(0);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [isScrolling, setIsScrolling] = useState(false);
 
   // Detect mobile on mount and resize
   useEffect(() => {
@@ -170,39 +168,12 @@ export default function OurSuperpowers() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Detect scrolling state for mobile
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const handleScroll = () => {
-      setIsScrolling(true);
-      
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-      
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 150); // Content shows 150ms after scroll stops
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [isMobile]);
-
-  // Mobile ScrollTrigger Animation (shape morphs on scroll down, content slides on scroll up)
+  // Mobile ScrollTrigger Animation (shape only; content driven by React state)
   useEffect(() => {
     if (!isMobile || !mobileMorphingShapeRef.current || !mobileTimelineRef.current) return;
 
     const mobileTriggers = document.querySelectorAll('.mobile-trigger-item');
-    const contentElement = document.querySelector('.mobile-content-area');
-    if (mobileTriggers.length === 0 || !contentElement) return;
+    if (mobileTriggers.length === 0) return;
 
     // Create triggers for each mobile item
     mobileTriggers.forEach((trigger, index) => {
@@ -212,61 +183,22 @@ export default function OurSuperpowers() {
         end: 'bottom center',
         onEnter: () => {
           if (currentMobileIndexRef.current !== index) {
-            const previousIndex = currentMobileIndexRef.current;
             currentMobileIndexRef.current = index;
             setMobileActiveIndex(index);
-            // Scrolling down - morph shape and slide content
-            morphToMobileShape(index, 'down');
-            slideContent(index, 'down');
+            morphToMobileShape(index);
           }
         },
         onEnterBack: () => {
           if (currentMobileIndexRef.current !== index) {
-            const previousIndex = currentMobileIndexRef.current;
             currentMobileIndexRef.current = index;
             setMobileActiveIndex(index);
-            // Scrolling up - keep shape static, only slide content
-            slideContent(index, 'up');
+            morphToMobileShape(index);
           }
         },
       });
     });
 
-    function slideContent(index: number, direction: 'up' | 'down') {
-      const contentElement = document.querySelector('.mobile-content-area');
-      if (!contentElement) return;
-
-      const tl = gsap.timeline();
-      
-      // Exit current content to the right
-      tl.to(contentElement, {
-        x: 100,
-        opacity: 0,
-        duration: 0.3,
-        ease: 'power2.in'
-      });
-      
-      // Update content
-      tl.call(() => {
-        setMobileActiveIndex(index);
-      });
-      
-      // Enter new content from the left
-      tl.fromTo(contentElement, 
-        {
-          x: -100,
-          opacity: 0
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.3,
-          ease: 'power2.out'
-        }
-      );
-    }
-
-    function morphToMobileShape(index: number, direction: 'up' | 'down') {
+    function morphToMobileShape(index: number) {
       const targetShape = superpowers[index];
       const config = SHAPE_CONFIG[targetShape.shape];
       
@@ -633,12 +565,8 @@ export default function OurSuperpowers() {
             </div>
 
             {/* Sticky Content Area */}
-            <div className="relative min-h-[6rem] flex items-center justify-center px-6 overflow-hidden">
-              <p 
-                className={`mobile-content-area text-sm leading-relaxed text-gray-300 max-w-sm mx-auto text-center transition-opacity duration-200 ${
-                  isScrolling ? 'opacity-0' : 'opacity-100'
-                }`}
-              >
+            <div className="relative min-h-[6rem] flex items-center justify-center px-6">
+              <p className="text-sm leading-relaxed text-gray-300 max-w-sm mx-auto text-center">
                 {superpowers[mobileActiveIndex].desc}
               </p>
             </div>

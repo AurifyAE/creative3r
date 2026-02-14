@@ -23,7 +23,7 @@
 }
 
 /* Hide default cursor globally */
-* {
+/* * {
     cursor: none !important;
   }
   
@@ -63,11 +63,11 @@
     transform: translate(-50%, -50%);
     left: 0;
     top: 0;
-  }
+  } */
 
 
   /* Only show custom cursor on desktop */
-@media (hover: hover) and (pointer: fine) {
+/* @media (hover: hover) and (pointer: fine) {
     * {
       cursor: none !important;
     }
@@ -83,4 +83,4 @@
     .cursor-follower {
       display: none;
     }
-  }
+  } */
