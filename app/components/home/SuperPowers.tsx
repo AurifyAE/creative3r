@@ -102,18 +102,18 @@ const SHAPE_PATHS: Record<ShapeType, string> = {
   arrow: "M287.225 110.875L153.111 188.675L153.051 159.792L44.1204 160.018L43.9193 62.7355L152.85 62.5103L152.791 33.6289L287.225 110.875Z"
 };
 
-const TimelineItem = ({ 
-  shape, 
-  title, 
-  desc, 
-  color, 
+const TimelineItem = ({
+  shape,
+  title,
+  desc,
+  color,
   alignment,
-  index 
+  index
 }: SuperpowerItem & { index: number }) => (
-  <div 
+  <div
     className={`flex items-center gap-8 ${alignment === 'right' ? 'flex-row-reverse' : ''}`}
   >
-    <div 
+    <div
       className="shrink-0 shape-container"
       data-shape-index={index}
     >
@@ -129,14 +129,14 @@ const TimelineItem = ({
 );
 
 // Mobile Card Component - trigger item (invisible spacer)
-const MobileSuperpowerCard = ({ 
-  shape, 
-  title, 
-  desc, 
+const MobileSuperpowerCard = ({
+  shape,
+  title,
+  desc,
   color,
   index
 }: SuperpowerItem & { index: number }) => (
-  <div 
+  <div
     className="mobile-trigger-item min-h-[60vh]"
     data-mobile-index={index}
   />
@@ -161,10 +161,10 @@ export default function OurSuperpowers() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -175,9 +175,12 @@ export default function OurSuperpowers() {
     const mobileTriggers = document.querySelectorAll('.mobile-trigger-item');
     if (mobileTriggers.length === 0) return;
 
+    // Store only THIS component's triggers so cleanup doesn't kill other components'
+    const myTriggers: ReturnType<typeof ScrollTrigger.create>[] = [];
+
     // Create triggers for each mobile item
     mobileTriggers.forEach((trigger, index) => {
-      ScrollTrigger.create({
+      const st = ScrollTrigger.create({
         trigger: trigger,
         start: 'top center',
         end: 'bottom center',
@@ -196,15 +199,16 @@ export default function OurSuperpowers() {
           }
         },
       });
+      myTriggers.push(st);
     });
 
     function morphToMobileShape(index: number) {
       const targetShape = superpowers[index];
       const config = SHAPE_CONFIG[targetShape.shape];
-      
+
       const morphingSvg = mobileMorphingShapeRef.current?.querySelector('svg');
       if (!morphingSvg) return;
-    
+
       const shapePath = morphingSvg.querySelector('[data-shape-path]') as SVGPathElement;
       const textElement = morphingSvg.querySelector('text');
 
@@ -216,7 +220,7 @@ export default function OurSuperpowers() {
 
       const tl = gsap.timeline();
       mobileTlRef.current = tl;
-      
+
       // 1. Fade out shape text
       if (textElement) {
         tl.to(textElement, {
@@ -225,7 +229,7 @@ export default function OurSuperpowers() {
           ease: 'power2.in'
         }, 0);
       }
-      
+
       // 2. Morph shape and change color
       if (shapePath) {
         tl.to(shapePath, {
@@ -237,10 +241,10 @@ export default function OurSuperpowers() {
           ease: 'power2.inOut'
         }, 0.1);
       }
-      
+
       // 3. Update SVG dimensions
       tl.to(morphingSvg, {
-        attr: { 
+        attr: {
           viewBox: config.viewBox,
           width: config.width,
           height: config.height
@@ -248,13 +252,13 @@ export default function OurSuperpowers() {
         duration: 0.6,
         ease: 'power2.inOut'
       }, 0.1);
-    
+
       // 4. Update text content
       if (textElement) {
         tl.call(() => {
           textElement.setAttribute('font-size', config.fontSize.toString());
           textElement.innerHTML = '';
-          
+
           targetShape.title.split(' ').forEach((word, i, arr) => {
             const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
             tspan.textContent = word;
@@ -264,7 +268,7 @@ export default function OurSuperpowers() {
           });
         }, [], 0.3);
       }
-      
+
       // 5. Fade in new text
       if (textElement) {
         tl.to(textElement, {
@@ -278,7 +282,7 @@ export default function OurSuperpowers() {
     // Initialize first mobile shape
     const firstShape = superpowers[0];
     const morphingSvg = mobileMorphingShapeRef.current?.querySelector('svg');
-    
+
     if (morphingSvg) {
       const shapePath = morphingSvg.querySelector('[data-shape-path]');
       if (shapePath) {
@@ -290,7 +294,8 @@ export default function OurSuperpowers() {
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      // Kill only this component's triggers — not global ones from other sections
+      myTriggers.forEach(trigger => trigger.kill());
       if (mobileTlRef.current) {
         mobileTlRef.current.kill();
         mobileTlRef.current = null;
@@ -303,12 +308,15 @@ export default function OurSuperpowers() {
     if (isMobile || !morphingShapeRef.current || !timelineRef.current) return;
 
     const shapeContainers = document.querySelectorAll('.shape-container');
-    
+
     if (shapeContainers.length === 0) return;
+
+    // Store only THIS component's triggers
+    const myTriggers: ReturnType<typeof ScrollTrigger.create>[] = [];
 
     // Create individual triggers for each shape with position animation
     shapeContainers.forEach((container, index) => {
-      ScrollTrigger.create({
+      const st = ScrollTrigger.create({
         trigger: container,
         start: 'top 50%',
         end: 'top -20%',
@@ -319,31 +327,32 @@ export default function OurSuperpowers() {
           queueShapeTransition(index);
         },
       });
+      myTriggers.push(st);
     });
 
     function queueShapeTransition(targetIndex: number) {
       const currentIndex = currentShapeIndexRef.current;
-      
+
       // If we're already at this shape, do nothing
       if (currentIndex === targetIndex) return;
-      
+
       // Calculate the path from current to target
       const direction = targetIndex > currentIndex ? 1 : -1;
       const steps: number[] = [];
-      
-      for (let i = currentIndex + direction; 
-           direction > 0 ? i <= targetIndex : i >= targetIndex; 
-           i += direction) {
+
+      for (let i = currentIndex + direction;
+        direction > 0 ? i <= targetIndex : i >= targetIndex;
+        i += direction) {
         steps.push(i);
       }
-      
+
       // Add steps to queue (avoiding duplicates)
       steps.forEach(step => {
         if (!animationQueueRef.current.includes(step)) {
           animationQueueRef.current.push(step);
         }
       });
-      
+
       // Start processing if not already running
       processQueue();
     }
@@ -352,10 +361,10 @@ export default function OurSuperpowers() {
       if (isProcessingRef.current || animationQueueRef.current.length === 0) {
         return;
       }
-      
+
       isProcessingRef.current = true;
       const nextIndex = animationQueueRef.current.shift()!;
-      
+
       moveAndMorphToShape(nextIndex, () => {
         isProcessingRef.current = false;
         processQueue(); // Process next item in queue
@@ -368,25 +377,25 @@ export default function OurSuperpowers() {
         activeTlRef.current.kill();
         activeTlRef.current = null;
       }
-      
+
       currentShapeIndexRef.current = index;
-      
+
       const targetShape = superpowers[index];
       const config = SHAPE_CONFIG[targetShape.shape];
-      
+
       const container = shapeContainers[index];
       const rect = container.getBoundingClientRect();
       const timelineRect = timelineRef.current!.getBoundingClientRect();
-      
+
       const morphingSvg = morphingShapeRef.current?.querySelector('svg');
       if (!morphingSvg) {
         onComplete?.();
         return;
       }
-    
+
       const shapePath = morphingSvg.querySelector('[data-shape-path]') as SVGPathElement;
       const textElement = morphingSvg.querySelector('text');
-      
+
       // Master timeline for coordinated animations
       const masterTl = gsap.timeline({
         onComplete: () => {
@@ -394,7 +403,7 @@ export default function OurSuperpowers() {
         }
       });
       activeTlRef.current = masterTl;
-      
+
       // 1. Move to new position (synchronized with morph)
       masterTl.to(morphingShapeRef.current, {
         x: rect.left - timelineRect.left,
@@ -402,7 +411,7 @@ export default function OurSuperpowers() {
         duration: 0.6,
         ease: 'power2.inOut'
       }, 0);
-      
+
       // 2. Fade out text
       if (textElement) {
         masterTl.to(textElement, {
@@ -411,7 +420,7 @@ export default function OurSuperpowers() {
           ease: 'power2.in'
         }, 0);
       }
-      
+
       // 3. Morph shape and change color
       if (shapePath) {
         masterTl.to(shapePath, {
@@ -423,10 +432,10 @@ export default function OurSuperpowers() {
           ease: 'power2.inOut'
         }, 0.1);
       }
-      
+
       // 4. Update SVG dimensions
       masterTl.to(morphingSvg, {
-        attr: { 
+        attr: {
           viewBox: config.viewBox,
           width: config.width,
           height: config.height
@@ -434,13 +443,13 @@ export default function OurSuperpowers() {
         duration: 0.6,
         ease: 'power2.inOut'
       }, 0.1);
-    
+
       // 5. Update text content
       if (textElement) {
         masterTl.call(() => {
           textElement.setAttribute('font-size', config.fontSize.toString());
           textElement.innerHTML = '';
-          
+
           targetShape.title.split(' ').forEach((word, i, arr) => {
             const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
             tspan.textContent = word;
@@ -449,7 +458,7 @@ export default function OurSuperpowers() {
             textElement.appendChild(tspan);
           });
         }, [], 0.3);
-        
+
         // 6. Fade in new text
         masterTl.to(textElement, {
           opacity: 1,
@@ -457,7 +466,7 @@ export default function OurSuperpowers() {
           ease: 'power2.out'
         }, 0.45);
       }
-    
+
       // 7. Update static shapes visibility
       document.querySelectorAll('.static-shape').forEach((shape, i) => {
         gsap.to(shape, {
@@ -466,7 +475,7 @@ export default function OurSuperpowers() {
           ease: 'power2.inOut'
         });
       });
-    
+
       // 8. Small pause at the end
       masterTl.to({}, { duration: 0.2 });
     }
@@ -475,7 +484,7 @@ export default function OurSuperpowers() {
     const firstContainer = shapeContainers[0];
     const rect = firstContainer.getBoundingClientRect();
     const timelineRect = timelineRef.current.getBoundingClientRect();
-    
+
     gsap.set(morphingShapeRef.current, {
       x: rect.left - timelineRect.left,
       y: rect.top - timelineRect.top
@@ -484,7 +493,7 @@ export default function OurSuperpowers() {
     // Initialize first shape without animation
     const firstShape = superpowers[0];
     const morphingSvg = morphingShapeRef.current?.querySelector('svg');
-    
+
     if (morphingSvg) {
       const shapePath = morphingSvg.querySelector('[data-shape-path]');
       if (shapePath) {
@@ -499,7 +508,8 @@ export default function OurSuperpowers() {
     gsap.set(document.querySelector('.static-shape'), { opacity: 0 });
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      // Kill only this component's triggers — not global ones from other sections
+      myTriggers.forEach(trigger => trigger.kill());
       if (activeTlRef.current) {
         activeTlRef.current.kill();
       }
@@ -512,7 +522,7 @@ export default function OurSuperpowers() {
   return (
     <section className="text-white py-16 md:py-32">
       <div className="max-w-4xl mx-auto px-6">
-        
+
         {/* Header */}
         <div className="flex items-center justify-center gap-4 md:gap-6 mb-12 md:mb-20">
           <div className="w-1.5 md:w-2 h-20 md:h-32 rounded-full bg-[#F4A261]" />
@@ -526,7 +536,7 @@ export default function OurSuperpowers() {
           {/* Sticky Container for Shape and Content */}
           <div className="sticky top-1/4 z-10 mb-8">
             {/* Morphing Shape */}
-            <div 
+            <div
               ref={mobileMorphingShapeRef}
               className="flex justify-center mb-6"
             >
@@ -582,9 +592,9 @@ export default function OurSuperpowers() {
 
         {/* Desktop Layout - Morphing Animation Timeline */}
         <div className="hidden md:block relative" ref={timelineRef}>
-          
+
           {/* Morphing Shape - absolute positioned */}
-          <div 
+          <div
             ref={morphingShapeRef}
             className="absolute z-20 pointer-events-none"
             style={{ willChange: 'transform' }}
@@ -622,14 +632,13 @@ export default function OurSuperpowers() {
               </text>
             </svg>
           </div>
-          
+
           <div className="space-y-12">
             {superpowers.map((power, index) => (
-              <div 
+              <div
                 key={power.title}
-                className={`relative grid grid-cols-1 items-center ${
-                  power.alignment === 'right' ? 'text-left' : 'text-left'
-                }`}
+                className={`relative grid grid-cols-1 items-center ${power.alignment === 'right' ? 'text-left' : 'text-left'
+                  }`}
               >
                 {power.alignment === 'left' ? (
                   <>

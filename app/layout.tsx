@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "./components/providers/LenisProvider";
+import SplashProvider from "./components/providers/SplashProvider";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import CustomCursor from "./components/ui/CustomCursor";
@@ -87,10 +88,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} ${ivyOraDisplay.variable} font-poppins antialiased bg-[#1F1E1E]`}>
         <LenisProvider>
-          <CustomCursor />
-          <Navbar />
-          {children}
-          <Footer />
+          <SplashProvider>
+            <CustomCursor />
+            <Navbar />
+            {children}
+            <Footer />
+          </SplashProvider>
         </LenisProvider>
       </body>
     </html>

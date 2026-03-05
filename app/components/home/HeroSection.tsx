@@ -20,8 +20,8 @@ const positions = [
   { x: -420, y: 80 },
   { x: -480, y: 300 },
   { x: -270, y: 350 },
-  { x: -60,  y: 400 },
-  { x: 150,  y: 430 }
+  { x: -60, y: 400 },
+  { x: 150, y: 430 }
 ];
 
 const HeroSection = () => {
@@ -35,7 +35,7 @@ const HeroSection = () => {
     const cards = serviceRefs.current.filter(Boolean) as HTMLDivElement[];
     const mobileCards = mobileServiceRefs.current.filter(Boolean) as HTMLDivElement[];
     const mobileContainer = mobileContainerRef.current;
-    
+
     if (!hero) return;
 
     const mm = gsap.matchMedia();
@@ -56,16 +56,16 @@ const HeroSection = () => {
             force3D: true
           });
         });
-      
+
         const tl = gsap.timeline({
           defaults: {
             ease: 'power3.out'
           }
         });
-      
+
         cards.forEach((card, index) => {
           const { y } = positions[index];
-          
+
           tl.to(card, {
             y,
             opacity: 1,
@@ -75,11 +75,11 @@ const HeroSection = () => {
             ease: 'power3.out'
           }, index * 0.12);
         });
-      
+
         ScrollTrigger.create({
           animation: tl,
           trigger: hero,
-          start: 'top -50%',
+          start: window.innerWidth >= 1280 ? 'top -50%' : 'top -20%',
           end: '+=250%',
           scrub: 2,
           pin: true,
@@ -91,7 +91,7 @@ const HeroSection = () => {
     });
 
     // Mobile stacked cards animation - cards come from bottom one by one
-    mm.add("(max-width: 1024px)", () => {
+    mm.add("(max-width: 1023px)", () => {
       if (mobileCards.length && mobileContainer) {
         // Set initial state - all cards start below viewport
         mobileCards.forEach((card, index) => {
@@ -154,31 +154,30 @@ const HeroSection = () => {
     <div ref={heroRef} className="relative min-h-1/2 lg:min-h-[150vh] bg-[#1F1E1E] text-white">
       {/* Hero */}
       <div className="relative flex items-start min-h-screen">
-        <div className="absolute top-0 right-0 md:right-10 lg:right-25 xl:right-35">
-          <div className="relative">
+        <div className="absolute top-0 right-0 w-full lg:w-auto md:right-0 lg:right-25 xl:right-35">
+          <div className="relative w-full">
             <video
               src="/assets/videos/home/hero-video.mp4"
               autoPlay
               muted
               loop
               playsInline
-              className="w-full lg:w-[50vw] h-full aspect-square object-cover rounded-b-3xl"
+              className="w-full h-auto md:w-full md:h-auto lg:w-[50vw] lg:h-full aspect-square object-cover rounded-b-3xl"
             ></video>
-
             <div className="hidden lg:block absolute top-0 right-0 w-20 h-20 bg-[#1F1E1E] rounded-bl-3xl"></div>
             <div className="hidden lg:block absolute bottom-20 left-0 w-56 h-56 bg-[#1F1E1E] rounded-r-3xl"></div>
           </div>
         </div>
 
-        <div className='absolute bottom-25 left-5 md:-bottom-30 md:left-25'>
-          <h2 className='text-3xl md:text-4xl font-normal'><span className=''>What</span><br/> <span className='font-semibold text-4xl md:text-5xl  italic'>We Do</span></h2>
+        <div className='absolute bottom-25 left-5 md:bottom-70 md:left-25 lg:bottom-95 lg:left-12 xl:bottom-45 2xl:-bottom-30 xl:left-45 2xl:left-60'>
+          <h2 className='text-3xl md:text-4xl font-normal'><span className=''>What</span><br /> <span className='font-semibold text-4xl md:text-5xl  italic'>We Do</span></h2>
         </div>
 
-        <div className='absolute w-52 md:w-80 bottom-25 right-5 md:bottom-10 md:right-40'>
+        <div className='absolute w-52 md:w-80 bottom-25 right-5 md:bottom-110 md:right-20 lg:bottom-95 lg:right-30 xl:bottom-40 xl:right-40 2xl:right-60 2xl:bottom-20'>
           <p className='font-light text-sm md:text-base'>Creative Agency focusing on Precious Metals & Jewellery Industry</p>
         </div>
 
-        <div className="relative flex flex-col justify-center h-full z-10 pl-10 lg:pl-15 xl:pl-40 pt-30">
+        <div className="relative flex flex-col justify-end md:justify-center h-full z-10 pl-10 lg:pl-15 xl:pl-40 pt-75 md:pt-90 lg:pt-30 2xl:pt-80 2xl:pl-80">
           <div className="flex items-end gap-2">
             <h1 className="text-xl lg:text-2xl xl:text-3xl font-light">We Build</h1>
             <h2 className="text-4xl lg:text-6xl xl:text-7xl font-normal italic">Brands</h2>
@@ -191,7 +190,7 @@ const HeroSection = () => {
         </div>
 
         {/* Desktop Services cards pinned around the video */}
-        <div className="hidden lg:block absolute bottom-73 left-[55%] z-20">
+        <div className="hidden lg:block absolute bottom-163 xl:bottom-112 2xl:bottom-[330px] left-[61%] xl:left-[55%] 2xl:left-[53.5%] z-20">
           <div className="relative" style={{ perspective: '1200px' }}>
             {services.map((service, index) => (
               <div
@@ -200,7 +199,7 @@ const HeroSection = () => {
                   serviceRefs.current[index] = el;
                 }}
                 className="absolute w-48 h-48 rounded-2xl shadow-lg flex items-center justify-center transition-transform duration-500 ease-out will-change-transform hover:scale-105 hover:shadow-2xl"
-                style={{ 
+                style={{
                   backgroundColor: service.color,
                   transformStyle: 'preserve-3d'
                 }}
@@ -215,19 +214,19 @@ const HeroSection = () => {
         </div>
 
         {/* Mobile Services cards - Stacked from bottom */}
-        <div 
+        <div
           ref={mobileContainerRef}
-          className="flex items-center justify-center lg:hidden absolute bottom-0 left-0 right-0 z-20 h-[80vh] "
+          className="flex items-center justify-center absolute lg:hidden -bottom-15 md:-bottom-65 left-0 right-0 z-20 h-[80vh]"
         >
-          <div className="relative w-5/6 h-52">
+          <div className="relative w-4/6 h-52">
             {services.map((service, index) => (
               <div
-                key={`mobile-${index}`}
+                key={`mobile - ${index} `}
                 ref={el => {
                   mobileServiceRefs.current[index] = el;
                 }}
                 className="absolute inset-0 w-full h-52 rounded-2xl shadow-xl flex items-center justify-center will-change-transform"
-                style={{ 
+                style={{
                   backgroundColor: service.color
                 }}
               >
@@ -241,8 +240,8 @@ const HeroSection = () => {
         </div>
 
         <Link href="/services">
-          <button className='absolute bottom-0 left-1/2 -translate-1/2 md:-bottom-63 md:left-auto md:translate-x-0 md:right-30 transition-all duration-300 hover:scale-110 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide hover:border-white hover:bg-white hover:text-black cursor-pointer'>
-              View All
+          <button className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-25 xl:right-35 2xl:right-70 bottom-0 md:-bottom-23 lg:-bottom-20 xl:-bottom-30 2xl:-bottom-60 transition-all duration-300 hover:scale-110 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide hover:border-white hover:bg-white hover:text-black cursor-pointer z-30">
+            View All
           </button>
         </Link>
       </div>

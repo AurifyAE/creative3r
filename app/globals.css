@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Add the CSS variable for font-ivyora-display as a fallback */
 :root {
     --font-ivyora-display: 'IvyOraDisplay', serif;
     --font-poppins: 'Poppins', sans-serif;
@@ -13,7 +12,13 @@
 }
 
 @layer base {
-    h1, h2, h3, h4, h5, h6 {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-family: var(--font-display);
     }
 
@@ -22,22 +27,49 @@
     }
 }
 
-/* Hide default cursor globally */
-/* * {
-    cursor: none !important;
-  }
-  
-  body,
-  html,
-  a,
-  button,
-  input,
-  textarea,
-  select {
-    cursor: none !important;
-  }
-  
-  .cursor {
+/* Only hide cursor and show custom one on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+    * {
+        cursor: none !important;
+    }
+
+    body,
+    html,
+    a,
+    button,
+    input,
+    textarea,
+    select {
+        cursor: none !important;
+    }
+
+    .cursor,
+    .cursor-follower {
+        display: block;
+    }
+}
+
+/* On touch devices: restore default cursor, hide custom cursor */
+@media (hover: none) or (pointer: coarse) {
+    * {
+        cursor: auto !important;
+        /* restore default instead of none */
+    }
+
+    a,
+    button {
+        cursor: pointer !important;
+    }
+
+    .cursor,
+    .cursor-follower {
+        display: none !important;
+    }
+}
+
+/* Base cursor styles (hidden by default, shown only via hover media query) */
+.cursor {
+    display: none;
     width: 10px;
     height: 10px;
     background-color: #fff;
@@ -46,12 +78,21 @@
     pointer-events: none;
     z-index: 9999;
     mix-blend-mode: difference;
-    transform: translate(-50%, -50%);
-    left: 0;
     top: 0;
-  }
-  
-  .cursor-follower {
+    left: 0;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.cursor-follower {
+    display: none;
     width: 40px;
     height: 40px;
     border: 2px solid #fff;
@@ -60,27 +101,6 @@
     pointer-events: none;
     z-index: 9998;
     mix-blend-mode: difference;
-    transform: translate(-50%, -50%);
-    left: 0;
     top: 0;
-  } */
-
-
-  /* Only show custom cursor on desktop */
-/* @media (hover: hover) and (pointer: fine) {
-    * {
-      cursor: none !important;
-    }
-    
-    .cursor,
-    .cursor-follower {
-      display: block;
-    }
-  }
-  
-  @media (hover: none) or (pointer: coarse) {
-    .cursor,
-    .cursor-follower {
-      display: none;
-    }
-  } */
+    left: 0;
+}

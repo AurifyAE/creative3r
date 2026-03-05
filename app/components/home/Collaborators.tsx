@@ -1,6 +1,6 @@
-    import Image from "next/image";
+import Image from "next/image";
 
-    const collaborators = [
+const collaborators = [
     { name: "Blue Diamond Jewellery", src: "assets/images/home/companies/bluediamond.svg" },
     { name: "Promise Gold Refinery", src: "assets/images/home/companies/promise.svg" },
     { name: "MAC & RO Capital FZC", src: "assets/images/home/companies/mac&ro.svg" },
@@ -17,12 +17,12 @@
     { name: "Arista Gold", src: "assets/images/home/companies/aristagold.svg" },
     { name: "Black Mamba Real Estate", src: "assets/images/home/companies/blackmamba.svg" },
     { name: "Ramla Style Italia", src: "assets/images/home/companies/ramla.svg" },
-    ];
+];
 
-    export default function CollaboratorsSection() {
+export default function CollaboratorsSection() {
     return (
         <section className="bg-[#1F1E1E] py-24 px-6">
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-4xl">
                 {/* Title */}
                 <div className="flex justify-start md:justify-center uppercase text-white gap-3 md:gap-10 mb-16">
                     <div className="h-20 w-2 rounded-full bg-[#E76F51]" />
@@ -37,21 +37,21 @@
                 </div>
 
                 {/* Logos Grid */}
-                <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {collaborators.map((logo) => (
-                    <div
-                    key={logo.name}
-                    className="flex items-center justify-center opacity-80 transition-all duration-300 hover:opacity-100 hover:-translate-y-1"
-                    >
-                    <Image
-                        src={logo.src}
-                        alt={logo.name}
-                        width={160}
-                        height={80}
-                        className="max-h-18 w-auto object-contain grayscale-100"
-                    />
-                    </div>
-                ))}
+                <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 md:grid-cols-4">
+                    {collaborators.map((logo) => (
+                        <div
+                            key={logo.name}
+                            className="flex items-center justify-center opacity-80 transition-all duration-300 bg-gray-400/10 rounded-xl py-2 px-8 shadow-xl hover:opacity-100 hover:-translate-y-1"
+                        >
+                            <Image
+                                src={logo.src}
+                                alt={logo.name}
+                                width={160}
+                                height={80}
+                                className="h-18 w-auto object-contain grayscale-100"
+                            />
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

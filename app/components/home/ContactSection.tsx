@@ -3,17 +3,17 @@ const ContactSection = () => {
     <section className="bg-[#1F1E1E] text-white py-20 md:py-28">
       <div className="mx-auto flex max-w-5xl flex-col items-start gap-10 px-6 text-center">
         {/* Heading */}
-        <div className="text-left space-y-2">
-          <p className="text-3xl md:text-4xl font-bold tracking-normal uppercase">
-            Let's have a chat
+        <div className="text-left space-y-1 md:space-y-2">
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-normal uppercase">
+            Let&apos;s have a chat
           </p>
-          <p className="text-3xl md:text-4xl font-bold uppercase">
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold uppercase">
             over a coffee
           </p>
         </div>
 
         {/* Card with Glassy Effect */}
-        <div className="w-full rounded-[32px] bg-white/10 backdrop-blur-xl px-6 py-8 text-left text-white shadow-2xl border border-white/20 md:px-10 md:py-10">
+        <div className="w-full rounded-[24px] md:rounded-[32px] bg-white/10 backdrop-blur-xl px-5 py-7 md:px-10 md:py-10 text-left text-white shadow-2xl border border-white/20">
           {/* Intro copy */}
           <div className="space-y-2 mb-6">
             <p className="text-sm md:text-base font-semibold text-[#E76F51]">
@@ -77,59 +77,61 @@ const ContactSection = () => {
               </div>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-             {/* How did you hear about us */}
-             <div className="flex flex-col gap-5 pt-1">
-              <div>
-                <p className="text-xs md:text-sm font-medium text-white/80">
-                  How did you hear about us?
-                </p>
-                <p className="text-[11px] text-white/60">
-                  We always love hearing how good people find us!
-                </p>
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* How did you hear about us */}
+              <div className="flex flex-col gap-4 pt-1">
+                <div>
+                  <p className="text-xs md:text-sm font-medium text-white/80">
+                    How did you hear about us?
+                  </p>
+                  <p className="text-[11px] text-white/60">
+                    We always love hearing how good people find us!
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2 sm:gap-3">
+                  {["Social Media", "Friends & Colleagues", "Word of mouth"].map((label) => (
+                    <button
+                      key={label}
+                      type="button"
+                      className="rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-3 py-1 sm:px-4 sm:py-1 text-[10px] sm:text-xs text-white/90 hover:bg-white/20 hover:border-[#E76F51] hover:text-white transition-all duration-200"
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-3">
-                {["Social Media", "Friends & Colleagues", "Word of mouth"].map((label) => (
-                  <button
-                    key={label}
-                    type="button"
-                    className="rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-1 text-xs text-white/90 hover:bg-white/20 hover:border-[#E76F51] hover:text-white transition-all duration-200"
-                  >
-                    {label}
-                  </button>
-                ))}
+
+              <div className="flex flex-col gap-1">
+                <label className="text-xs md:text-sm font-medium text-white/80">
+                  Project Details
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="Tell us a little about your brand, your goals, and what you'd like to create together."
+                  className="backdrop-blur-sm border-b border-white/20 rounded-xl px-4 py-2 text-sm text-white placeholder:text-white/40 outline-none hover:bg-white/10 hover:border-white/30 focus:bg-white/10 focus:border-[#E76F51] focus:ring focus:ring-[#E76F51]/30 transition-all duration-200 resize-none"
+                />
               </div>
             </div>
 
-            <div className="flex flex-col gap-1">
-              <label className="text-xs md:text-sm font-medium text-white/80">
-                Project Details
-              </label>
-              <textarea
-                rows={3}
-                placeholder="Tell us a little about your brand, your goals, and what you'd like to create together."
-                className="backdrop-blur-sm border-b border-white/20 rounded-xl px-4 py-2 text-sm text-white placeholder:text-white/40 outline-none hover:bg-white/10 hover:border-white/30 focus:bg-white/10 focus:border-[#E76F51] focus:ring focus:ring-[#E76F51]/30 transition-all duration-200 resize-none"
-              />
-            </div>
-            </div>
-            
 
-            
 
-            <div className="flex flex-col gap-3 pt-2">
+
+            <div className="flex flex-col gap-4 pt-4">
               <button
                 type="submit"
-                className="inline-flex items-center justify-center rounded-full bg-[#E76F51] px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-[#d45b3f] hover:shadow-xl hover:shadow-[#E76F51]/20 transition-all duration-200"
+                className="w-full sm:w-auto self-center sm:self-start inline-flex items-center justify-center rounded-full bg-[#E76F51] px-10 py-4 text-base font-bold text-white shadow-lg hover:bg-[#d45b3f] hover:shadow-xl hover:shadow-[#E76F51]/20 transition-all duration-300 transform hover:-translate-y-1"
               >
                 Send Message
               </button>
 
-              <p className="text-center text-2xl font-semibold text-[#299D8F]">
-                Thanks a ton!
-              </p>
-              <p className="text-center text-xs font-semibold text-white/80">
-                We&apos;re thrilled to connect and can&apos;t wait to start working together.
-              </p>
+              <div className="mt-4 space-y-2">
+                <p className="text-center text-xl md:text-2xl font-bold text-[#299D8F]">
+                  Thanks a ton!
+                </p>
+                <p className="text-center text-xs md:text-sm font-medium text-white/70 max-w-xs mx-auto">
+                  We&apos;re thrilled to connect and can&apos;t wait to start working together.
+                </p>
+              </div>
             </div>
           </form>
         </div>

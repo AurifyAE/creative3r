@@ -20,7 +20,7 @@ const LenisProvider = ({ children }: LenisProviderProps) => {
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
+      touchMultiplier: 1, // Reduced from 2 to prevent mobile scrolling issues
       infinite: false,
     });
 
@@ -38,7 +38,7 @@ const LenisProvider = ({ children }: LenisProviderProps) => {
     return () => {
       gsap.ticker.remove(ticker);
       lenis.destroy();
-      ScrollTrigger.killAll();
+      // Remove ScrollTrigger.killAll() to prevent killing other ScrollTrigger instances
     };
   }, []);
 

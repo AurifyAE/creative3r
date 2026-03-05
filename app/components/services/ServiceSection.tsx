@@ -46,7 +46,7 @@ const services: Service[] = [
           serviceName: 'Rebranding',
           description: 'Revitalizing brand feel without losing its soul'
         }
-       ]
+      ]
     }
   },
   {
@@ -74,7 +74,7 @@ const services: Service[] = [
           serviceName: 'Visual Storytelling',
           description: 'Creating visual contents that resonate emotion'
         }
-       ]
+      ]
     }
   },
   {
@@ -106,7 +106,7 @@ const services: Service[] = [
           serviceName: 'Influencer Marketing',
           description: 'Influencers who align with your brand’s story.'
         }
-       ]
+      ]
     }
   },
   {
@@ -134,7 +134,7 @@ const services: Service[] = [
           serviceName: 'Mobile App Development',
           description: 'Apps that resonate with your audience’s needs.'
         }
-       ]
+      ]
     }
   },
   {
@@ -158,7 +158,7 @@ const services: Service[] = [
           serviceName: 'Performance Dashboards',
           description: 'Actionable insights through analytics.'
         }
-       ]
+      ]
     }
   },
   {
@@ -182,7 +182,7 @@ const services: Service[] = [
           serviceName: 'Video Production',
           description: 'Capturing the essence of brand, product, or service.'
         }
-       ]
+      ]
     }
   },
   {
@@ -206,7 +206,7 @@ const services: Service[] = [
           serviceName: 'Crisis Management',
           description: 'Protecting brand’s reputation during challenging times.'
         }
-       ]
+      ]
     }
   },
   {
@@ -230,7 +230,7 @@ const services: Service[] = [
           serviceName: 'Competitor Analysis',
           description: 'Identifying opportunities to set your brand apart.'
         }
-       ]
+      ]
     }
   },
   {
@@ -254,7 +254,7 @@ const services: Service[] = [
           serviceName: 'AI Solutions',
           description: 'Leveraging AI for personalization and smarter campaigns'
         }
-       ]
+      ]
     }
   },
   {
@@ -274,7 +274,7 @@ const services: Service[] = [
           serviceName: 'Impact Reporting & Transparency',
           description: 'Engage modern consumers where it matters.'
         }
-       ]
+      ]
     }
   }
 ];
@@ -286,7 +286,8 @@ export default function ServicesPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [expandedItems, setExpandedItems] = useState<number[]>([0]);
   const [isAnimating, setIsAnimating] = useState(false);
-  
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const detailsRef = useRef<HTMLDivElement>(null);
   const serviceListRef = useRef<HTMLDivElement>(null);
@@ -296,25 +297,37 @@ export default function ServicesPage() {
   const progressRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-   // Get current color based on index
-   const getCurrentColor = (index: number) => colors[index % colors.length];
+  // Get current color based on index
+  const getCurrentColor = (index: number) => colors[index % colors.length];
 
-  // Handle scroll navigation with improved sticking behavior
+  const handleNext = () => {
+    if (!isAnimating && currentIndex < services.length - 1) {
+      setCurrentIndex(prev => prev + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (!isAnimating && currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1);
+    }
+  };
+
+  // Handle scroll navigation - only on desktop
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
+      // Only hijiack scroll on desktop
+      if (window.innerWidth < 1024) return;
+
       const now = Date.now();
-      
-      // Check if we should prevent default scroll behavior
       const shouldPreventScroll = (
-        (e.deltaY > 0 && currentIndex < services.length - 1) || 
+        (e.deltaY > 0 && currentIndex < services.length - 1) ||
         (e.deltaY < 0 && currentIndex > 0)
       );
 
       if (shouldPreventScroll) {
         e.preventDefault();
         e.stopPropagation();
-        
-        // Improved debounce - 650ms for smoother feel
+
         if (now - lastScrollTime.current < 650 || isAnimating) {
           return;
         }
@@ -341,9 +354,8 @@ export default function ServicesPage() {
     };
   }, [currentIndex, isAnimating]);
 
-  // Enhanced service list animations with smoother stagger and no unwanted movement
+  // Enhanced service list animations
   useEffect(() => {
-    // Kill any existing timeline
     if (timelineRef.current) {
       timelineRef.current.kill();
     }
@@ -358,12 +370,14 @@ export default function ServicesPage() {
     serviceItemsRef.current.forEach((item, index) => {
       if (!item) return;
 
+      // Grouping logic for desktop to keep list manageable
+      const isMobile = window.innerWidth < 1024;
       const currentGroup = Math.floor(currentIndex / 5);
       const itemGroup = Math.floor(index / 5);
 
-      if (itemGroup === currentGroup) {
+      if (isMobile || itemGroup === currentGroup) {
         const distance = Math.abs(index - currentIndex);
-        const delay = distance * 0.03; // Reduced delay for smoother feel
+        const delay = distance * 0.03;
 
         if (index === currentIndex) {
           tl.to(item, {
@@ -375,15 +389,15 @@ export default function ServicesPage() {
           }, 0);
         } else if (index < currentIndex) {
           tl.to(item, {
-            opacity: 0.4,
+            opacity: isMobile ? 0.3 : 0.4,
             scale: 0.97,
-            x: -10, // Reduced movement
+            x: isMobile ? 0 : -10,
             duration: 0.5,
             delay: delay
           }, 0);
         } else {
           tl.to(item, {
-            opacity: 0.5,
+            opacity: isMobile ? 0.3 : 0.5,
             scale: 0.98,
             x: 0,
             duration: 0.5,
@@ -398,19 +412,16 @@ export default function ServicesPage() {
     };
   }, [currentIndex]);
 
-  // Smoother background animation with better positioning
+  // Background transition animation
   useEffect(() => {
     const activeItem = serviceItemsRef.current[currentIndex];
     const bg = activeBgRef.current;
     const serviceList = serviceListRef.current;
-  
+
     if (!activeItem || !bg || !serviceList) return;
-  
-    // Use getBoundingClientRect for accurate positioning
+
     const itemRect = activeItem.getBoundingClientRect();
     const parentRect = serviceList.getBoundingClientRect();
-  
-    // Calculate relative position
     const y = itemRect.top - parentRect.top + serviceList.scrollTop;
 
     gsap.to(bg, {
@@ -422,10 +433,10 @@ export default function ServicesPage() {
     });
   }, [currentIndex]);
 
-  // Enhanced details panel animation with cascading elements
+  // Panel content animation
   useEffect(() => {
     setIsAnimating(true);
-    
+
     if (detailsRef.current) {
       const tl = gsap.timeline({
         defaults: {
@@ -434,120 +445,21 @@ export default function ServicesPage() {
         onComplete: () => setIsAnimating(false)
       });
 
-      // Animate container
       tl.fromTo(
         detailsRef.current,
-        { 
-          opacity: 0,
-          y: 30,
-          scale: 0.98
-        },
-        { 
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.4
-        }
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4 }
       );
 
-      // Animate badge with subtle bounce
+      const items = detailsRef.current.querySelectorAll('.service-badge, .service-title, .service-description, .service-divider, .details-title, .accordion-item');
       tl.fromTo(
-        detailsRef.current.querySelector('.service-badge'),
-        {
-          opacity: 0,
-          y: 30,
-          scale: 0.9
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.4,
-          ease: 'back.out(1.4)'
-        },
-        '-=0.3'
-      );
-
-      // Animate title
-      tl.fromTo(
-        detailsRef.current.querySelector('.service-title'),
-        {
-          opacity: 0,
-          y: 20
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4
-        },
-        '-=0.3'
-      );
-
-      // Animate description
-      tl.fromTo(
-        detailsRef.current.querySelector('.service-description'),
-        {
-          opacity: 0,
-          y: 15
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4
-        },
-        '-=0.3'
-      );
-
-      // Animate divider
-      tl.fromTo(
-        detailsRef.current.querySelector('.service-divider'),
-        {
-          scaleX: 0,
-          opacity: 0
-        },
-        {
-          scaleX: 1,
-          opacity: 1,
-          duration: 0.4,
-          transformOrigin: 'left'
-        },
-        '-=0.2'
-      );
-
-      // Animate details title
-      tl.fromTo(
-        detailsRef.current.querySelector('.details-title'),
-        {
-          opacity: 0,
-          y: 20
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.3
-        },
-        '-=0.2'
-      );
-
-      // Animate accordion items with stagger
-      const accordionItems = detailsRef.current.querySelectorAll('.accordion-item');
-      tl.fromTo(
-        accordionItems,
-        {
-          opacity: 0,
-          y: 20
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          stagger: 0.06,
-        },
+        items,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.3, stagger: 0.05 },
         '-=0.2'
       );
     }
 
-    // Animate progress bar
     if (progressRef.current) {
       gsap.to(progressRef.current, {
         scaleX: (currentIndex + 1) / services.length,
@@ -567,6 +479,7 @@ export default function ServicesPage() {
   const handleServiceClick = (index: number) => {
     if (!isAnimating && index !== currentIndex) {
       setCurrentIndex(index);
+      setIsMenuOpen(false); // Close mobile menu if open
     }
   };
 
@@ -576,184 +489,233 @@ export default function ServicesPage() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-[#2A2A2A] text-white overflow-hidden"
+      className="min-h-screen bg-[#2A2A2A] text-white overflow-x-hidden"
     >
-      <div className="container mx-auto px-6 lg:px-12h-screen flex flex-col justify-center">
-        {/* Section Title - Centered */}
-        <div className="text-center mb-6 lg:mb-8  mt-32 pb-6">
-          <h2 className="text-3xl lg:text-5xl font-bold text-white/90">Our Services</h2>
-          <p className="text-gray-400 text-sm mt-2">Scroll to explore our comprehensive solutions</p>
+      <div className="container mx-auto px-6 lg:px-12 py-24 md:py-32 flex flex-col items-center">
+        {/* Section Header */}
+        <div className="text-center mb-10 lg:mb-16 w-full max-w-2xl px-4">
+          <h2 className="text-4xl lg:text-6xl font-bold text-white tracking-tight mb-4">Our Services</h2>
+          <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+            Crafting premium digital experiences through strategy, design, and technology.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 w-full flex-1 overflow-hidden">
-          
-          {/* Left Side - Service List */}
-          <div className="relative overflow-hidden py-8">
-            <div ref={serviceListRef} className="relative space-y-3 will-change-transform h-full">
+        {/* Mobile Accordion Selector */}
+        <div className="lg:hidden w-full max-w-7xl mb-6 relative z-50">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="w-full flex items-center justify-between p-5 bg-[#232323] border border-white/10 rounded-2xl shadow-xl transition-all active:scale-[0.98]"
+          >
+            <div className="flex items-center gap-4">
+              <span className="font-mono text-xs font-bold" style={{ color: currentColor }}>
+                {currentService.number}
+              </span>
+              <span className="font-semibold text-sm">{currentService.title}</span>
+            </div>
+            <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} />
+          </button>
 
-              {/* Active Background - Fixed positioning to prevent movement */}
+          <div className={`absolute top-full left-0 right-0 mt-2 bg-[#232323] border border-white/10 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[60vh] opacity-100 py-3' : 'max-h-0 opacity-0 pointer-events-none'
+            }`}>
+            <div className="overflow-y-auto max-h-[55vh] px-2 space-y-1">
+              {services.map((service, index) => (
+                <button
+                  key={service.id}
+                  onClick={() => handleServiceClick(index)}
+                  className={`w-full flex items-center justify-between p-4 rounded-xl transition-colors ${index === currentIndex ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5'
+                    }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="font-mono text-xs" style={{ color: index === currentIndex ? getCurrentColor(index) : undefined }}>
+                      {service.number}
+                    </span>
+                    <span className="font-medium text-sm text-left">{service.title}</span>
+                  </div>
+                  {index === currentIndex && <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: currentColor }} />}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 w-full max-w-7xl">
+
+          {/* Left Side: Navigation (Desktop only) */}
+          <div className="relative order-2 lg:order-1 hidden lg:block">
+            <div ref={serviceListRef} className="relative space-y-2 lg:space-y-3">
+              {/* Desktop Indicator Background */}
               <div
                 ref={activeBgRef}
-                className="absolute left-0 right-0 bg-white/10 border-l-4 rounded-3xl pointer-events-none"
-                style={{ top: 0, height: 0, willChange: 'transform', borderLeftColor: currentColor }}
+                className="absolute left-0 right-0 bg-white/5 border-l-4 rounded-xl pointer-events-none hidden lg:block"
+                style={{ top: 0, height: 0, borderLeftColor: currentColor }}
               />
 
-            {services.map((service, index) => {
-              const currentGroup = Math.floor(currentIndex / 5);
-              const itemGroup = Math.floor(index / 5);
-              const isInCurrentGroup = itemGroup === currentGroup;
-              
-              return (
-                <div
-                  key={service.id}
-                  ref={(el) => {
-                    serviceItemsRef.current[index] = el;
-                  }}
-                  onClick={() => handleServiceClick(index)}
-                  className={`group cursor-pointer will-change-transform ${
-                    isAnimating && index !== currentIndex ? 'pointer-events-none' : ''
-                  } ${!isInCurrentGroup ? 'hidden' : ''}`}
-                >
+              {services.map((service, index) => {
+                const currentGroup = Math.floor(currentIndex / 5);
+                const itemGroup = Math.floor(index / 5);
+
+                if (itemGroup !== currentGroup) return null;
+
+                return (
                   <div
-                    className={`flex items-center justify-between p-6 rounded-2xl transition-all duration-300 ${
-                      index === currentIndex
-                        ? 'relative z-10 shadow-lg'
-                        : 'relative z-10 bg-transparent border-transparent hover:bg-white/5'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4 flex-1">
-                      <span className={`font-mono text-sm font-medium transition-colors duration-300`}
-                      style={{ 
-                        color: index === currentIndex ? getCurrentColor(index) : '#9CA3AF'
-                      }}
-                      >
-                        {service.number}
-                      </span>
-                      <span
-                        className={`font-medium transition-colors duration-300 text-sm lg:text-base ${
-                          index === currentIndex ? 'text-white' : 'text-gray-300'
-                        }`}
-                      >
-                        {service.title}
-                      </span>
-                    </div>
-                    <ArrowRight
-                      className={`w-5 h-5 transition-all duration-300 shrink-0 ${
-                        index === currentIndex
-                          ? 'translate-x-0 opacity-100'
-                          : 'text-gray-500 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0'
+                    key={service.id}
+                    ref={(el) => {
+                      serviceItemsRef.current[index] = el;
+                    }}
+                    onClick={() => handleServiceClick(index)}
+                    className={`group cursor-pointer p-4 md:p-5 rounded-xl transition-all duration-300 ${index === currentIndex
+                      ? 'lg:bg-transparent'
+                      : 'opacity-50 hover:opacity-100'
                       }`}
-                      style={{ 
-                        color: index === currentIndex ? getCurrentColor(index) : undefined
-                      }}
-                    />
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <span
+                          className="font-mono text-xs md:text-sm font-medium transition-colors"
+                          style={{ color: index === currentIndex ? currentColor : '#6B7280' }}
+                        >
+                          {service.number}
+                        </span>
+                        <span className={`font-medium text-sm md:text-lg ${index === currentIndex ? 'text-white' : 'text-gray-400'}`}>
+                          {service.title}
+                        </span>
+                      </div>
+                      <ArrowRight
+                        className={`w-4 h-4 md:w-5 md:h-5 transition-all ${index === currentIndex ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
+                          }`}
+                        style={{ color: currentColor }}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
             </div>
 
-            {/* Counter Dots Navigation */}
-            <div className="absolute top-[54%] left-0 right-0 flex justify-center items-center gap-2 py-4">
+            {/* Pagination Controls */}
+            <div className="flex justify-center flex-wrap gap-2 mt-8 lg:mt-12">
               {services.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => handleServiceClick(index)}
-                  className="group relative"
+                  className="p-2 transition-transform hover:scale-125 focus:outline-none"
                   aria-label={`Go to service ${index + 1}`}
                 >
                   <div
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === currentIndex
-                        ? 'scale-125'
-                        : 'bg-gray-600 hover:bg-gray-500 scale-100'
-                    }`}
-                    style={{
-                      backgroundColor: index === currentIndex ? getCurrentColor(index) : undefined
-                    }}
+                    className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'scale-150' : 'bg-gray-600'
+                      }`}
+                    style={{ backgroundColor: index === currentIndex ? currentColor : undefined }}
                   />
-                  {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-500 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                    {services[index].title}
-                  </div>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Right Side - Service Details */}
-          <div className="flex flex-col justify-center">
+          {/* Right Side: Content Card */}
+          <div className="order-1 lg:order-2">
             <div
               ref={detailsRef}
-              className="text-white rounded-2xl p-6 lg:p-8 will-change-transform"
+              className="bg-[#232323] overflow-hidden rounded-3xl border border-white/5 shadow-2xl relative"
             >
-              {/* Service Image */}
-              <div className="service-image relative overflow-hidden rounded-xl mb-6">
-                {/* Badge on Image */}
-                <div className="service-badge absolute top-4 left-4 text-white px-4 py-1 rounded-full text-sm font-mono font-medium z-10" 
-                style={{ backgroundColor: currentColor }}
+              {/* Mobile Quick Nav Buttons (Top) */}
+              <div className="lg:hidden absolute top-4 right-4 z-20 flex gap-2">
+                <button
+                  onClick={handlePrev}
+                  disabled={currentIndex === 0}
+                  className="w-10 h-10 flex items-center justify-center bg-black/40 backdrop-blur-md border border-white/10 rounded-full disabled:opacity-30 active:scale-90 transition-all"
                 >
-                  {currentService.number}
-                </div>
+                  <ArrowRight className="w-5 h-5 rotate-180" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={currentIndex === services.length - 1}
+                  className="w-10 h-10 flex items-center justify-center bg-black/40 backdrop-blur-md border border-white/10 rounded-full disabled:opacity-30 active:scale-90 transition-all"
+                >
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
 
+              {/* Card Header Image */}
+              <div className="relative h-48 md:h-64 overflow-hidden">
                 <img
                   src={currentService.image}
                   alt={currentService.title}
-                  className="w-full h-[220px] object-cover"
+                  className="w-full h-full object-cover transition-scale duration-700"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#232323] to-transparent opacity-60" />
+                <div
+                  className="absolute top-6 left-6 px-4 py-1 rounded-full text-[10px] md:text-xs font-mono font-bold text-white uppercase tracking-widest z-10"
+                  style={{ backgroundColor: currentColor }}
+                >
+                  {currentService.number} / Service
+                </div>
               </div>
 
-              {/* Service Title */}
-              <h3 className="service-title text-2xl lg:text-3xl font-bold mb-4 text-white">
-                {currentService.title}
-              </h3>
+              <div className="p-6 md:p-10 -mt-8 relative z-10 bg-[#232323] rounded-t-3xl">
+                <h3 className="service-title text-2xl md:text-4xl font-bold mb-5 leading-tight">
+                  {currentService.title}
+                </h3>
+                <p className="service-description text-sm md:text-base text-gray-400 mb-8 leading-relaxed">
+                  {currentService.description}
+                </p>
 
-              {/* Description */}
-              <p className="service-description text-sm lg:text-base text-gray-300 leading-relaxed mb-6">
-                {currentService.description}
-              </p>
+                <div className="service-divider h-[1px] bg-white/10 mb-8" />
 
-              {/* Divider */}
-              <div className="service-divider h-px bg-gray-300 mb-6"></div>
+                <h4 className="details-title text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-gray-500 mb-6">
+                  {currentService.details.title}
+                </h4>
 
-              {/* Details Title */}
-              <h4 className="details-title text-lg font-semibold mb-4 text-gray-200">
-                {currentService.details.title}
-              </h4>
-
-              {/* Accordion Section */}
-              <div className="">
-                {currentService.details.items.map((item, index) => (
-                  <div key={index} className="accordion-item border-b border-gray-300 last:border-b-0">
-                    <button
-                      onClick={() => toggleExpand(index)}
-                      className="w-full py-5 flex items-center justify-between hover:bg-white/10 transition-colors duration-200 px-3 rounded group"
-                    >
-                      <span className="text-left font-medium text-sm lg:text-base text-gray-200">
-                        {item.serviceName}
-                      </span>
-                      <ChevronDown
-                        className={`w-5 h-5 shrink-0 transition-transform duration-300 text-gray-200 ${
-                          expandedItems.includes(index) ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
-                    <div
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                        expandedItems.includes(index)
-                          ? 'max-h-32 opacity-100 mb-3'
-                          : 'max-h-0 opacity-0'
-                      }`}
-                    >
-                      <p className="px-3 pb-2 text-xs lg:text-sm text-gray-200 leading-relaxed mt-3">
-                        {item.description}
-                      </p>
+                <div className="space-y-4">
+                  {currentService.details.items.map((item, index) => (
+                    <div key={index} className="accordion-item rounded-xl bg-white/5 border border-white/5 overflow-hidden transition-all duration-300">
+                      <button
+                        onClick={() => toggleExpand(index)}
+                        className="w-full p-4 flex items-center justify-between text-left group"
+                      >
+                        <span className="font-semibold text-sm md:text-base text-gray-200 group-hover:text-white transition-colors">
+                          {item.serviceName}
+                        </span>
+                        <ChevronDown
+                          className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${expandedItems.includes(index) ? 'rotate-180 text-white' : ''
+                            }`}
+                        />
+                      </button>
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ${expandedItems.includes(index) ? 'max-h-40 py-4 pt-0' : 'max-h-0'
+                          }`}
+                      >
+                        <p className="px-4 text-xs md:text-sm text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
+                  ))}
+                </div>
+
+                {/* Mobile Bottom Quick Nav */}
+                <div className="lg:hidden flex items-center justify-between mt-10 pt-6 border-t border-white/5">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-widest text-gray-500">Navigation</span>
+                    <span className="text-xs font-mono">{currentIndex + 1} of {services.length}</span>
                   </div>
-                ))}
+                  <div className="flex gap-4">
+                    <button
+                      onClick={handlePrev}
+                      disabled={currentIndex === 0}
+                      className="flex items-center gap-4 text-sm font-semibold disabled:opacity-20 active:scale-95 transition-all"
+                    >
+                      <ArrowRight className="w-4 h-4 rotate-180" /> Prev
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      disabled={currentIndex === services.length - 1}
+                      className="flex items-center gap-4 text-sm font-semibold disabled:opacity-20 active:scale-95 transition-all"
+                    >
+                      Next <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>

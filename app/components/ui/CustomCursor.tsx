@@ -8,10 +8,13 @@ export default function CustomCursor() {
   const followerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    // Only run on devices with a fine pointer (mouse), not touch screens
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
     const cursor = cursorRef.current;
     const follower = followerRef.current;
 
-    // Set initial position offscreen
+    // xPercent/yPercent centre the element on the cursor point
     gsap.set([cursor, follower], { xPercent: -50, yPercent: -50 });
 
     const moveCursor = (e: MouseEvent) => {
