@@ -188,7 +188,7 @@ export default function TeamPage() {
                                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                                                     />
                                                     {position === 0 && (
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-[#1F1E1E] via-transparent to-transparent opacity-100" />
+                                                        <div className="absolute inset-0 bg-linear-to-t from-[#1F1E1E] via-transparent to-transparent opacity-100" />
                                                     )}
                                                 </div>
 

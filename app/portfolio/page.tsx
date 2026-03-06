@@ -341,7 +341,7 @@ export default function PortfolioPage() {
                   className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-center pl-6">
+                <div className="absolute bottom-0 inset-x-0 h-16 bg-linear-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-center pl-6">
                   <h3 className="text-xl text-white font-medium italic tracking-wide">{item.title}</h3>
                 </div>
               </div>
@@ -371,7 +371,7 @@ export default function PortfolioPage() {
           >
             {/* Close Button */}
             <button
-              className="fixed top-4 right-4 md:top-10 md:right-10 w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/60 hover:text-white transition-all duration-300 hover:rotate-90 z-[60] group border border-white/10"
+              className="fixed top-4 right-4 md:top-10 md:right-10 w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md rounded-full text-white/60 hover:text-white transition-all duration-300 hover:rotate-90 z-60 group border border-white/10"
               onClick={handleClose}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -398,7 +398,7 @@ export default function PortfolioPage() {
                           className="object-cover"
                           priority
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
                       </>
                     )}
                   </div>
@@ -445,7 +445,7 @@ export default function PortfolioPage() {
                         <h2 className="text-2xl md:text-3xl xl:text-5xl text-white font-bold leading-tight">
                           {selectedItem.title}
                         </h2>
-                        <div className="h-[2px] w-20 bg-gradient-to-r from-[#E9C46A] to-transparent mt-4 md:mt-6" />
+                        <div className="h-[2px] w-20 bg-linear-to-r from-[#E9C46A] to-transparent mt-4 md:mt-6" />
                       </div>
 
                       {/* Description */}

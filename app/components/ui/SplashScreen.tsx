@@ -165,7 +165,7 @@ export default function SplashScreen({ onComplete }: { onComplete?: () => void }
     return (
         <div
             ref={containerRef}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-evenly bg-[#1F1E1E]"
+            className="fixed inset-0 z-9999 flex flex-col items-center justify-evenly bg-[#1F1E1E]"
             style={{ willChange: "opacity, transform, filter" }}
         >
             <div>

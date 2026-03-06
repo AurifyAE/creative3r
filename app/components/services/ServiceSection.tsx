@@ -641,7 +641,7 @@ export default function ServicesPage() {
                   alt={currentService.title}
                   className="w-full h-full object-cover transition-scale duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#232323] to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#232323] to-transparent opacity-60" />
                 <div
                   className="absolute top-6 left-6 px-4 py-1 rounded-full text-[10px] md:text-xs font-mono font-bold text-white uppercase tracking-widest z-10"
                   style={{ backgroundColor: currentColor }}
@@ -658,7 +658,7 @@ export default function ServicesPage() {
                   {currentService.description}
                 </p>
 
-                <div className="service-divider h-[1px] bg-white/10 mb-8" />
+                <div className="service-divider h-px bg-white/10 mb-8" />
 
                 <h4 className="details-title text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-gray-500 mb-6">
                   {currentService.details.title}

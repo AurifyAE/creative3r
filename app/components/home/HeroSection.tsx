@@ -63,6 +63,13 @@ const HeroSection = () => {
           }
         });
 
+        // Fade in hero UI content as cards appear
+        tl.to(hero.querySelectorAll('.hero-ui-content'), {
+          opacity: 1,
+          duration: 1,
+          stagger: 0.1
+        }, 0);
+
         cards.forEach((card, index) => {
           const { y } = positions[index];
 
@@ -105,6 +112,13 @@ const HeroSection = () => {
 
         // Create a single timeline with all animations
         const mobileTl = gsap.timeline();
+
+        // Fade in hero UI content at the start of mobile scroll
+        mobileTl.to(hero.querySelectorAll('.hero-ui-content'), {
+          opacity: 1,
+          duration: 1,
+          stagger: 0.1
+        }, 0);
 
         // Animate each card sequentially, and reduce opacity of previous card
         mobileCards.forEach((card, index) => {
@@ -151,10 +165,10 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div ref={heroRef} className="relative min-h-1/2 lg:min-h-[150vh] bg-[#1F1E1E] text-white">
+    <div ref={heroRef} className="relative min-h-screen lg:min-h-[150vh] bg-[#1F1E1E] text-white">
       {/* Hero */}
       <div className="relative flex items-start min-h-screen">
-        <div className="absolute top-0 right-0 w-full lg:w-auto md:right-0 lg:right-25 xl:right-35">
+        <div className="absolute top-0 right-0 w-full lg:w-auto md:right-0 lg:right-25 xl:right-35 z-40">
           <div className="relative w-full">
             <video
               src="/assets/videos/home/hero-video.mp4"
@@ -165,19 +179,19 @@ const HeroSection = () => {
               className="w-full h-auto md:w-full md:h-auto lg:w-[50vw] lg:h-full aspect-square object-cover rounded-b-3xl"
             ></video>
             <div className="hidden lg:block absolute top-0 right-0 w-20 h-20 bg-[#1F1E1E] rounded-bl-3xl"></div>
-            <div className="hidden lg:block absolute bottom-20 left-0 w-56 h-56 bg-[#1F1E1E] rounded-r-3xl"></div>
+            <div className="hidden lg:block absolute bottom-20 left-0 w-56 h-56 bg-[#1F1E1E] rounded-r-3xl hero-ui-content opacity-0"></div>
           </div>
         </div>
 
-        <div className='absolute bottom-25 left-5 md:bottom-70 md:left-25 lg:bottom-95 lg:left-12 xl:bottom-45 2xl:-bottom-30 xl:left-45 2xl:left-60'>
+        <div className='absolute bottom-25 left-5 md:bottom-70 md:left-25 lg:bottom-95 lg:left-12 xl:bottom-45 2xl:-bottom-30 xl:left-45 2xl:left-60 z-40 hero-ui-content opacity-0'>
           <h2 className='text-3xl md:text-4xl font-normal'><span className=''>What</span><br /> <span className='font-semibold text-4xl md:text-5xl  italic'>We Do</span></h2>
         </div>
 
-        <div className='absolute w-52 md:w-80 bottom-25 right-5 md:bottom-110 md:right-20 lg:bottom-95 lg:right-30 xl:bottom-40 xl:right-40 2xl:right-60 2xl:bottom-20'>
+        <div className='absolute w-52 md:w-80 bottom-25 right-5 md:bottom-110 md:right-20 lg:bottom-95 lg:right-30 xl:bottom-40 xl:right-40 2xl:right-60 2xl:bottom-20 z-40 hero-ui-content opacity-0'>
           <p className='font-light text-sm md:text-base'>Creative Agency focusing on Precious Metals & Jewellery Industry</p>
         </div>
 
-        <div className="relative flex flex-col justify-end md:justify-center h-full z-10 pl-10 lg:pl-15 xl:pl-40 pt-75 md:pt-90 lg:pt-30 2xl:pt-80 2xl:pl-80">
+        <div className="relative flex flex-col justify-end md:justify-center h-full z-40 pl-10 lg:pl-15 xl:pl-40 pt-75 md:pt-90 lg:pt-30 2xl:pt-80 2xl:pl-80">
           <div className="flex items-end gap-2">
             <h1 className="text-xl lg:text-2xl xl:text-3xl font-light">We Build</h1>
             <h2 className="text-4xl lg:text-6xl xl:text-7xl font-normal italic">Brands</h2>
@@ -190,7 +204,7 @@ const HeroSection = () => {
         </div>
 
         {/* Desktop Services cards pinned around the video */}
-        <div className="hidden lg:block absolute bottom-163 xl:bottom-112 2xl:bottom-[330px] left-[61%] xl:left-[55%] 2xl:left-[53.5%] z-20">
+        <div className="hidden lg:block absolute bottom-163 xl:bottom-112 2xl:bottom-[330px] left-[61%] xl:left-[55%] 2xl:left-[53.5%] z-50">
           <div className="relative" style={{ perspective: '1200px' }}>
             {services.map((service, index) => (
               <div
@@ -216,7 +230,7 @@ const HeroSection = () => {
         {/* Mobile Services cards - Stacked from bottom */}
         <div
           ref={mobileContainerRef}
-          className="flex items-center justify-center absolute lg:hidden -bottom-15 md:-bottom-65 left-0 right-0 z-20 h-[80vh]"
+          className="flex items-center justify-center absolute lg:hidden -bottom-15 md:-bottom-65 left-0 right-0 z-50 h-[80vh]"
         >
           <div className="relative w-4/6 h-52">
             {services.map((service, index) => (
@@ -240,7 +254,7 @@ const HeroSection = () => {
         </div>
 
         <Link href="/services">
-          <button className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-25 xl:right-35 2xl:right-70 bottom-0 md:-bottom-23 lg:-bottom-20 xl:-bottom-30 2xl:-bottom-60 transition-all duration-300 hover:scale-110 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide hover:border-white hover:bg-white hover:text-black cursor-pointer z-30">
+          <button className="absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-25 xl:right-35 2xl:right-70 bottom-0 md:-bottom-23 lg:-bottom-20 xl:-bottom-30 2xl:-bottom-60 transition-all duration-300 hover:scale-110 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide hover:border-white hover:bg-white hover:text-black cursor-pointer z-50 hero-ui-content opacity-0">
             View All
           </button>
         </Link>

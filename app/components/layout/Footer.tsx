@@ -44,7 +44,7 @@ const Footer = () => {
         </div>
 
         {/* Center logo & tagline */}
-        <div className="flex flex-col items-center gap-4 text-center md:flex-1 order-first md:order-none">
+        <div className="flex flex-col items-center gap-4 text-center md:flex-1 order-first md:order-0">
           <div className="flex flex-col items-center gap-3">
             <Image
               src="/assets/images/logo.svg"
