@@ -28,7 +28,7 @@
 }
 
 /* Only hide cursor and show custom one on devices that support hover */
-@media (hover: hover) and (pointer: fine) {
+/* @media (hover: hover) and (pointer: fine) {
     * {
         cursor: none !important;
     }
@@ -47,13 +47,12 @@
     .cursor-follower {
         display: block;
     }
-}
+} */
 
 /* On touch devices: restore default cursor, hide custom cursor */
-@media (hover: none) or (pointer: coarse) {
+/* @media (hover: none) or (pointer: coarse) {
     * {
         cursor: auto !important;
-        /* restore default instead of none */
     }
 
     a,
@@ -65,10 +64,10 @@
     .cursor-follower {
         display: none !important;
     }
-}
+} */
 
 /* Base cursor styles (hidden by default, shown only via hover media query) */
-.cursor {
+/* .cursor {
     display: none;
     width: 10px;
     height: 10px;
@@ -103,4 +102,4 @@
     mix-blend-mode: difference;
     top: 0;
     left: 0;
-}
+} */
