@@ -21,7 +21,7 @@ const Navbar = () => {
             hoverSoundRef.current = new Audio('/assets/sounds/tick.mp3');
             hoverSoundRef.current.volume = 0.3;
         }
-        
+
         const sound = hoverSoundRef.current.cloneNode() as HTMLAudioElement;
         sound.volume = 0.3;
         sound.play().catch(err => {
@@ -31,18 +31,18 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-          const currentScrollY = window.scrollY;
-    
-          setHasBg(currentScrollY > 20);
-    
-          if (currentScrollY > lastScrollY && currentScrollY > 80) {
-            setHidden(true);
-            setMobileMenuOpen(false); // Close menu when hiding navbar
-          } else {
-            setHidden(false);
-          }
-    
-          setLastScrollY(currentScrollY);
+            const currentScrollY = window.scrollY;
+
+            setHasBg(currentScrollY > 20);
+
+            if (currentScrollY > lastScrollY && currentScrollY > 80) {
+                setHidden(true);
+                setMobileMenuOpen(false); // Close menu when hiding navbar
+            } else {
+                setHidden(false);
+            }
+
+            setLastScrollY(currentScrollY);
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -83,9 +83,9 @@ const Navbar = () => {
                 {/* Desktop Navigation Links - Hidden on mobile */}
                 <div className="hidden lg:flex gap-2 text-sm">
                     {navItems.map((item) => (
-                        <Link 
+                        <Link
                             key={item.id}
-                            href={item.href} 
+                            href={item.href}
                             onClick={() => handleSelect(item.id)}
                             onMouseEnter={playHoverSound}
                             className={`w-28 h-8 rounded-2xl relative overflow-hidden group cursor-pointer
@@ -123,7 +123,7 @@ const Navbar = () => {
 
                 {/* Contact Button - Hidden on mobile, visible on desktop */}
                 <div className="hidden lg:block">
-                    <Link 
+                    <Link
                         href="/contact"
                         onMouseEnter={playHoverSound}
                         className="text-sm font-medium border border-gray-600 px-8 py-2 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300">
@@ -133,7 +133,7 @@ const Navbar = () => {
             </nav>
 
             {/* Mobile Menu Overlay */}
-            <div 
+            <div
                 className={`
                     fixed inset-0 bg-[#1F1E1E]/98 backdrop-blur-lg z-40 lg:hidden
                     transition-all duration-300 ease-in-out
@@ -146,9 +146,9 @@ const Navbar = () => {
                     ${mobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}
                 `}>
                     {navItems.map((item, index) => (
-                        <Link 
+                        <Link
                             key={item.id}
-                            href={item.href} 
+                            href={item.href}
                             onClick={() => handleSelect(item.id)}
                             style={{ transitionDelay: `${index * 50}ms` }}
                             className={`
@@ -160,15 +160,15 @@ const Navbar = () => {
                             {item.name}
                         </Link>
                     ))}
-                    
+
                     {/* Mobile Contact Button */}
-                    <Link 
+                    <Link
                         href="/contact"
                         onClick={() => setMobileMenuOpen(false)}
                         style={{ transitionDelay: `${navItems.length * 50}ms` }}
                         className={`
                             text-xl sm:text-2xl font-medium border-2 border-gray-600 px-10 py-3 rounded-full
-                            hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white
+                            hover:bg-[#299D8F] hover:border-[#299D8F] text-white
                             transition-all duration-300 mt-4
                             ${mobileMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}
                         `}>
