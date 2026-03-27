@@ -99,7 +99,7 @@ const WhyChooseSection = () => {
     return (
         <section
             ref={containerRef}
-            className="bg-[#1F1E1E] text-white py-20 lg:py-40 px-6 overflow-hidden"
+            className="bg-[#1F1E1E] text-white py-20 lg:py-20 px-6 overflow-hidden"
         >
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20">
                 {/* Left Side: Sticky Title */}
@@ -155,8 +155,8 @@ export default function AboutPage() {
     return (
         <main className="min-h-screen bg-[#1F1E1E]">
             {/* Added a placeholder hero to show off the scroll effect better */}
-            <div className="h-[40vh] flex items-center justify-center border-b border-white/5">
-                <h1 className="text-6xl md:text-8xl font-display font-bold text-white opacity-20">ABOUT US</h1>
+            <div className="h-[30vh] pt-30 pb-10 flex items-center justify-center border-b border-white/5">
+                <h1 className="text-6xl md:text-8xl font-display font-bold text-white opacity-20">About us</h1>
             </div>
 
             <WhyChooseSection />

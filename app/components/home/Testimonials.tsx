@@ -51,7 +51,7 @@ const TestimonialContent = ({ testimonial }: { testimonial: Testimonial }) => {
   const highlightWords = (text: string) => {
     const words = ['invaluable to me', 'recommend it to anyone', 'improved dramatically', 'essential part', 'transformed', 'incredible', 'top-notch'];
     let highlightedText = text;
-    
+
     words.forEach(word => {
       const regex = new RegExp(`(${word})`, 'gi');
       highlightedText = highlightedText.replace(
@@ -59,14 +59,14 @@ const TestimonialContent = ({ testimonial }: { testimonial: Testimonial }) => {
         '<span class="text-[#2EC4B6] font-medium">$1</span>'
       );
     });
-    
+
     return highlightedText;
   };
 
   return (
     <>
       {/* Large quotation mark */}
-      <div 
+      <div
         ref={quoteRef}
         className="quote-mark absolute top-8 left-8 text-[#2EC4B6] text-9xl font-serif leading-none select-none opacity-30"
       >
@@ -89,10 +89,10 @@ const TestimonialContent = ({ testimonial }: { testimonial: Testimonial }) => {
 
       {/* Testimonial content */}
       <div ref={testimonialRef} className="testimonial-text relative z-10">
-        <p 
-          className="text-lg md:text-2xl lg:text-3xl font-light leading-relaxed text-gray-200 mb-12 text-center"
-          dangerouslySetInnerHTML={{ 
-            __html: highlightWords(testimonial.text) 
+        <p
+          className="text-base md:text-lg lg:text-xl font-light leading-relaxed text-gray-200 mb-12 text-center"
+          dangerouslySetInnerHTML={{
+            __html: highlightWords(testimonial.text)
           }}
         />
 
@@ -148,7 +148,7 @@ const Testimonials: React.FC = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-    
+
     intervalRef.current = setInterval(() => {
       if (!isTransitioning.current) {
         setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -165,13 +165,13 @@ const Testimonials: React.FC = () => {
   // Initial entrance animation (only once on mount)
   useEffect(() => {
     const tl = gsap.timeline();
-    
+
     const quoteMark = cardRef.current?.querySelector('.quote-mark');
     const testimonialText = cardRef.current?.querySelector('.testimonial-text');
     const ratingContainer = cardRef.current?.querySelector('.rating-container');
     const stars = cardRef.current?.querySelectorAll('.star');
     const avatarCarousel = cardRef.current?.querySelector('.avatar-carousel');
-    
+
     if (quoteMark) {
       gsap.set(quoteMark, { opacity: 0, scale: 0.5, rotation: -30 });
       tl.to(quoteMark, {
@@ -384,7 +384,7 @@ const Testimonials: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-8 bg-[#1F1E1E] relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="max-w-[1920px] mx-auto absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-[#2EC4B6] rounded-full opacity-10 blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#9B5DE5] rounded-full opacity-10 blur-3xl" style={{ animationDelay: '1s' }}></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#2EC4B6] rounded-full opacity-5 blur-3xl"></div>
@@ -401,7 +401,7 @@ const Testimonials: React.FC = () => {
 
         {/* Main testimonial card */}
         <div ref={cardRef} className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] shadow-2xl p-12 md:p-16 relative border border-white/10 transition-all duration-500">
-          
+
           {/* Testimonial Content */}
           <TestimonialContent testimonial={displayedTestimonial} />
 
@@ -438,11 +438,10 @@ const Testimonials: React.FC = () => {
                 key={idx}
                 onClick={() => !isTransitioning.current && setCurrentIndex(idx)}
                 disabled={isTransitioning.current}
-                className={`h-2 rounded-full transition-all duration-500 ${
-                  idx === currentIndex 
-                    ? 'w-8 bg-[#2EC4B6]' 
-                    : 'w-2 bg-white/30 hover:bg-white/50'
-                }`}
+                className={`h-2 rounded-full transition-all duration-500 ${idx === currentIndex
+                  ? 'w-8 bg-[#2EC4B6]'
+                  : 'w-2 bg-white/30 hover:bg-white/50'
+                  }`}
                 aria-label={`Go to testimonial ${idx + 1}`}
               />
             ))}

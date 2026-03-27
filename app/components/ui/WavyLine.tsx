@@ -17,7 +17,7 @@ export default function WaterWavesWithLine() {
     const freq = 0.025;
 
     const phases = [0, 0, 0]; // uniform phase
-    const phaseSpeed = 0.05;
+    const phaseSpeed = 0.03;
 
     const drawLine = (
       line: SVGPathElement,
@@ -57,38 +57,38 @@ export default function WaterWavesWithLine() {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden bg-[#1F1E1E] py-8">
-      <svg 
-        className="w-full h-auto" 
-        viewBox="0 0 1512 240" 
+    <div className="relative max-w-[1920px] mx-auto w-full overflow-hidden bg-[#1F1E1E] py-8">
+      <svg
+        className="w-full h-auto"
+        viewBox="0 0 1512 240"
         preserveAspectRatio="xMidYMid meet"
       >
-        <path 
+        <path
           ref={(el) => {
             el && (lineRefs.current[0] = el)
-          }} 
-          stroke="#E76F51" 
-          strokeWidth="3" 
+          }}
+          stroke="#E76F51"
+          strokeWidth="3"
           strokeLinecap="round"
-          fill="none" 
+          fill="none"
         />
-        <path 
+        <path
           ref={(el) => {
             el && (lineRefs.current[1] = el)
-          }} 
-          stroke="#299D8F" 
-          strokeWidth="3" 
+          }}
+          stroke="#299D8F"
+          strokeWidth="3"
           strokeLinecap="round"
-          fill="none" 
+          fill="none"
         />
-        <path 
+        <path
           ref={(el) => {
             el && (lineRefs.current[2] = el)
-          }} 
-          stroke="#E9C369" 
-          strokeWidth="3" 
+          }}
+          stroke="#E9C369"
+          strokeWidth="3"
           strokeLinecap="round"
-          fill="none" 
+          fill="none"
         />
       </svg>
     </div>

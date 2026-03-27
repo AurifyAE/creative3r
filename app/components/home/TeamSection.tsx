@@ -29,13 +29,13 @@ const TeamSection = () => {
             Reflect. Refine. Resonate.
           </h2>
 
-          <p className="text-sm md:text-base text-neutral-200 leading-relaxed">
+          <p className="text-base md:text-lg text-neutral-200 leading-relaxed">
             At 3R Creative, we specialise exclusively in the precious metals, jewellery,
             gold refinery, and gold trading industries—empowering brands across the UAE
             and Middle East with strategic creativity that drives real business results.
           </p>
 
-          <p className="text-sm md:text-base text-neutral-200 leading-relaxed">
+          <p className="text-base md:text-lg text-neutral-200 leading-relaxed">
             Born from the belief that every brand holds a story worth refining, we work
             closely with each client to understand who they are, what their story is,
             and where they want to go. Through deep industry insight and collaborative
@@ -46,9 +46,9 @@ const TeamSection = () => {
 
           <Link href="/teams">
             <button
-            className="mt-4 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer"
-          >
-                Know More
+              className="mt-4 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer"
+            >
+              Know More
             </button>
           </Link>
         </div>

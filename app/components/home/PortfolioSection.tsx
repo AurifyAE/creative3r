@@ -127,9 +127,9 @@ const PortfolioSection = () => {
       ref={sectionRef}
       className="bg-[#1F1E1E] text-white py-16 md:py-24"
     >
-      <div className="px-6 md:px-8 lg:px-0">
+      <div className="max-w-[1920px] mx-auto px-6 md:px-8 lg:px-0">
         {/* Heading row */}
-        <div className="mx-auto max-w-6xl mb-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-end">
+        <div className="mx-auto max-w-6xl mb-20 flex flex-col gap-6 md:flex-row md:items-center md:justify-end">
           <div className="text-left md:text-right flex items-center md:items-end gap-5">
             <div className="block md:hidden h-20 w-2 rounded-full bg-[#E76F51]" />
             <div className='flex flex-col justify-center'>

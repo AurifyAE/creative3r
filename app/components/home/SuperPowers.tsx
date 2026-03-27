@@ -122,7 +122,7 @@ const TimelineItem = ({
         <ShapeSVG shape={shape} color={color} name={title} />
       </div>
     </div>
-    <p className="max-w-md text-sm leading-relaxed text-gray-300">
+    <p className="max-w-md text-base md:text-lg leading-relaxed text-gray-300">
       {desc}
     </p>
   </div>

@@ -114,7 +114,7 @@ const Navbar = () => {
                 </button>
 
                 {/* Logo - Centered */}
-                <div className="flex-1 lg:flex-initial flex justify-center">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center">
                     <Link href="/" className="flex items-start gap-2">
                         <Image src="/assets/images/logo.svg" alt="3R Creative" width={100} height={100} className="w-6 h-6 sm:w-8 sm:h-8" />
                         <Image src="/assets/images/logoName.svg" alt="3R Creative" width={100} height={100} className="w-24 h-8 sm:w-30 sm:h-10" />
