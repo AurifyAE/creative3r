@@ -179,38 +179,6 @@ const HeroSection = () => {
             ease: 'sine.inOut',
             delay: 0.3,
           });
-
-          // ── Occasional "bounce pop" every ~6 s on "What We Do" ────────────
-          const bouncePop = () => {
-            gsap.to(whatWeDoBox, {
-              scale: 1.08,
-              y: '-=10',
-              duration: 0.25,
-              ease: 'power2.out',
-              yoyo: true,
-              repeat: 1,
-              onComplete: () => {
-                gsap.delayedCall(5.5 + Math.random() * 2, bouncePop);
-              },
-            });
-          };
-          gsap.delayedCall(4, bouncePop);
-
-          // ── Occasional "nudge" every ~7 s on agency desc box ─────────────
-          const nudge = () => {
-            gsap.to(agencyDescBox, {
-              x: '+=12',
-              rotation: -2,
-              duration: 0.3,
-              ease: 'power2.out',
-              yoyo: true,
-              repeat: 1,
-              onComplete: () => {
-                gsap.delayedCall(6 + Math.random() * 3, nudge);
-              },
-            });
-          };
-          gsap.delayedCall(5, nudge);
         },
       }, '-=0.8');
 
@@ -226,14 +194,24 @@ const HeroSection = () => {
 
         {/* ── Video ──────────────────────────────────────────────────────────── */}
         <div className="absolute top-0 right-0 w-full lg:w-2/3 md:left-1/2 md:-translate-x-1/2 z-40">
-          <div className="relative w-full">
+          <div className="relative w-full overflow-hidden">
             <video
               src="/assets/videos/home/hero-video.mp4"
               autoPlay
               muted
               loop
               playsInline
-              className="w-full h-[520px] md:w-full lg:h-[640px] xl:h-[680px] 2xl:h-[760px] object-cover rounded-b-3xl"
+              className="w-full h-[520px] md:w-full lg:h-[640px] xl:h-[680px] 2xl:h-[760px] object-cover border-4 border-[#1F1E1E]"
+            />
+            {/* Edge blending overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `
+                  linear-gradient(to bottom, rgba(31, 30, 30, 1) 0%, rgba(31, 30, 30, 0) 15%, rgba(31, 30, 30, 0) 85%, rgba(31, 30, 30, 1) 100%),
+                  linear-gradient(to right, rgba(31, 30, 30, 1) 0%, rgba(31, 30, 30, 0) 15%, rgba(31, 30, 30, 0) 85%, rgba(31, 30, 30, 1) 100%)
+                `
+              }}
             />
           </div>
         </div>
@@ -242,7 +220,7 @@ const HeroSection = () => {
         <div
           id="what-we-do-box"
           ref={whatWeDoRef}
-          className="absolute left-1/2 -translate-x-1/2 bottom-80 lg:bottom-90 xl:bottom-120 2xl:bottom-110 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 text-center will-change-transform"
+          className="absolute left-1/2 -translate-x-1/2 bottom-90 md:bottom-90 lg:bottom-90 xl:bottom-120 2xl:bottom-110 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 text-center will-change-transform"
           style={{ transformOrigin: 'center center' }}
         >
           <h2 className="text-base md:text-lg lg:text-xl xl:text-2xl font-normal">What We Do</h2>
@@ -253,16 +231,16 @@ const HeroSection = () => {
           id="agency-desc-box"
           ref={agencyDescRef}
           className="absolute w-56 md:w-64 lg:w-64 xl:w-72 2xl:w-80
-          h-32 bottom-36 right-6 md:bottom-120 md:right-20 lg:top-1/3 lg:-translate-y-1/3 lg:right-10 xl:right-16 2xl:right-60 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 will-change-transform"
+          h-24 lg:h-32 top-20 -right-6 md:bottom-120 lg:top-1/3 lg:-translate-y-1/3 lg:right-10 xl:right-16 2xl:right-60 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 will-change-transform"
           style={{ transformOrigin: 'center center' }}
         >
-          <p className="font-light text-sm md:text-base lg:text-sm xl:text-base 2xl:text-lg leading-relaxed">
+          <p className="font-light text-xs lg:text-sm leading-relaxed">
             Creative Agency focusing on Precious Metals &amp; Jewellery Industry
           </p>
         </div>
 
         {/* ── Hero headline ───────────────────────────────────────────────── */}
-        <div className="relative flex flex-col justify-end md:justify-center z-40 pl-8 lg:pl-14 xl:pl-28 2xl:pl-52 pt-72 md:pt-90 lg:pt-44 xl:pt-52 2xl:pt-72">
+        <div className="relative flex flex-col justify-end md:justify-center z-40 pl-8 md:pl-20 lg:pl-14 xl:pl-28 2xl:pl-52 pt-80 md:pt-64 lg:pt-44 xl:pt-52 2xl:pt-72">
           <div className="hero-main-text flex items-end gap-2">
             <h1 className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-light">We Build</h1>
             <h2 className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-normal italic">Brands</h2>
@@ -397,7 +375,7 @@ const HeroSection = () => {
         {/* ── Mobile stacked cards ────────────────────────────────────────── */}
         <div
           ref={mobileContainerRef}
-          className="flex items-center justify-center absolute lg:hidden -bottom-15 md:-bottom-65 left-0 right-0 z-50 h-[80vh]"
+          className="flex items-center justify-center absolute lg:hidden -bottom-45 md:-bottom-48 left-0 right-0 z-50 h-[80vh]"
         >
           <div className="relative w-4/6 h-52">
             {services.map((service, index) => (
