@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
+import { useHoverSound } from '@/app/hooks/useHoverSound';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +23,7 @@ const HeroSection = () => {
   const mobileContainerRef = useRef<HTMLDivElement | null>(null);
   const whatWeDoRef = useRef<HTMLDivElement | null>(null);
   const agencyDescRef = useRef<HTMLDivElement | null>(null);
+  const playHoverSound = useHoverSound();
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -403,7 +405,7 @@ const HeroSection = () => {
         </div>
 
         <div className="absolute w-full bottom-8 md:bottom-0 lg:bottom-16 xl:bottom-24 2xl:-bottom-16 flex justify-center z-50 pointer-events-none">
-          <Link href="/services" className="pointer-events-auto">
+          <Link href="/services" onMouseEnter={playHoverSound} className="pointer-events-auto">
             <button className="transition-all duration-300 hover:scale-110 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide hover:border-white hover:bg-white hover:text-black cursor-pointer hero-ui-content">
               View All
             </button>

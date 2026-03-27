@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
+import { useHoverSound } from '@/app/hooks/useHoverSound';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,6 +89,7 @@ const PortfolioSection = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const rowOneRef = useRef<HTMLDivElement | null>(null);
   const rowTwoRef = useRef<HTMLDivElement | null>(null);
+  const playHoverSound = useHoverSound();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -226,7 +228,7 @@ const PortfolioSection = () => {
           {/* View all */}
           <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 md:bottom-35 md:right-40 md:left-auto md:translate-x-0 flex justify-center">
             <Link href="/portfolio">
-              <button className="rounded-full border border-white/40 px-6 py-2 text-xs md:text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer">
+              <button onMouseEnter={playHoverSound} className="rounded-full border border-white/40 px-6 py-2 text-xs md:text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer">
                 View All
               </button>
             </Link>

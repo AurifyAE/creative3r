@@ -103,7 +103,7 @@ const WhyChooseSection = () => {
         >
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20">
                 {/* Left Side: Sticky Title */}
-                <div className="lg:w-1/3">
+                <div className="lg:w-1/2 flex items-start justify-center">
                     <div ref={leftContentRef} className="lg:sticky lg:top-40 space-y-6">
                         <h2 className="text-4xl md:text-5xl lg:text-6xl italic font-display leading-tight ">
                             Why Choose <br />
@@ -116,7 +116,7 @@ const WhyChooseSection = () => {
                 </div>
 
                 {/* Right Side: Values List */}
-                <div className="lg:w-2/3 space-y-32 lg:space-y-60 pb-20">
+                <div className="lg:w-1/2 space-y-32 lg:space-y-60 pb-20">
                     {points.map((point, index) => (
                         <div
                             key={index}

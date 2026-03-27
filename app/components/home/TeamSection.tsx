@@ -1,6 +1,10 @@
+"use client";
 import Link from "next/link";
+import { useHoverSound } from "@/app/hooks/useHoverSound";
 
 const TeamSection = () => {
+  const playHoverSound = useHoverSound();
+
   return (
     <section className="bg-[#1F1E1E] text-white py-16 md:py-24 z-1">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 md:flex-row md:items-start md:px-8 lg:px-0">
@@ -46,6 +50,7 @@ const TeamSection = () => {
 
           <Link href="/teams">
             <button
+              onMouseEnter={playHoverSound}
               className="mt-4 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer"
             >
               Know More

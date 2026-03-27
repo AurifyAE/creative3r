@@ -186,7 +186,7 @@ export default function SplashScreen({ onComplete }: { onComplete?: () => void }
                 </div>
             </div>
 
-            <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center gap-1 pb-20">
                 <p className="text-lg md:text-xl text-neutral-500 tracking-widest uppercase font-poppins">
                     We Craft
                 </p>

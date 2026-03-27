@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import { useHoverSound } from "@/app/hooks/useHoverSound";
 
 const Navbar = () => {
     const [selected, setSelected] = useState('home');
@@ -9,24 +10,11 @@ const Navbar = () => {
     const [hasBg, setHasBg] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const hoverSoundRef = useRef<HTMLAudioElement | null>(null);
+    const playHoverSound = useHoverSound();
 
     const handleSelect = (item: string) => {
         setSelected(item);
         setMobileMenuOpen(false); // Close mobile menu on selection
-    };
-
-    const playHoverSound = () => {
-        if (!hoverSoundRef.current) {
-            hoverSoundRef.current = new Audio('/assets/sounds/tick.mp3');
-            hoverSoundRef.current.volume = 0.3;
-        }
-
-        const sound = hoverSoundRef.current.cloneNode() as HTMLAudioElement;
-        sound.volume = 0.3;
-        sound.play().catch(err => {
-            console.log('Audio play failed:', err);
-        });
     };
 
     useEffect(() => {

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PhoneInput, { PhoneValue } from "../ui/PhoneInput";
+import { useHoverSound } from "@/app/hooks/useHoverSound";
 
 type HearOption = "Social Media" | "Friends & Colleagues" | "Word of mouth";
 type FormStatus = "idle" | "loading" | "success" | "error";
@@ -31,6 +32,7 @@ const ContactSection = () => {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [phoneKey, setPhoneKey] = useState(0);
+  const playHoverSound = useHoverSound();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -236,6 +238,7 @@ const ContactSection = () => {
 
               <button
                 type="submit"
+                onMouseEnter={playHoverSound}
                 disabled={status === "loading"}
                 className="w-full sm:w-auto self-center sm:self-start inline-flex items-center justify-center rounded-full bg-[#E76F51] px-10 py-4 text-base font-bold text-white shadow-lg hover:bg-[#d45b3f] hover:shadow-xl hover:shadow-[#E76F51]/20 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
