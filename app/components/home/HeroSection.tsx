@@ -222,7 +222,7 @@ const HeroSection = () => {
         <div
           id="what-we-do-box"
           ref={whatWeDoRef}
-          className="absolute left-1/2 -translate-x-1/2 bottom-90 md:bottom-90 lg:bottom-90 xl:bottom-120 2xl:bottom-110 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 text-center will-change-transform"
+          className="hidden lg:block absolute left-1/2 -translate-x-1/2 bottom-90 md:bottom-90 lg:bottom-90 xl:bottom-120 2xl:bottom-110 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 text-center will-change-transform"
           style={{ transformOrigin: 'center center' }}
         >
           <h2 className="text-base md:text-lg lg:text-xl xl:text-2xl font-normal">What We Do</h2>
@@ -233,7 +233,7 @@ const HeroSection = () => {
           id="agency-desc-box"
           ref={agencyDescRef}
           className="absolute w-56 md:w-64 lg:w-64 xl:w-72 2xl:w-80
-          h-24 lg:h-32 top-20 -right-6 md:bottom-120 lg:top-1/3 lg:-translate-y-1/3 lg:right-10 xl:right-16 2xl:right-60 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 will-change-transform"
+          h-24 lg:h-32 bottom-95 left-1/2 -translate-x-1/2 md:bottom-120 lg:top-1/3 lg:-translate-y-1/3 lg:left-auto lg:-right-12 xl:-right-16 2xl:right-40 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 will-change-transform"
           style={{ transformOrigin: 'center center' }}
         >
           <p className="font-light text-xs lg:text-sm leading-relaxed">
@@ -242,7 +242,7 @@ const HeroSection = () => {
         </div>
 
         {/* ── Hero headline ───────────────────────────────────────────────── */}
-        <div className="relative flex flex-col justify-end md:justify-center z-40 pl-8 md:pl-20 lg:pl-14 xl:pl-28 2xl:pl-52 pt-80 md:pt-64 lg:pt-44 xl:pt-52 2xl:pt-72">
+        <div className="relative flex flex-col justify-end md:justify-center z-40 pl-8 md:pl-20 lg:pl-14 xl:pl-28 2xl:pl-52 pt-70 md:pt-64 lg:pt-44 xl:pt-52 2xl:pt-72">
           <div className="hero-main-text flex items-end gap-2">
             <h1 className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-light">We Build</h1>
             <h2 className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-normal italic">Brands</h2>

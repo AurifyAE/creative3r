@@ -1,23 +1,14 @@
 'use client'
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { Flip } from 'gsap/dist/Flip';
+import { portfolioItems, PortfolioItem } from './portfolioData';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(Flip);
-}
-
-interface PortfolioItem {
-  id: number;
-  title: string;
-  image: string;
-  description: string;
-  category: string;
-  year: string;
 }
 
 export default function PortfolioPage() {
@@ -30,73 +21,6 @@ export default function PortfolioPage() {
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
-
-  const portfolioItems: PortfolioItem[] = [
-    {
-      id: 1,
-      title: 'Blue Diamond',
-      image: '/assets/images/portfolio/project-1.webp',
-      description: 'A stunning visual experience combining modern design with innovative functionality.',
-      category: 'Web Design',
-      year: '2024'
-    },
-    {
-      id: 2,
-      title: 'Mac & Ro Capital',
-      image: '/assets/images/portfolio/project-2.webp',
-      description: 'Strategic branding solution that captures the essence of modern elegance.',
-      category: 'Branding',
-      year: '2024'
-    },
-    {
-      id: 3,
-      title: 'BlackMamba',
-      image: '/assets/images/portfolio/project-3.webp',
-      description: 'Revolutionary mobile experience with seamless user interactions.',
-      category: 'Mobile App',
-      year: '2023'
-    },
-    {
-      id: 4,
-      title: 'Faqeesh Jewellery',
-      image: '/assets/images/portfolio/project-4.webp',
-      description: 'Comprehensive digital platform showcasing creative excellence.',
-      category: 'Web Development',
-      year: '2023'
-    },
-    {
-      id: 5,
-      title: 'Project 5',
-      image: '/assets/images/portfolio/project-5.webp',
-      description: 'Elegant e-commerce solution with premium user experience.',
-      category: 'E-commerce',
-      year: '2024'
-    },
-    {
-      id: 6,
-      title: 'Project 6',
-      image: '/assets/images/portfolio/project-6.webp',
-      description: 'Bold visual identity that stands out in the digital landscape.',
-      category: 'Branding',
-      year: '2023'
-    },
-    {
-      id: 7,
-      title: 'Project 7',
-      image: '/assets/images/portfolio/project-7.webp',
-      description: 'Interactive dashboard with real-time data visualization.',
-      category: 'UI/UX',
-      year: '2024'
-    },
-    {
-      id: 8,
-      title: 'Project 8',
-      image: '/assets/images/portfolio/project-8.webp',
-      description: 'Minimalist design approach with maximum impact.',
-      category: 'Web Design',
-      year: '2023'
-    },
-  ];
 
   const handleCardClick = (item: PortfolioItem) => {
     if (selectedItem) return;
@@ -407,7 +331,7 @@ export default function PortfolioPage() {
                 {/* Content Section */}
                 <div
                   ref={contentRef}
-                  className="flex-1 flex flex-col justify-center space-y-4 lg:space-y-8 lg:pr-8"
+                  className="flex-1 flex flex-col justify-center space-y-4 lg:space-y-6 lg:pr-8"
                 >
                   {selectedItem && (
                     <>
@@ -442,21 +366,21 @@ export default function PortfolioPage() {
 
                       {/* Title */}
                       <div>
-                        <h2 className="text-2xl md:text-3xl xl:text-5xl text-white font-bold leading-tight">
+                        <h2 className="text-xl md:text-2xl xl:text-4xl text-white font-bold leading-tight">
                           {selectedItem.title}
                         </h2>
                         <div className="h-[2px] w-20 bg-linear-to-r from-[#E9C46A] to-transparent mt-4 md:mt-6" />
                       </div>
 
                       {/* Description */}
-                      <p className="text-sm md:text-base text-gray-400 leading-relaxed font-light">
+                      <p className="text-[10px] md:text-sm text-gray-400 leading-relaxed font-light line-clamp-2">
                         {selectedItem.description}
                       </p>
 
                       {/* Project Details */}
                       <div className="flex flex-wrap gap-2 md:gap-3 pt-2">
                         {['Creative Direction', 'UI/UX Design', 'Development'].map((detail) => (
-                          <div key={detail} className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/5 rounded-lg text-xs md:text-sm text-gray-400 font-medium">
+                          <div key={detail} className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/5 rounded-lg text-[8px] md:text-[10px] text-gray-400 font-medium">
                             <div className="w-1 h-1 rounded-full bg-[#E9C46A]" />
                             {detail}
                           </div>
@@ -465,14 +389,15 @@ export default function PortfolioPage() {
 
                       {/* CTA Button */}
                       <div className="pt-6 md:pt-10 flex flex-col sm:flex-row gap-4">
-                        <button className="group relative px-8 md:px-10 py-4 bg-white text-black rounded-full font-bold overflow-hidden transition-all duration-300 hover:scale-105">
-                          <span className="relative z-10 flex items-center justify-center gap-2">
-                            View Full Project
-                            <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                          </span>
-                        </button>
+                        <Link
+                          href={`/portfolio/${selectedItem.id}`}
+                          className="group relative px-8 md:px-10 py-4 bg-white text-black rounded-full font-bold overflow-hidden transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                        >
+                          View Full Project
+                          <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </Link>
 
                         {/* Mobile Navigation Buttons (Visible only on Mobile) */}
                         <div className="lg:hidden flex items-center justify-center gap-4 pt-4 border-t border-white/5 sm:border-t-0 sm:pt-0">

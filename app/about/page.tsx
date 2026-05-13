@@ -126,7 +126,7 @@ const WhyChooseSection = () => {
                             className="relative group"
                         >
                             {/* Background Number */}
-                            <span className="point-number absolute -top-10 -left-10 lg:-left-20 text-[10rem] lg:text-[18rem] font-bold text-white/10 select-none pointer-events-none transition-all duration-500 group-hover:text-[#F9844A]/10">
+                            <span className="point-number absolute -top-10 -left-10 lg:-left-20 text-[10rem] lg:text-[18rem] font-bold text-white/30 select-none pointer-events-none transition-all duration-500 group-hover:text-[#F9844A]/10">
                                 {point.number}
                             </span>
 
