@@ -109,12 +109,20 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Contact Button - Hidden on mobile, visible on desktop */}
-                <div className="hidden lg:block">
+                {/* Contact Button */}
+                <div className="flex items-center gap-3">
+                    {/* Mobile compact button - visible only on mobile */}
                     <Link
                         href="/contact"
                         onMouseEnter={playHoverSound}
-                        className="text-sm font-medium border border-gray-600 px-8 py-2 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300">
+                        className="lg:hidden text-xs font-medium border border-gray-600 px-4 py-1.5 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300 whitespace-nowrap">
+                        Let's Chat
+                    </Link>
+                    {/* Desktop button - hidden on mobile */}
+                    <Link
+                        href="/contact"
+                        onMouseEnter={playHoverSound}
+                        className="hidden lg:block text-sm font-medium border border-gray-600 px-8 py-2 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300">
                         Let's Chat
                     </Link>
                 </div>

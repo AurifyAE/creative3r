@@ -19,72 +19,18 @@ const services = [
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement | null>(null);
-  const mobileServiceRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const mobileContainerRef = useRef<HTMLDivElement | null>(null);
   const whatWeDoRef = useRef<HTMLDivElement | null>(null);
   const agencyDescRef = useRef<HTMLDivElement | null>(null);
   const playHoverSound = useHoverSound();
 
   useEffect(() => {
     const hero = heroRef.current;
-    const mobileCards = mobileServiceRefs.current.filter(Boolean) as HTMLDivElement[];
-    const mobileContainer = mobileContainerRef.current;
     const whatWeDoBox = whatWeDoRef.current;
     const agencyDescBox = agencyDescRef.current;
 
     if (!hero) return;
 
     const mm = gsap.matchMedia();
-
-    // ─── Mobile stacked cards ───────────────────────────────────────────────
-    mm.add('(max-width: 1023px)', () => {
-      if (mobileCards.length && mobileContainer) {
-        mobileCards.forEach((card, index) => {
-          gsap.set(card, { y: 500, opacity: 0, scale: 0.85, zIndex: index });
-        });
-
-        const mobileTl = gsap.timeline();
-
-        mobileTl.to(hero.querySelectorAll('.hero-ui-content'), {
-          opacity: 1,
-          duration: 1,
-          stagger: 0.1,
-        }, 0);
-
-        mobileCards.forEach((card, index) => {
-          const stackOffset = -index * 12;
-          const scaleValue = 1 + index * 0.025;
-
-          mobileTl.to(card, {
-            y: stackOffset,
-            opacity: 0.9,
-            scale: scaleValue,
-            duration: 1,
-            ease: 'power2.out',
-          }, index * 1);
-
-          if (index > 0) {
-            mobileTl.to(mobileCards[index - 1], {
-              opacity: 0.2,
-              duration: 0.4,
-              ease: 'power1.out',
-            }, index * 1 + 0.7);
-          }
-        });
-
-        ScrollTrigger.create({
-          trigger: hero,
-          start: 'top top',
-          end: `+=${mobileCards.length * 300}`,
-          scrub: 1.5,
-          animation: mobileTl,
-          pin: true,
-          anticipatePin: 1,
-          pinSpacing: true,
-          invalidateOnRefresh: true,
-        });
-      }
-    });
 
     // ─── Page-load sequence ─────────────────────────────────────────────────
     gsap.set('.hero-ui-content', { opacity: 0, y: 30 });
@@ -192,7 +138,7 @@ const HeroSection = () => {
   return (
     <div ref={heroRef} className="relative bg-[#1F1E1E] text-white">
       {/* Hero */}
-      <div className="max-w-[1920px] mx-auto relative flex items-start h-[900px] xl:h-[1080px]">
+      <div className="max-w-[1920px] mx-auto relative flex items-start h-[720px] md:h-[800px] lg:h-[900px] xl:h-[1080px]">
 
         {/* ── Video ──────────────────────────────────────────────────────────── */}
         <div className="absolute top-0 right-0 w-full lg:w-2/3 md:left-1/2 md:-translate-x-1/2 z-40">
@@ -233,7 +179,7 @@ const HeroSection = () => {
           id="agency-desc-box"
           ref={agencyDescRef}
           className="absolute w-56 md:w-64 lg:w-64 xl:w-72 2xl:w-80
-          h-24 lg:h-32 bottom-95 left-1/2 -translate-x-1/2 md:bottom-120 lg:top-1/3 lg:-translate-y-1/3 lg:left-auto lg:-right-12 xl:-right-16 2xl:right-40 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 will-change-transform"
+          h-24 lg:h-32 bottom-56 left-1/2 -translate-x-1/2 md:bottom-80 lg:top-1/3 lg:-translate-y-1/3 lg:left-auto lg:-right-12 xl:-right-16 2xl:right-40 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 will-change-transform"
           style={{ transformOrigin: 'center center' }}
         >
           <p className="font-light text-xs lg:text-sm leading-relaxed">
@@ -256,14 +202,14 @@ const HeroSection = () => {
           </p>
         </div>
 
-        {/* ── Desktop 3D Carousel ─────────────────────────────────────────── */}
+        {/* ── 3D Carousel (all breakpoints) ──────────────────────────────── */}
         <style>{`
           .carousel-scene {
-            --w: 180px;
-            --h: 120px;
-            --tz: 420px;
+            --w: 100px;
+            --h: 70px;
+            --tz: 200px;
             --rx: -10deg;
-            --persp: 1200px;
+            --persp: 920px;
             position: absolute;
             width: var(--w);
             height: var(--h);
@@ -273,6 +219,43 @@ const HeroSection = () => {
             transform-style: preserve-3d;
             animation: c3dSpin 20s linear infinite;
           }
+          /* ≥ 475px  (larger phones) */
+          @media (min-width: 475px) {
+            .carousel-scene {
+              --w: 130px;
+              --h: 90px;
+              --tz: 220px;
+              --persp: 900px;
+            }
+          }
+          /* ≥ 640px  (sm - small tablets) */
+          @media (min-width: 640px) {
+            .carousel-scene {
+              --w: 150px;
+              --h: 100px;
+              --tz: 300px;
+              --persp: 1000px;
+            }
+          }
+          /* ≥ 768px  (md - tablets) */
+          @media (min-width: 768px) {
+            .carousel-scene {
+              --w: 160px;
+              --h: 110px;
+              --tz: 350px;
+              --persp: 1100px;
+            }
+          }
+          /* ≥ 1024px (lg - desktop) */
+          @media (min-width: 1024px) {
+            .carousel-scene {
+              --w: 180px;
+              --h: 120px;
+              --tz: 420px;
+              --persp: 1200px;
+            }
+          }
+          /* ≥ 1280px (xl) */
           @media (min-width: 1280px) {
             .carousel-scene {
               --w: 220px;
@@ -280,6 +263,7 @@ const HeroSection = () => {
               --tz: 480px;
             }
           }
+          /* ≥ 1536px (2xl) */
           @media (min-width: 1536px) {
             .carousel-scene {
               --w: 260px;
@@ -294,7 +278,7 @@ const HeroSection = () => {
           .carousel-face {
             position: absolute;
             inset: 0;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
             transform: rotateY(calc(360deg / var(--qty) * var(--i))) translateZ(var(--tz));
             backface-visibility: hidden;
@@ -303,6 +287,9 @@ const HeroSection = () => {
             box-shadow: 0 0 28px 4px rgba(var(--c), 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+          }
+          @media (min-width: 768px) {
+            .carousel-face { border-radius: 20px; }
           }
           .carousel-face-bg {
             position: absolute;
@@ -319,7 +306,10 @@ const HeroSection = () => {
             top: 0; left: 0; right: 0;
             height: 50%;
             background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
-            border-radius: 20px 20px 0 0;
+            border-radius: 16px 16px 0 0;
+          }
+          @media (min-width: 768px) {
+            .carousel-face-shine { border-radius: 20px 20px 0 0; }
           }
           .carousel-face-curve {
             position: absolute;
@@ -335,7 +325,7 @@ const HeroSection = () => {
           }
         `}</style>
 
-        <div className="hidden lg:block absolute bottom-40 xl:bottom-64 2xl:bottom-80 z-50 w-full h-96">
+        <div className="absolute bottom-16 md:bottom-24 lg:bottom-40 xl:bottom-64 2xl:bottom-80 z-50 w-full h-60 sm:h-72 md:h-80 lg:h-96">
           <div className="relative w-full h-full overflow-visible">
             <div
               className="carousel-scene"
@@ -354,15 +344,15 @@ const HeroSection = () => {
                   <div className="carousel-face-bg" />
                   <div className="carousel-face-shine" />
                   <div className="carousel-face-curve" />
-                  <div className="relative z-10 flex flex-col items-center justify-center gap-1 px-3 w-full h-full">
+                  <div className="relative z-10 flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-2 sm:px-3 w-full h-full">
                     <span
-                      className="text-2xl xl:text-3xl leading-none mb-1"
+                      className="text-lg sm:text-xl md:text-2xl xl:text-3xl leading-none mb-0.5 sm:mb-1"
                       style={{ color: `rgba(${service.rgb}, 0.9)`, filter: 'drop-shadow(0 0 6px currentColor)' }}
                     >
                       {service.icon}
                     </span>
                     <span
-                      className="text-white font-bold text-xs xl:text-sm tracking-[0.12em] uppercase text-center leading-tight"
+                      className="text-white font-bold text-[10px] sm:text-xs xl:text-sm tracking-[0.1em] sm:tracking-[0.12em] uppercase text-center leading-tight"
                       style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
                     >
                       {service.title1}{service.title2 && <><br />{service.title2}</>}
@@ -374,35 +364,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* ── Mobile stacked cards ────────────────────────────────────────── */}
-        <div
-          ref={mobileContainerRef}
-          className="flex items-center justify-center absolute lg:hidden -bottom-45 md:-bottom-48 left-0 right-0 z-50 h-[80vh]"
-        >
-          <div className="relative w-4/6 h-52">
-            {services.map((service, index) => (
-              <div
-                key={`mobile-${index}`}
-                ref={el => { mobileServiceRefs.current[index] = el; }}
-                className="absolute inset-0 w-full h-52 rounded-2xl shadow-2xl flex flex-col items-center justify-center gap-2 will-change-transform overflow-hidden"
-                style={{
-                  background: `linear-gradient(135deg, rgba(${service.rgb},0.12) 0%, rgba(${service.rgb},0.45) 60%, rgba(${service.rgb},0.72) 100%)`,
-                  border: `1.5px solid rgba(${service.rgb},0.55)`,
-                  boxShadow: `0 0 32px 4px rgba(${service.rgb},0.22), inset 0 1px 0 rgba(255,255,255,0.12)`,
-                  backdropFilter: 'blur(12px)',
-                }}
-              >
-                <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.38) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.38) 100%)' }} />
-                <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-2xl" style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.1) 0%,transparent 100%)' }} />
-                <span className="text-3xl" style={{ color: `rgba(${service.rgb}, 0.9)`, filter: 'drop-shadow(0 0 8px currentColor)' }}>{service.icon}</span>
-                <span className="flex flex-col text-white font-bold text-2xl uppercase tracking-widest text-center leading-tight" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
-                  {service.title1}
-                  {service.title2 && <span>{service.title2}</span>}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+
 
         <div className="absolute w-full bottom-8 md:bottom-0 lg:bottom-16 xl:bottom-24 2xl:-bottom-16 flex justify-center z-50 pointer-events-none">
           <Link href="/services" onMouseEnter={playHoverSound} className="pointer-events-auto">
