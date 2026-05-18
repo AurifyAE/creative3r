@@ -1,20 +1,49 @@
 'use client';
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { useHoverSound } from "@/app/hooks/useHoverSound";
 
+const navItems = [
+    { name: 'Home', href: '/', id: 'home' },
+    { name: 'About Us', href: '/about', id: 'about' },
+    { name: 'Services', href: '/services', id: 'services' },
+    { name: 'Portfolio', href: '/portfolio', id: 'portfolio' },
+] as const;
+
+type NavId = (typeof navItems)[number]['id'];
+
+function getActiveNavId(pathname: string): NavId | null {
+    if (pathname === '/') return 'home';
+    if (pathname.startsWith('/about')) return 'about';
+    if (pathname.startsWith('/services')) return 'services';
+    if (pathname.startsWith('/portfolio')) return 'portfolio';
+    return null;
+}
+
 const Navbar = () => {
-    const [selected, setSelected] = useState('home');
+    const pathname = usePathname();
+    const [selected, setSelected] = useState<NavId | null>('home');
     const [hidden, setHidden] = useState(false);
     const [hasBg, setHasBg] = useState(false);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const playHoverSound = useHoverSound();
 
-    const handleSelect = (item: string) => {
-        setSelected(item);
-        setMobileMenuOpen(false); // Close mobile menu on selection
+    useEffect(() => {
+        setSelected(getActiveNavId(pathname));
+    }, [pathname]);
+
+    const handleNavClick = (id: string) => {
+        const match = navItems.find((item) => item.id === id);
+        if (match) setSelected(match.id as NavId);
+        setMobileMenuOpen(false);
+    };
+
+    const handleLogoClick = () => {
+        setSelected('home');
+        setMobileMenuOpen(false);
     };
 
     useEffect(() => {
@@ -74,7 +103,7 @@ const Navbar = () => {
                         <Link
                             key={item.id}
                             href={item.href}
-                            onClick={() => handleSelect(item.id)}
+                            onClick={() => handleNavClick(item.id)}
                             onMouseEnter={playHoverSound}
                             className={`w-28 h-8 rounded-2xl relative overflow-hidden group cursor-pointer
                                 transition-colors duration-300
@@ -103,7 +132,13 @@ const Navbar = () => {
 
                 {/* Logo - Centered */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center">
-                    <Link href="/" className="flex items-start gap-2">
+                    <Link
+                        href="/"
+                        onClick={handleLogoClick}
+                        onMouseEnter={playHoverSound}
+                        className="flex items-start gap-2"
+                        aria-label="3R Creative home"
+                    >
                         <Image src="/assets/images/logo.svg" alt="3R Creative" width={100} height={100} className="w-6 h-6 sm:w-8 sm:h-8" />
                         <Image src="/assets/images/logoName.svg" alt="3R Creative" width={100} height={100} className="w-24 h-8 sm:w-30 sm:h-10" />
                     </Link>
@@ -145,7 +180,7 @@ const Navbar = () => {
                         <Link
                             key={item.id}
                             href={item.href}
-                            onClick={() => handleSelect(item.id)}
+                            onClick={() => handleNavClick(item.id)}
                             style={{ transitionDelay: `${index * 50}ms` }}
                             className={`
                                 text-2xl sm:text-3xl font-medium py-3 px-8 rounded-2xl

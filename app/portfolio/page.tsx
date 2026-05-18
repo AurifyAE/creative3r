@@ -1,10 +1,11 @@
 'use client'
 import { useRef, useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import { Flip } from 'gsap/dist/Flip';
-import { portfolioItems, PortfolioItem } from './portfolioData';
+import { portfolioItems, PortfolioItem, getPortfolioMedia, isPortfolioVideo } from './portfolioData';
+import PortfolioMedia from './PortfolioMedia';
+import PortfolioGridCard from './PortfolioGridCard';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
@@ -249,27 +250,14 @@ export default function PortfolioPage() {
         {/* Portfolio Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {portfolioItems.map((item) => (
-            <div
+            <PortfolioGridCard
               key={item.id}
-              ref={(el) => {
+              item={item}
+              cardRef={(el) => {
                 cardRefs.current[item.id] = el;
               }}
-              className="aspect-video bg-[#2A2A2A] hover:bg-[#333333] transition-colors duration-300 cursor-pointer relative overflow-hidden group rounded-xl shadow-lg border border-white/5"
               onClick={() => handleCardClick(item)}
-            >
-              <div className="w-full h-full flex items-center justify-center relative">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 inset-x-0 h-16 bg-linear-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-center pl-6">
-                  <h3 className="text-xl text-white font-medium italic tracking-wide">{item.title}</h3>
-                </div>
-              </div>
-            </div>
+            />
           ))}
         </div>
       </div>
@@ -313,18 +301,25 @@ export default function PortfolioPage() {
                     ref={imageContainerRef}
                     className="absolute inset-0 overflow-hidden shadow-2xl rounded-2xl border border-white/10"
                   >
-                    {selectedItem && (
-                      <>
-                        <Image
-                          src={selectedItem.image}
-                          alt={selectedItem.title}
-                          fill
-                          className="object-cover"
-                          priority
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-                      </>
-                    )}
+                    {selectedItem && (() => {
+                      const modalSrc = getPortfolioMedia(selectedItem)[0];
+                      const modalIsVideo = isPortfolioVideo(modalSrc);
+                      return (
+                        <>
+                          <PortfolioMedia
+                            src={modalSrc}
+                            alt={selectedItem.title}
+                            priority
+                            autoPlay={modalIsVideo}
+                            loop={modalIsVideo}
+                            muted={modalIsVideo}
+                          />
+                          {!modalIsVideo && (
+                            <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
 

@@ -44,26 +44,26 @@ const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 4,
-    title: 'Faqeesh Jewellery',
-    image: '/assets/images/portfolio/project-4.webp',
+    title: 'Promise Gold Refinery',
+    image: '/assets/images/portfolio/promise/promise-portfolio.jpeg',
     description: 'Comprehensive digital platform showcasing creative excellence.',
-    category: 'Web Development',
+    category: '',
     year: '2023'
   },
   {
     id: 5,
-    title: 'Project 5',
-    image: '/assets/images/portfolio/project-5.webp',
+    title: 'Signature Jewellery',
+    image: '/assets/images/portfolio/signature/signature-portfolio.jpeg',
     description: 'Elegant e-commerce solution with premium user experience.',
-    category: 'E-commerce',
+    category: '',
     year: '2024'
   },
   {
     id: 6,
-    title: 'Project 6',
-    image: '/assets/images/portfolio/project-6.webp',
+    title: 'Siramamba Refinery',
+    image: '/assets/images/portfolio/siramamba/siramamba-portfolio.jpeg',
     description: 'Bold visual identity that stands out in the digital landscape.',
-    category: 'Branding',
+    category: '',
     year: '2023'
   },
   {
@@ -73,15 +73,7 @@ const portfolioItems: PortfolioItem[] = [
     description: 'Interactive dashboard with real-time data visualization.',
     category: 'UI/UX',
     year: '2024'
-  },
-  {
-    id: 8,
-    title: 'Project 8',
-    image: '/assets/images/portfolio/project-8.webp',
-    description: 'Minimalist design approach with maximum impact.',
-    category: 'Web Design',
-    year: '2023'
-  },
+  }
 ];
 
 // ─── Drag-to-slide hook ───────────────────────────────────────────────────────

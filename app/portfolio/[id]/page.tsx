@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { use, useState, useEffect, useCallback } from 'react';
-import { portfolioItems, ContentSection, ContentItem } from '../portfolioData';
+import { portfolioItems, ContentSection, ContentItem, getPortfolioMedia, isPortfolioVideo } from '../portfolioData';
+import PortfolioMedia from '../PortfolioMedia';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -44,7 +45,12 @@ function DefaultSection({ section }: { section: ContentSection }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
           {section.images.map((src, i) => (
             <div key={i} className="relative overflow-hidden rounded-xl border border-white/5 bg-[#161616]" style={{ aspectRatio: '4/3' }}>
-              <Image src={src} alt={`${section.title ?? 'Project'} image ${i + 1}`} fill className="object-cover" />
+              <PortfolioMedia
+                src={src}
+                alt={`${section.title ?? 'Project'} image ${i + 1}`}
+                autoPlay={isPortfolioVideo(src)}
+                loop={isPortfolioVideo(src)}
+              />
             </div>
           ))}
         </div>
@@ -141,7 +147,12 @@ function LogoSection({ section }: { section: ContentSection }) {
           <div className="grid grid-cols-1 gap-4">
             {section.images.map((src, i) => (
               <div key={i} className="relative overflow-hidden rounded-xl border border-white/5 bg-[#161616]" style={{ aspectRatio: '4/3' }}>
-                <Image src={src} alt={`${section.title ?? 'Logo'} image ${i + 1}`} fill className="object-cover" />
+                <PortfolioMedia
+                src={src}
+                alt={`${section.title ?? 'Logo'} image ${i + 1}`}
+                autoPlay={isPortfolioVideo(src)}
+                loop={isPortfolioVideo(src)}
+              />
               </div>
             ))}
           </div>
@@ -168,12 +179,15 @@ export default function ProjectPage({ params }: Props) {
   const item = portfolioItems.find((p) => p.id === parseInt(id, 10));
   if (!item) notFound();
 
-  const allImages = item.images && item.images.length > 0 ? item.images : [item.image];
+  const allMedia = getPortfolioMedia(item);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [fading, setFading] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const activeSrc = allMedia[activeIndex];
+  const activeIsVideo = isPortfolioVideo(activeSrc);
 
   const switchImage = useCallback(
     (index: number) => {
@@ -186,8 +200,8 @@ export default function ProjectPage({ params }: Props) {
 
   const openLightbox = (index: number) => { setLightboxIndex(index); setLightboxOpen(true); };
   const closeLightbox = () => setLightboxOpen(false);
-  const lightboxPrev = useCallback(() => setLightboxIndex((i) => (i - 1 + allImages.length) % allImages.length), [allImages.length]);
-  const lightboxNext = useCallback(() => setLightboxIndex((i) => (i + 1) % allImages.length), [allImages.length]);
+  const lightboxPrev = useCallback(() => setLightboxIndex((i) => (i - 1 + allMedia.length) % allMedia.length), [allMedia.length]);
+  const lightboxNext = useCallback(() => setLightboxIndex((i) => (i + 1) % allMedia.length), [allMedia.length]);
 
   useEffect(() => {
     if (!lightboxOpen) return;
@@ -252,39 +266,44 @@ export default function ProjectPage({ params }: Props) {
 
           {/* Main Viewer */}
           <div
-            className="relative w-full overflow-hidden rounded-2xl border border-white/5 bg-[#161616] cursor-zoom-in group"
+            className={`relative w-full overflow-hidden rounded-2xl border border-white/5 bg-[#161616] group ${activeIsVideo ? '' : 'cursor-zoom-in'}`}
             style={{ aspectRatio: '16/9' }}
-            onClick={() => openLightbox(activeIndex)}
+            onClick={() => !activeIsVideo && openLightbox(activeIndex)}
           >
-            <Image
+            <PortfolioMedia
               key={activeIndex}
-              src={allImages[activeIndex]}
-              alt={`${item.title} — image ${activeIndex + 1}`}
-              fill
-              className="object-cover"
+              src={activeSrc}
+              alt={`${item.title} — media ${activeIndex + 1}`}
               priority
-              style={{ opacity: fading ? 0 : 1, transition: 'opacity 0.28s ease' }}
+              autoPlay={activeIsVideo}
+              loop={activeIsVideo}
+              className={fading ? 'opacity-0' : 'opacity-100'}
+              style={{ transition: 'opacity 0.28s ease' }}
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+            {!activeIsVideo && (
+              <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+            )}
 
-            {/* Expand icon */}
+            {/* Expand icon (images only) */}
+            {!activeIsVideo && (
             <div className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
               </svg>
             </div>
+            )}
 
-            {allImages.length > 1 && (
+            {allMedia.length > 1 && (
               <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-xs text-white/70 border border-white/10">
-                {activeIndex + 1} / {allImages.length}
+                {activeIndex + 1} / {allMedia.length}
               </div>
             )}
 
-            {allImages.length > 1 && (
+            {allMedia.length > 1 && (
               <>
                 <button
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/50 backdrop-blur-md rounded-full border border-white/10 text-white/70 hover:text-white hover:bg-black/70 transition-all opacity-0 group-hover:opacity-100"
-                  onClick={(e) => { e.stopPropagation(); switchImage((activeIndex - 1 + allImages.length) % allImages.length); }}
+                  onClick={(e) => { e.stopPropagation(); switchImage((activeIndex - 1 + allMedia.length) % allMedia.length); }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
@@ -292,7 +311,7 @@ export default function ProjectPage({ params }: Props) {
                 </button>
                 <button
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/50 backdrop-blur-md rounded-full border border-white/10 text-white/70 hover:text-white hover:bg-black/70 transition-all opacity-0 group-hover:opacity-100"
-                  onClick={(e) => { e.stopPropagation(); switchImage((activeIndex + 1) % allImages.length); }}
+                  onClick={(e) => { e.stopPropagation(); switchImage((activeIndex + 1) % allMedia.length); }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
@@ -303,9 +322,9 @@ export default function ProjectPage({ params }: Props) {
           </div>
 
           {/* Thumbnail Strip */}
-          {allImages.length > 1 && (
+          {allMedia.length > 1 && (
             <div className="flex items-center gap-3 mt-3">
-              {allImages.map((src, i) => (
+              {allMedia.map((src, i) => (
                 <button
                   key={i}
                   onClick={() => switchImage(i)}
@@ -314,7 +333,14 @@ export default function ProjectPage({ params }: Props) {
                   }`}
                   style={{ width: 90, height: 56 }}
                 >
-                  <Image src={src} alt={`Thumbnail ${i + 1}`} fill className="object-cover" />
+                  <PortfolioMedia src={src} alt={`Thumbnail ${i + 1}`} muted playsInline />
+                  {isPortfolioVideo(src) && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                      <div className="w-7 h-7 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                      </div>
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
@@ -431,14 +457,22 @@ export default function ProjectPage({ params }: Props) {
             </svg>
           </button>
           <div className="absolute top-5 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-sm text-white/60 border border-white/10">
-            {lightboxIndex + 1} / {allImages.length}
+            {lightboxIndex + 1} / {allMedia.length}
           </div>
           <div className="relative w-full max-w-5xl mx-auto px-16 md:px-20" onClick={(e) => e.stopPropagation()}>
             <div className="relative w-full overflow-hidden rounded-xl shadow-2xl" style={{ aspectRatio: '16/9' }}>
-              <Image key={lightboxIndex} src={allImages[lightboxIndex]} alt={`${item.title} — image ${lightboxIndex + 1}`} fill className="object-contain" priority />
+              <PortfolioMedia
+                key={lightboxIndex}
+                src={allMedia[lightboxIndex]}
+                alt={`${item.title} — media ${lightboxIndex + 1}`}
+                objectFit="contain"
+                priority
+                autoPlay={isPortfolioVideo(allMedia[lightboxIndex])}
+                loop={isPortfolioVideo(allMedia[lightboxIndex])}
+              />
             </div>
           </div>
-          {allImages.length > 1 && (
+          {allMedia.length > 1 && (
             <>
               <button className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 border border-white/10 text-white/70 hover:text-white hover:bg-white/20 transition-all" onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" /></svg>
@@ -448,11 +482,18 @@ export default function ProjectPage({ params }: Props) {
               </button>
             </>
           )}
-          {allImages.length > 1 && (
+          {allMedia.length > 1 && (
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2">
-              {allImages.map((src, i) => (
+              {allMedia.map((src, i) => (
                 <button key={i} onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }} className={`relative overflow-hidden rounded-md flex-shrink-0 transition-all duration-300 border-2 ${i === lightboxIndex ? 'border-white/80 opacity-100' : 'border-transparent opacity-40 hover:opacity-70'}`} style={{ width: 64, height: 40 }}>
-                  <Image src={src} alt={`Thumbnail ${i + 1}`} fill className="object-cover" />
+                  <PortfolioMedia src={src} alt={`Thumbnail ${i + 1}`} muted playsInline />
+                  {isPortfolioVideo(src) && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                      <div className="w-7 h-7 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                      </div>
+                    </div>
+                  )}
                 </button>
               ))}
             </div>

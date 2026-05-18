@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-12 md:py-16">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-12 px-6 md:flex-row md:items-start md:justify-between md:px-8">
+    <footer className="bg-black text-white">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-12 px-6 md:flex-row md:items-start md:justify-between md:px-8 py-12 md:py-16">
         {/* Left nav columns */}
         <div className="grid grid-cols-2 gap-10 sm:flex sm:flex-1 sm:gap-12 text-sm text-neutral-300 text-left">
           <div className="space-y-4">
@@ -69,14 +69,14 @@ const Footer = () => {
         {/* Right social & contact */}
         <div className="flex flex-1 flex-col items-center md:items-end gap-6 text-center md:text-right text-sm text-neutral-300">
           <div className="flex gap-6 text-lg justify-center md:justify-end">
-            <Link href="#" aria-label="Instagram" className="transition-transform hover:scale-110">
+            <Link href="instagram.com/3r_creative" aria-label="Instagram" className="transition-transform hover:scale-110">
               <Image src="/assets/icon/instagram.svg" alt="Instagram" className="w-5 h-5 opacity-70 hover:opacity-100" width={20} height={20} />
             </Link>
-            <Link href="#" aria-label="Facebook" className="transition-transform hover:scale-110">
+            <Link href="facebook.com/3RCreativeF.Z.E/" aria-label="Facebook" className="transition-transform hover:scale-110">
               <Image src="/assets/icon/facebook.svg" alt="Facebook" className="w-5 h-5 opacity-70 hover:opacity-100" width={20} height={20} />
             </Link>
-            <Link href="#" aria-label="Linkedin" className="transition-transform hover:scale-110">
-              <Image src="/assets/icon/linkedin.svg" alt="Linkedin" className="w-5 h-5 opacity-70 hover:opacity-100" width={20} height={20} />
+            <Link href="linkedin.com/company/3rcreative" aria-label="Linkedin" className="transition-transform hover:scale-110">
+              <Image src="/assets/icon/linkedIn.svg" alt="Linkedin" className="w-5 h-5 opacity-70 hover:opacity-100" width={20} height={20} />
             </Link>
           </div>
 
@@ -91,6 +91,9 @@ const Footer = () => {
             </p>
           </div>
         </div>
+      </div>
+      <div className="max-w-6xl mx-auto text-center md:text-right text-neutral-400 text-xs pb-6 px-6 md:px-8">
+        <Link href="/privacy-policy" className="hover:text-white/80">Privacy Policy</Link>
       </div>
     </footer>
   );

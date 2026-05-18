@@ -128,6 +128,25 @@ function CursorEnquireButton({
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const card = cardRef.current;
     if (!card) return;
+  
+    // Hide button when hovering over interactive elements
+    const target = e.target as HTMLElement;
+    const isOverInteractive = target.closest('.accordion-item, button, a');
+    
+    if (isOverInteractive) {
+      if (wrapperRef.current) {
+        gsap.killTweensOf(wrapperRef.current);
+        gsap.to(wrapperRef.current, { opacity: 0, scale: 0.5, duration: 0.2, ease: 'power2.in' });
+      }
+      return;
+    }
+  
+    // Restore button when back on non-interactive area
+    if (isInside.current && wrapperRef.current) {
+      gsap.killTweensOf(wrapperRef.current);
+      gsap.to(wrapperRef.current, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.6)' });
+    }
+  
     const rect = card.getBoundingClientRect();
     cursorPos.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }, [cardRef]);
@@ -165,7 +184,7 @@ function CursorEnquireButton({
   return (
     <div
       ref={wrapperRef}
-      className="absolute pointer-events-none z-50"
+      className="absolute pointer-events-none z-30"
       style={{
         opacity: 0,
         scale: '0.5',
@@ -405,7 +424,7 @@ export default function ServicesPage() {
 
                   <div className="space-y-4">
                     {currentService.details.items.map((item, index) => (
-                      <div key={index} className="accordion-item rounded-xl bg-white/5 border border-white/5 overflow-hidden transition-all duration-300">
+                      <div key={index} className="accordion-item relative z-40 rounded-xl bg-white/5 border border-white/5 overflow-hidden transition-all duration-300">
                         <button onClick={() => toggleExpand(index)} className="w-full p-4 flex items-center justify-between text-left group">
                           <span className="font-semibold text-sm md:text-base text-gray-200 group-hover:text-white transition-colors">{item.serviceName}</span>
                           <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${expandedItems.includes(index) ? 'rotate-180 text-white' : ''}`} />

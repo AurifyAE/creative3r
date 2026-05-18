@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -151,13 +151,74 @@ const WhyChooseSection = () => {
     );
 };
 
+const AboutHero = () => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [isMuted, setIsMuted] = useState(true);
+
+    const toggleMute = () => {
+        const video = videoRef.current;
+        if (!video) return;
+        const nextMuted = !isMuted;
+        video.muted = nextMuted;
+        setIsMuted(nextMuted);
+    };
+
+    return (
+        <section className="relative w-full overflow-hidden border-b border-white/5">
+            <div className="relative h-[30vh] min-h-[300px] md:h-[50vh] lg:h-[80vh] max-h-[900px]">
+                <video
+                    ref={videoRef}
+                    src="/assets/videos/about/aboutus-cover.mp4"
+                    autoPlay
+                    muted={isMuted}
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                    aria-label="About 3R Creative"
+                />
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: `
+                            linear-gradient(to bottom, rgba(31, 30, 30, 0.85) 0%, rgba(31, 30, 30, 0.2) 40%, rgba(31, 30, 30, 0.2) 70%, rgba(31, 30, 30, 1) 100%),
+                            linear-gradient(to right, rgba(31, 30, 30, 0.6) 0%, transparent 30%, transparent 70%, rgba(31, 30, 30, 0.6) 100%)
+                        `,
+                    }}
+                />
+                <button
+                    type="button"
+                    onClick={toggleMute}
+                    className="absolute bottom-5 right-5 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/80 backdrop-blur-md transition-all duration-300 hover:bg-black/60 hover:text-white"
+                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                >
+                    {isMuted ? (
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M15 9.879V14m0-8.121V6" />
+                        </svg>
+                    ) : (
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.536 8.464a5 5 0 010 7.072M12 6v12m-4.536-9.536a9 9 0 000 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg>
+                    )}
+                </button>
+            </div>
+            <div className="px-6 pb-12 pt-10 md:pb-16 md:pt-12 text-center">
+                <p className="mb-3 text-xs font-medium uppercase tracking-[0.35em] text-[#F4A261]">
+                    Who we are
+                </p>
+                <h1 className="font-display text-5xl font-bold text-white md:text-7xl lg:text-8xl">
+                    About us
+                </h1>
+            </div>
+        </section>
+    );
+};
+
 export default function AboutPage() {
     return (
         <main className="min-h-screen bg-[#1F1E1E]">
-            {/* Added a placeholder hero to show off the scroll effect better */}
-            <div className="h-[30vh] pt-30 pb-10 flex items-center justify-center border-b border-white/5">
-                <h1 className="text-6xl md:text-8xl font-display font-bold text-white opacity-20">About us</h1>
-            </div>
+            <AboutHero />
 
             <WhyChooseSection />
 

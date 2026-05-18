@@ -29,6 +29,34 @@ export interface PortfolioItem {
   sections?: ContentSection[];
 }
 
+const VIDEO_EXT = /\.(mp4|webm|ogg)(\?.*)?$/i;
+
+/** True when the asset path is a video file (e.g. .mp4 in `images`). */
+export function isPortfolioVideo(src: string): boolean {
+  return VIDEO_EXT.test(src);
+}
+
+/** First still image in `images`, or falls back to `image` (poster for cards). */
+export function getPortfolioPoster(item: PortfolioItem): string {
+  const still = item.images?.find((src) => !isPortfolioVideo(src));
+  return still ?? item.image;
+}
+
+/** Gallery / modal media list (images + videos). */
+export function getPortfolioMedia(item: PortfolioItem): string[] {
+  return item.images && item.images.length > 0 ? item.images : [item.image];
+}
+
+/** Second gallery asset for grid hover (prefers another still image, else next media item). */
+export function getPortfolioHoverMedia(item: PortfolioItem): string | null {
+  const media = getPortfolioMedia(item);
+  const poster = getPortfolioPoster(item);
+  const secondStill = media.filter((s) => !isPortfolioVideo(s)).find((s) => s !== poster);
+  if (secondStill) return secondStill;
+  if (media.length > 1 && media[1] !== poster) return media[1];
+  return null;
+}
+
 export const portfolioItems: PortfolioItem[] = [
 
   /* ─── 1. Blue Diamond ──────────────────────────────────────── */
@@ -37,6 +65,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: 'Blue Diamond',
     image: '/assets/images/portfolio/bluediamond/blue-diamond-homepage.jpeg',
     images: [
+      '/assets/images/portfolio/bluediamond/bluediamond-portfolio-video.mp4',
       '/assets/images/portfolio/bluediamond/blue-diamond-homepage.jpeg',
       '/assets/images/portfolio/bluediamond/blue-diamond-all-collections.jpeg',
     ],
@@ -65,6 +94,7 @@ export const portfolioItems: PortfolioItem[] = [
     image: '/assets/images/portfolio/blackmamba/blackmamba-portfolio.jpeg',
     images: [
       '/assets/images/portfolio/blackmamba/blackmamba-portfolio.jpeg',
+      '/assets/images/portfolio/blackmamba/blackmamba-portfolio-video.mp4',
     ],
     description:
       'Blackmamba Real Estate came to us with a bold vision - to position itself as a premium, broker-free real estate brand offering seamless access to luxury furnished residences and short-stay properties in the UAE.',
@@ -94,11 +124,9 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 3,
     title: 'Siramamba Refinery',
-    image: '/assets/images/portfolio/project-3.webp',
+    image: '/assets/images/portfolio/siramamba/siramamba-portfolio.jpeg',
     images: [
-      '/assets/images/portfolio/project-3.webp',
-      '/assets/images/portfolio/project-5.webp',
-      '/assets/images/portfolio/project-7.webp',
+      '/assets/images/portfolio/siramamba/siramamba-portfolio.jpeg',
     ],
     description:
       'Siramamba is a gold and precious metal refinery in the UAE, specialising in producing high-purity gold and metals for investment, trading, and industrial use. The brand combines precision, quality, and trust, meeting international standards.',
@@ -129,11 +157,9 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 4,
     title: 'Promise Gold Refinery',
-    image: '/assets/images/portfolio/project-4.webp',
+    image: '/assets/images/portfolio/promise/promise-portfolio.jpeg',
     images: [
-      '/assets/images/portfolio/project-4.webp',
-      '/assets/images/portfolio/project-1.webp',
-      '/assets/images/portfolio/project-8.webp',
+      '/assets/images/portfolio/promise/promise-portfolio.jpeg',
     ],
     description:
       'Promise Gold Refinery is a UAE-based precious metals refinery, specializing in high-purity gold and silver, built on trust, precision, and global standards.',
@@ -166,11 +192,9 @@ export const portfolioItems: PortfolioItem[] = [
   {
     id: 5,
     title: 'Signature Jewellery',
-    image: '/assets/images/portfolio/project-5.webp',
+    image: '/assets/images/portfolio/signature/signature-portfolio.jpeg',
     images: [
-      '/assets/images/portfolio/project-5.webp',
-      '/assets/images/portfolio/project-3.webp',
-      '/assets/images/portfolio/project-1.webp',
+      '/assets/images/portfolio/signature/signature-portfolio.jpeg',
     ],
     description:
       'We built Signature Jewellery\'s Instagram from scratch, refining their brand story, tagline, and colors for a premium, cohesive social presence. Within just 4 months, our strategy helped the account reach 30,000 people, showcasing their craftsmanship, bridal collections, and gemstone pieces. The result is a visually elegant feed that amplifies brand awareness and connects with a luxury audience.',
@@ -215,116 +239,116 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   /* ─── 6. Suntech Group ────────────────────────────────────── */
-  {
-    id: 6,
-    title: 'Suntech Group',
-    image: '/assets/images/portfolio/project-6.webp',
-    images: [
-      '/assets/images/portfolio/project-6.webp',
-      '/assets/images/portfolio/project-2.webp',
-      '/assets/images/portfolio/project-4.webp',
-    ],
-    description:
-      'Suntech Group delivers advanced ERP and business solutions, helping jewellery businesses streamline operations and scale efficiently. Suntech Group partnered with us to elevate their brand presence through a cohesive visual and communication strategy. The goal was to position the company as a forward-thinking, professional, and credible organization across both digital and offline platforms.',
-    category: 'SMM',
-    year: '2023',
-    client: 'Suntech Group',
-    services: ['Corporate Video', 'Photoshoot', 'Headshot Photography', 'PR Creatives', 'Offline Marketing'],
-    sections: [
-      {
-        title: 'Objectives',
-        items: [
-          { text: 'Build a strong corporate identity through high-quality visual storytelling.' },
-          { text: 'Establish consistency across all brand touchpoints.' },
-          { text: 'Enhance credibility through professional representation of leadership and team.' },
-          { text: 'Support marketing and PR efforts with impactful creative assets.' },
-        ],
-        type: 'bullets',
-      },
-      {
-        title: 'Scope of Work',
-        items: [
-          {
-            label: '1. Corporate Video Production',
-            text: 'We conceptualized and produced a premium corporate video that captures Suntech Group\'s vision, values, and operational excellence. The video was designed to communicate trust, innovation, and scale, making it suitable for presentations, digital platforms, and client engagements.',
-            subLabel: 'Key Highlights',
-            subItems: [
-              'Story-driven narrative aligned with brand positioning.',
-              'Cinematic visuals showcasing operations and leadership.',
-              'Professional voiceover and editing for a polished finish.',
-            ],
-          },
-          {
-            label: '2. Corporate Photoshoot (Team & Workplace)',
-            text: 'A comprehensive photoshoot was conducted to document the company\'s environment, culture, and workforce. The visuals were crafted to reflect professionalism, collaboration, and authenticity.',
-            subLabel: 'Deliverables',
-            subItems: [
-              'Team interaction shots.',
-              'Workplace and infrastructure visuals.',
-              'Brand-aligned lifestyle imagery.',
-            ],
-          },
-          {
-            label: '3. Individual Headshot Photography',
-            text: 'We executed a series of high-end headshot sessions for all team members, ensuring a consistent and refined look across the organization.',
-            subLabel: 'Approach',
-            subItems: [
-              'Uniform lighting and background for brand consistency.',
-              'Direction to capture confident and approachable expressions.',
-              'Optimized for website, LinkedIn, and PR usage.',
-            ],
-          },
-          {
-            label: '4. PR & Advertisement Creative Support',
-            text: 'We supported Suntech Group with PR-focused creatives tailored for advertisements and brand visibility campaigns.',
-            subLabel: 'Includes',
-            subItems: [
-              'Ad creatives designed for maximum visual impact.',
-              'Messaging aligned with brand voice and positioning.',
-              'Ready-to-publish assets for media placements.',
-            ],
-          },
-          {
-            label: '5. Offline Marketing Collaterals',
-            text: 'To strengthen physical brand presence, we designed and delivered offline marketing materials that reflect the company\'s premium identity.',
-            subLabel: 'Deliverables',
-            subItems: [
-              'Brochures and company profiles.',
-              'Event and exhibition materials.',
-              'Print-ready designs maintaining brand consistency.',
-            ],
-          },
-        ],
-        type: 'scope',
-      },
-      {
-        title: 'Outcome',
-        body: 'The collaboration resulted in a unified and elevated brand presence for Suntech Group. With a strong library of visual and marketing assets, the company is now equipped to communicate its value proposition more effectively across all channels.',
-        type: 'default',
-      },
-      {
-        title: 'Impact',
-        items: [
-          { text: 'Enhanced brand perception and professionalism.' },
-          { text: 'Improved client engagement through high-quality visuals.' },
-          { text: 'Consistent identity across digital and offline platforms.' },
-          { text: 'Stronger positioning in PR and marketing initiatives.' },
-        ],
-        type: 'impact',
-      },
-      {
-        title: 'What We Delivered',
-        items: [
-          { label: 'Corporate Video', text: 'A cinematic brand film capturing their vision, operations, and credibility.' },
-          { label: 'Corporate Photoshoot', text: 'Professional workplace and team visuals reflecting culture and scale.' },
-          { label: 'Headshot Photography', text: 'Consistent, high-quality individual portraits for leadership and team.' },
-          { label: 'PR & Ad Creatives', text: 'Impactful visuals designed for brand visibility and media placements.' },
-          { label: 'Offline Marketing', text: 'Brochures, company profiles, and print collaterals aligned with brand identity.' },
-        ],
-        type: 'scope',
-      },
-    ],
-  },
+  // {
+  //   id: 6,
+  //   title: 'Suntech Group',
+  //   image: '/assets/images/portfolio/project-6.webp',
+  //   images: [
+  //     '/assets/images/portfolio/project-6.webp',
+  //     '/assets/images/portfolio/project-2.webp',
+  //     '/assets/images/portfolio/project-4.webp',
+  //   ],
+  //   description:
+  //     'Suntech Group delivers advanced ERP and business solutions, helping jewellery businesses streamline operations and scale efficiently. Suntech Group partnered with us to elevate their brand presence through a cohesive visual and communication strategy. The goal was to position the company as a forward-thinking, professional, and credible organization across both digital and offline platforms.',
+  //   category: 'SMM',
+  //   year: '2023',
+  //   client: 'Suntech Group',
+  //   services: ['Corporate Video', 'Photoshoot', 'Headshot Photography', 'PR Creatives', 'Offline Marketing'],
+  //   sections: [
+  //     {
+  //       title: 'Objectives',
+  //       items: [
+  //         { text: 'Build a strong corporate identity through high-quality visual storytelling.' },
+  //         { text: 'Establish consistency across all brand touchpoints.' },
+  //         { text: 'Enhance credibility through professional representation of leadership and team.' },
+  //         { text: 'Support marketing and PR efforts with impactful creative assets.' },
+  //       ],
+  //       type: 'bullets',
+  //     },
+  //     {
+  //       title: 'Scope of Work',
+  //       items: [
+  //         {
+  //           label: '1. Corporate Video Production',
+  //           text: 'We conceptualized and produced a premium corporate video that captures Suntech Group\'s vision, values, and operational excellence. The video was designed to communicate trust, innovation, and scale, making it suitable for presentations, digital platforms, and client engagements.',
+  //           subLabel: 'Key Highlights',
+  //           subItems: [
+  //             'Story-driven narrative aligned with brand positioning.',
+  //             'Cinematic visuals showcasing operations and leadership.',
+  //             'Professional voiceover and editing for a polished finish.',
+  //           ],
+  //         },
+  //         {
+  //           label: '2. Corporate Photoshoot (Team & Workplace)',
+  //           text: 'A comprehensive photoshoot was conducted to document the company\'s environment, culture, and workforce. The visuals were crafted to reflect professionalism, collaboration, and authenticity.',
+  //           subLabel: 'Deliverables',
+  //           subItems: [
+  //             'Team interaction shots.',
+  //             'Workplace and infrastructure visuals.',
+  //             'Brand-aligned lifestyle imagery.',
+  //           ],
+  //         },
+  //         {
+  //           label: '3. Individual Headshot Photography',
+  //           text: 'We executed a series of high-end headshot sessions for all team members, ensuring a consistent and refined look across the organization.',
+  //           subLabel: 'Approach',
+  //           subItems: [
+  //             'Uniform lighting and background for brand consistency.',
+  //             'Direction to capture confident and approachable expressions.',
+  //             'Optimized for website, LinkedIn, and PR usage.',
+  //           ],
+  //         },
+  //         {
+  //           label: '4. PR & Advertisement Creative Support',
+  //           text: 'We supported Suntech Group with PR-focused creatives tailored for advertisements and brand visibility campaigns.',
+  //           subLabel: 'Includes',
+  //           subItems: [
+  //             'Ad creatives designed for maximum visual impact.',
+  //             'Messaging aligned with brand voice and positioning.',
+  //             'Ready-to-publish assets for media placements.',
+  //           ],
+  //         },
+  //         {
+  //           label: '5. Offline Marketing Collaterals',
+  //           text: 'To strengthen physical brand presence, we designed and delivered offline marketing materials that reflect the company\'s premium identity.',
+  //           subLabel: 'Deliverables',
+  //           subItems: [
+  //             'Brochures and company profiles.',
+  //             'Event and exhibition materials.',
+  //             'Print-ready designs maintaining brand consistency.',
+  //           ],
+  //         },
+  //       ],
+  //       type: 'scope',
+  //     },
+  //     {
+  //       title: 'Outcome',
+  //       body: 'The collaboration resulted in a unified and elevated brand presence for Suntech Group. With a strong library of visual and marketing assets, the company is now equipped to communicate its value proposition more effectively across all channels.',
+  //       type: 'default',
+  //     },
+  //     {
+  //       title: 'Impact',
+  //       items: [
+  //         { text: 'Enhanced brand perception and professionalism.' },
+  //         { text: 'Improved client engagement through high-quality visuals.' },
+  //         { text: 'Consistent identity across digital and offline platforms.' },
+  //         { text: 'Stronger positioning in PR and marketing initiatives.' },
+  //       ],
+  //       type: 'impact',
+  //     },
+  //     {
+  //       title: 'What We Delivered',
+  //       items: [
+  //         { label: 'Corporate Video', text: 'A cinematic brand film capturing their vision, operations, and credibility.' },
+  //         { label: 'Corporate Photoshoot', text: 'Professional workplace and team visuals reflecting culture and scale.' },
+  //         { label: 'Headshot Photography', text: 'Consistent, high-quality individual portraits for leadership and team.' },
+  //         { label: 'PR & Ad Creatives', text: 'Impactful visuals designed for brand visibility and media placements.' },
+  //         { label: 'Offline Marketing', text: 'Brochures, company profiles, and print collaterals aligned with brand identity.' },
+  //       ],
+  //       type: 'scope',
+  //     },
+  //   ],
+  // },
 
   /* ─── 7. Mac N Ro Capital ────────────────────────────────── */
   {
@@ -393,50 +417,50 @@ export const portfolioItems: PortfolioItem[] = [
   },
 
   /* ─── 8. Faqeesh Jewellery ───────────────────────────────── */
-  {
-    id: 8,
-    title: 'Faqeesh Jewellery',
-    image: '/assets/images/portfolio/project-8.webp',
-    images: [
-      '/assets/images/portfolio/project-8.webp',
-      '/assets/images/portfolio/project-6.webp',
-      '/assets/images/portfolio/project-2.webp',
-    ],
-    description:
-      'Faqeesh Jewellery is a premium Arabic-focused jewellery brand based in Abu Dhabi, catering to clients looking for high-quality gold and diamond pieces online. We designed a premium Arabic-first e-commerce platform for Faqeesh Jewellery in Abu Dhabi. The site features a custom layout, live gold rate integration, and a user-friendly shopping experience, while giving the client full control over product management. Bringing luxury jewellery online with precision and real-time pricing.',
-    category: 'E-commerce',
-    year: '2023',
-    client: 'Faqeesh Jewellery',
-    services: ['UI/UX Design', 'Website Development', 'E-commerce'],
-    sections: [
-      {
-        title: 'The Challenge',
-        body: 'The client wanted an e-commerce platform tailored for the Arabic-speaking audience while providing real-time gold pricing. Key challenges included:',
-        items: [
-          { text: 'Ensuring Arabic language support with proper right-to-left layout.' },
-          { text: 'Displaying live gold rates integrated with product pricing.' },
-          { text: 'Creating a user-friendly shopping experience that reflects the luxury brand.' },
-        ],
-        type: 'bullets',
-      },
-      {
-        title: 'Our Approach',
-        items: [
-          { text: 'Designed a custom website layout optimized for Arabic users, balancing aesthetics with usability.' },
-          { text: 'Integrated a live gold rate system to automatically update pricing on the website.' },
-          { text: 'Developed the e-commerce framework, while enabling the client to manage products, inventory, and orders independently.' },
-        ],
-        type: 'bullets',
-      },
-      {
-        title: 'Outcome',
-        items: [
-          { text: 'Delivered a responsive, Arabic-first e-commerce platform reflecting the premium brand identity.' },
-          { text: 'Enabled real-time pricing for gold products, improving transparency and customer trust.' },
-          { text: 'Client now has full control over daily operations while leveraging a professional, brand-aligned website.' },
-        ],
-        type: 'impact',
-      },
-    ],
-  },
+  // {
+  //   id: 8,
+  //   title: 'Faqeesh Jewellery',
+  //   image: '/assets/images/portfolio/project-8.webp',
+  //   images: [
+  //     '/assets/images/portfolio/project-8.webp',
+  //     '/assets/images/portfolio/project-6.webp',
+  //     '/assets/images/portfolio/project-2.webp',
+  //   ],
+  //   description:
+  //     'Faqeesh Jewellery is a premium Arabic-focused jewellery brand based in Abu Dhabi, catering to clients looking for high-quality gold and diamond pieces online. We designed a premium Arabic-first e-commerce platform for Faqeesh Jewellery in Abu Dhabi. The site features a custom layout, live gold rate integration, and a user-friendly shopping experience, while giving the client full control over product management. Bringing luxury jewellery online with precision and real-time pricing.',
+  //   category: 'E-commerce',
+  //   year: '2023',
+  //   client: 'Faqeesh Jewellery',
+  //   services: ['UI/UX Design', 'Website Development', 'E-commerce'],
+  //   sections: [
+  //     {
+  //       title: 'The Challenge',
+  //       body: 'The client wanted an e-commerce platform tailored for the Arabic-speaking audience while providing real-time gold pricing. Key challenges included:',
+  //       items: [
+  //         { text: 'Ensuring Arabic language support with proper right-to-left layout.' },
+  //         { text: 'Displaying live gold rates integrated with product pricing.' },
+  //         { text: 'Creating a user-friendly shopping experience that reflects the luxury brand.' },
+  //       ],
+  //       type: 'bullets',
+  //     },
+  //     {
+  //       title: 'Our Approach',
+  //       items: [
+  //         { text: 'Designed a custom website layout optimized for Arabic users, balancing aesthetics with usability.' },
+  //         { text: 'Integrated a live gold rate system to automatically update pricing on the website.' },
+  //         { text: 'Developed the e-commerce framework, while enabling the client to manage products, inventory, and orders independently.' },
+  //       ],
+  //       type: 'bullets',
+  //     },
+  //     {
+  //       title: 'Outcome',
+  //       items: [
+  //         { text: 'Delivered a responsive, Arabic-first e-commerce platform reflecting the premium brand identity.' },
+  //         { text: 'Enabled real-time pricing for gold products, improving transparency and customer trust.' },
+  //         { text: 'Client now has full control over daily operations while leveraging a professional, brand-aligned website.' },
+  //       ],
+  //       type: 'impact',
+  //     },
+  //   ],
+  // },
 ];
