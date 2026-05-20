@@ -25,9 +25,6 @@ const Footer = () => {
               <Link href="/portfolio" className="block transition-colors hover:text-white/80">
                 Portfolio
               </Link>
-              <Link href="#" className="block transition-colors hover:text-white/80">
-                Blogs
-              </Link>
             </nav>
           </div>
 
@@ -36,9 +33,11 @@ const Footer = () => {
               Work with us
             </p>
             <nav className="space-y-2">
-              <Link href="#" className="block transition-colors hover:text-white/80">
+              <Link href="/contact" className="block transition-colors hover:text-white/80">
                 Discuss Project
               </Link>
+              <Link href="https://creative3r-lsconnect-home.netlify.app/" target="_blank" className="block transition-colors hover:text-white/80">LS connect</Link>
+              <Link href="https://creative3r-lsconnect-userdatadeletion.netlify.app/" target="_blank" className="block transition-colors hover:text-white/80">User Data Deletion</Link>
             </nav>
           </div>
         </div>

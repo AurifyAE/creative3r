@@ -114,7 +114,7 @@ export const portfolioItems: PortfolioItem[] = [
       {
         title: 'About the Logo',
         body: 'The Blackmamba logo embodies luxury, precision, and exclusivity, inspired by the agility and elegance of the black mamba snake. Its sleek, minimalist design and black palette reflect sophistication and authority, symbolizing the brand\'s promise of a direct, frictionless, and elite real estate experience in the UAE.',
-        images: ['/assets/images/portfolio/project-2.webp'],
+        images: ['/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.png'],
         type: 'logo',
       },
     ],
@@ -182,7 +182,7 @@ export const portfolioItems: PortfolioItem[] = [
       {
         title: 'The Result',
         body: 'The result is a sleek, visually-driven website that communicates Promise Gold Refinery\'s expertise and premium positioning.',
-        images: ['/assets/images/portfolio/project-4.webp'],
+        images: ['/assets/images/portfolio/promise/promise-portfolio.jpeg'],
         type: 'default',
       },
     ],

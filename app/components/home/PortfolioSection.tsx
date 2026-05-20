@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
 import { useHoverSound } from '@/app/hooks/useHoverSound';
+import { useRouter } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +14,7 @@ interface PortfolioItem {
   title: string;
   image: string;
   description: string;
+  link: string;
   category: string;
   year: string;
 }
@@ -23,6 +25,7 @@ const portfolioItems: PortfolioItem[] = [
     title: 'Blue Diamond',
     image: '/assets/images/portfolio/bluediamond/blue-diamond-homepage.jpeg',
     description: 'A stunning visual experience combining modern design with innovative functionality.',
+    link: 'portfolio/1',
     category: '',
     year: '2024'
   },
@@ -31,6 +34,7 @@ const portfolioItems: PortfolioItem[] = [
     title: 'Mac & Ro Capital',
     image: '/assets/images/portfolio/mac&ro/mac&ro-homepage.jpeg',
     description: 'Strategic branding solution that captures the essence of modern elegance.',
+    link: '/portfolio/7',
     category: '',
     year: '2024'
   },
@@ -39,14 +43,16 @@ const portfolioItems: PortfolioItem[] = [
     title: 'BlackMamba',
     image: '/assets/images/portfolio/blackmamba/blackmamba-portfolio.jpeg',
     description: 'Revolutionary mobile experience with seamless user interactions.',
+    link: '/portfolio/2',
     category: '',
-    year: '2023'
+    year: '2024'
   },
   {
     id: 4,
     title: 'Promise Gold Refinery',
     image: '/assets/images/portfolio/promise/promise-portfolio.jpeg',
     description: 'Comprehensive digital platform showcasing creative excellence.',
+    link: '/portfolio/4',
     category: '',
     year: '2023'
   },
@@ -55,6 +61,7 @@ const portfolioItems: PortfolioItem[] = [
     title: 'Signature Jewellery',
     image: '/assets/images/portfolio/signature/signature-portfolio.jpeg',
     description: 'Elegant e-commerce solution with premium user experience.',
+    link: '/portfolio/5',
     category: '',
     year: '2024'
   },
@@ -63,32 +70,36 @@ const portfolioItems: PortfolioItem[] = [
     title: 'Siramamba Refinery',
     image: '/assets/images/portfolio/siramamba/siramamba-portfolio.jpeg',
     description: 'Bold visual identity that stands out in the digital landscape.',
+    link: '/portfolio/3',
     category: '',
     year: '2023'
   },
-  {
-    id: 7,
-    title: 'Project 7',
-    image: '/assets/images/portfolio/project-7.webp',
-    description: 'Interactive dashboard with real-time data visualization.',
-    category: 'UI/UX',
-    year: '2024'
-  }
+  // {
+  //   id: 7,
+  //   title: 'Project 7',
+  //   image: '/assets/images/portfolio/project-7.webp',
+  //   description: 'Interactive dashboard with real-time data visualization.',
+  //   category: 'UI/UX',
+  //   year: '2024'
+  // }
 ];
 
 // ─── Drag-to-slide hook ───────────────────────────────────────────────────────
 function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
   const isDragging = useRef(false);
   const startX = useRef(0);
+  const startY = useRef(0);
   const scrollLeft = useRef(0);
-  // Track whether this pointer event was a drag (vs a click)
   const didDrag = useRef(false);
+  const startTime = useRef(0);
 
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     isDragging.current = true;
     didDrag.current = false;
-    startX.current = e.clientX - ref.current.getBoundingClientRect().left;
+    startX.current = e.clientX;
+    startY.current = e.clientY;
+    startTime.current = Date.now();
     scrollLeft.current = ref.current.scrollLeft;
     ref.current.setPointerCapture(e.pointerId);
     ref.current.style.cursor = 'grabbing';
@@ -97,10 +108,13 @@ function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
 
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging.current || !ref.current) return;
-    const x = e.clientX - ref.current.getBoundingClientRect().left;
-    const walk = x - startX.current;
-    if (Math.abs(walk) > 5) didDrag.current = true;
-    ref.current.scrollLeft = scrollLeft.current - walk;
+    const dx = e.clientX - startX.current;
+    const dy = e.clientY - startY.current;
+    // Only treat as horizontal drag (ignore vertical scroll attempts)
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 4) {
+      didDrag.current = true;
+    }
+    ref.current.scrollLeft = scrollLeft.current - dx;
   }, [ref]);
 
   const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
@@ -120,22 +134,25 @@ interface CardProps {
   rowKey: string;
   selectedId: string | null;
   onSelect: (id: string) => void;
-  didDrag: React.RefObject<boolean>;
+  didDrag: React.MutableRefObject<boolean>;
 }
 
 const PortfolioCard = ({ item, rowKey, selectedId, onSelect, didDrag }: CardProps) => {
+  const router = useRouter();
   const id = `${rowKey}-${item.id}`;
   const isSelected = selectedId === id;
 
-  const handleClick = () => {
-    // Don't fire selection if the user was dragging
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Only handle left-button / primary touch
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    // If the parent drag hook moved more than threshold, ignore
     if (didDrag.current) return;
-    onSelect(isSelected ? '' : id);
+    router.push(item.link);
   };
 
   return (
     <div
-      onClick={handleClick}
+    onPointerUp={handlePointerUp}
       className={`
         group relative aspect-4/4 w-64 md:w-72 lg:w-80 shrink-0 overflow-hidden rounded-3xl shadow-lg
         transition-all duration-300 cursor-pointer
