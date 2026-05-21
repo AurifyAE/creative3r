@@ -6,7 +6,7 @@ import TeamSection from "./components/home/TeamSection";
 import ContactSection from "./components/home/ContactSection";
 import Footer from "./components/layout/Footer";
 import SuperPowers from "./components/home/SuperPowers";
-import StackingCards from "./components/home/Testimonials";
+import Testimonials from "./components/home/Testimonials";
 import CollaboratorsSection from "./components/home/Collaborators";
 
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
       <WavyLine />
       <SuperPowers />
       <WavyLine />
-      <StackingCards />
+      {/* <Testimonials /> */}
       <ContactSection />
       {/* <Footer /> */}
     </div>
