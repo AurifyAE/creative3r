@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-
 const Footer = () => {
   return (
     <footer className="bg-black text-white">
@@ -15,7 +14,7 @@ const Footer = () => {
             <nav className="space-y-2">
               <Link href="/" className="block font-medium text-white transition-colors hover:text-white/70">
                 Home
-              </Link>
+              </Link> 
               <Link href="/about" className="block transition-colors hover:text-white/80">
                 About Us
               </Link>
@@ -68,13 +67,13 @@ const Footer = () => {
         {/* Right social & contact */}
         <div className="flex flex-1 flex-col items-center md:items-end gap-6 text-center md:text-right text-sm text-neutral-300">
           <div className="flex gap-6 text-lg justify-center md:justify-end">
-            <Link href="instagram.com/3r_creative" aria-label="Instagram" className="transition-transform hover:scale-110">
+            <Link href="https://instagram.com/3r_creative" target="_blank" aria-label="Instagram" className="transition-transform hover:scale-110">
               <Image src="/assets/icon/instagram.svg" alt="Instagram" className="w-5 h-5 opacity-70 hover:opacity-100" width={20} height={20} />
             </Link>
-            <Link href="facebook.com/3RCreativeF.Z.E/" aria-label="Facebook" className="transition-transform hover:scale-110">
+            <Link href="https://facebook.com/3RCreativeF.Z.E/" target="_blank" aria-label="Facebook" className="transition-transform hover:scale-110">
               <Image src="/assets/icon/facebook.svg" alt="Facebook" className="w-5 h-5 opacity-70 hover:opacity-100" width={20} height={20} />
             </Link>
-            <Link href="linkedin.com/company/3rcreative" aria-label="Linkedin" className="transition-transform hover:scale-110">
+            <Link href="https://linkedin.com/company/3rcreative" target="_blank" aria-label="Linkedin" className="transition-transform hover:scale-110">
               <Image src="/assets/icon/linkedIn.svg" alt="Linkedin" className="w-5 h-5 opacity-70 hover:opacity-100" width={20} height={20} />
             </Link>
           </div>
