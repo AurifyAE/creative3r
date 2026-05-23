@@ -12,7 +12,6 @@ import CollaboratorsSection from "./components/home/Collaborators";
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-[#1F1E1E] text-white">
-      {/* <Navbar /> */}
       <HeroSection />
       <PortfolioSection />
       <WavyLine />
@@ -24,7 +23,6 @@ export default function Home() {
       <WavyLine />
       {/* <Testimonials /> */}
       <ContactSection />
-      {/* <Footer /> */}
     </div>
   );
 }

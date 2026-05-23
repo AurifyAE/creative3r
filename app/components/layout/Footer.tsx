@@ -35,8 +35,8 @@ const Footer = () => {
               <Link href="/contact" className="block transition-colors hover:text-white/80">
                 Discuss Project
               </Link>
-              <Link href="https://creative3r-lsconnect-home.netlify.app/" target="_blank" className="block transition-colors hover:text-white/80">LS connect</Link>
-              <Link href="https://creative3r-lsconnect-userdatadeletion.netlify.app/" target="_blank" className="block transition-colors hover:text-white/80">User Data Deletion</Link>
+              <Link href="/ls-connect" className="block transition-colors hover:text-white/80">LS connect</Link>
+              <Link href="/ls-connect/data-deletion" className="block transition-colors hover:text-white/80">User Data Deletion</Link>
             </nav>
           </div>
         </div>
@@ -90,8 +90,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto text-center md:text-right text-neutral-400 text-xs pb-6 px-6 md:px-8">
-        <Link href="/privacy-policy" className="hover:text-white/80">Privacy Policy</Link>
+      <div className="max-w-6xl mx-auto flex justify-center md:justify-end text-neutral-600 text-xs gap-4 pb-6 px-6 md:px-8">
+        <Link href="/ls-connect/privacy-policy" className="hover:text-white/80">Privacy Policy</Link>
+        <Link href="/ls-connect/terms" className="hover:text-white/80">Terms & Conditions</Link>
       </div>
     </footer>
   );

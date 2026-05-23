@@ -70,8 +70,12 @@ const ContactSection = () => {
       setPhoneKey((prev) => prev + 1);
     } catch (err: unknown) {
       setStatus("error");
+      const message =
+        err instanceof Error ? err.message : "Something went wrong. Please try again.";
       setErrorMsg(
-        err instanceof Error ? err.message : "Something went wrong. Please try again."
+        message.includes("fetch") || message === "Failed to fetch"
+          ? "Could not reach the server. Check your connection or email info@creative3r.com."
+          : message
       );
     }
   };
