@@ -54,7 +54,7 @@ export default function LSConnectTermsPage() {
                     className="pointer-events-none absolute inset-0 opacity-100"
                     style={{
                         background:
-                            'radial-gradient(ellipse 80% 55% at 50% -5%, rgba(37,211,102,0.09) 0%, transparent 70%)',
+                            'radial-gradient(ellipse 80% 55% at 50% -5%, rgba(233,195,105,0.09) 0%, transparent 70%)',
                     }}
                 />
                 <div
@@ -67,17 +67,17 @@ export default function LSConnectTermsPage() {
                 <div className="max-w-5xl mx-auto relative z-10">
                     <Link
                         href="/ls-connect"
-                        className="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-[#25D366] transition-colors mb-8"
+                        className="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-[#E9C369] transition-colors mb-8"
                     >
                         <span aria-hidden="true">←</span> Back to LS Connect
                     </Link>
-                    <p className="text-xs tracking-[0.3em] uppercase text-[#25D366] mb-4">
+                    <p className="text-xs tracking-[0.3em] uppercase text-[#E9C369] mb-4">
                         LS Connect · Legal
                     </p>
                     <h1 className="text-4xl md:text-6xl font-bold leading-[1.05] tracking-tight mb-4">
                         Master Subscription
                         <br />
-                        <span className="text-[#25D366]">Agreement</span>
+                        <span className="text-[#E9C369]">Agreement</span>
                     </h1>
                     <p className="text-white/50 max-w-2xl leading-relaxed mb-8">
                         Terms and conditions governing your purchase of subscriptions to, and use of,
@@ -85,15 +85,15 @@ export default function LSConnectTermsPage() {
                     </p>
                     <div className="flex flex-wrap gap-6 text-sm text-white/60">
                         <span>
-                            <span className="text-[#25D366] mr-1">Platform:</span>
+                            <span className="text-[#E9C369] mr-1">Platform:</span>
                             LS Connect
                         </span>
                         <span>
-                            <span className="text-[#25D366] mr-1">Company:</span>
+                            <span className="text-[#E9C369] mr-1">Company:</span>
                             3R Creative (F.Z.E.)
                         </span>
                         <span>
-                            <span className="text-[#25D366] mr-1">Last Updated:</span>
+                            <span className="text-[#E9C369] mr-1">Last Updated:</span>
                             May 2026
                         </span>
                     </div>
@@ -112,7 +112,7 @@ export default function LSConnectTermsPage() {
                                 <a
                                     key={s.id}
                                     href={`#${s.id}`}
-                                    className="text-left text-sm py-1.5 px-3 rounded transition-all border-l-2 border-transparent text-white/60 hover:text-[#25D366] hover:border-[#25D366]"
+                                    className="text-left text-sm py-1.5 px-3 rounded transition-all border-l-2 border-transparent text-white/60 hover:text-[#E9C369] hover:border-[#E9C369]"
                                 >
                                     {s.label}
                                 </a>
@@ -196,7 +196,7 @@ export default function LSConnectTermsPage() {
                                 processing of information in accordance with our{' '}
                                 <Link
                                     href="/ls-connect/privacy-policy"
-                                    className="text-[#25D366] hover:underline underline-offset-4"
+                                    className="text-[#E9C369] hover:underline underline-offset-4"
                                 >
                                     Privacy Policy
                                 </Link>
@@ -303,12 +303,12 @@ export default function LSConnectTermsPage() {
                         <ul className="mt-3 space-y-2">
                             {whatsappPolicies.map((policy) => (
                                 <li key={policy.href} className="flex gap-3 text-sm leading-relaxed">
-                                    <span className="mt-[0.4rem] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#25D366]" />
+                                    <span className="mt-[0.4rem] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#E9C369]" />
                                     <a
                                         href={policy.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-[#25D366] hover:underline underline-offset-4"
+                                        className="text-[#E9C369] hover:underline underline-offset-4"
                                     >
                                         {policy.label} ↗
                                     </a>
@@ -434,7 +434,7 @@ export default function LSConnectTermsPage() {
                                 If you have any questions about this Agreement, please contact us at{' '}
                                 <a
                                     href="mailto:info@creative3r.com"
-                                    className="text-[#25D366] hover:underline underline-offset-4"
+                                    className="text-[#E9C369] hover:underline underline-offset-4"
                                 >
                                     info@creative3r.com
                                 </a>
@@ -455,7 +455,7 @@ export default function LSConnectTermsPage() {
                     <div className="pt-6 border-t border-white/10">
                         <Link
                             href="/ls-connect"
-                            className="text-sm text-[#25D366] hover:underline underline-offset-4"
+                            className="text-sm text-[#E9C369] hover:underline underline-offset-4"
                         >
                             ← Return to LS Connect
                         </Link>
@@ -468,7 +468,7 @@ export default function LSConnectTermsPage() {
 
 function SectionNumber({ children }: { children: React.ReactNode }) {
     return (
-        <span className="text-[11px] tracking-[0.25em] uppercase text-[#25D366] mb-1 block">
+        <span className="text-[11px] tracking-[0.25em] uppercase text-[#E9C369] mb-1 block">
             Section {children}
         </span>
     );
@@ -501,7 +501,7 @@ function List({ items }: { items: React.ReactNode[] }) {
         <ul className="mt-3 space-y-2">
             {items.map((item, i) => (
                 <li key={i} className="flex gap-3 text-white/70 text-[0.97rem] leading-relaxed">
-                    <span className="mt-[0.4rem] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#25D366]" />
+                    <span className="mt-[0.4rem] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#E9C369]" />
                     <span>{item}</span>
                 </li>
             ))}
@@ -515,9 +515,9 @@ function Divider() {
 
 function ContactCard({ label, children }: { label: string; children: React.ReactNode }) {
     return (
-        <div className="bg-[#25D366]/8 border border-[#25D366]/25 rounded-xl p-5">
+        <div className="bg-[#E9C369]/8 border border-[#E9C369]/25 rounded-xl p-5">
             <p className="text-[10px] tracking-[0.2em] uppercase text-white/40 mb-2">{label}</p>
-            <p className="text-[#25D366] text-sm font-medium">{children}</p>
+            <p className="text-[#E9C369] text-sm font-medium">{children}</p>
         </div>
     );
 }

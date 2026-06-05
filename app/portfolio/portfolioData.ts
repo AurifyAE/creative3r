@@ -95,6 +95,9 @@ export const portfolioItems: PortfolioItem[] = [
     images: [
       '/assets/images/portfolio/blackmamba/blackmamba-portfolio.jpeg',
       '/assets/images/portfolio/blackmamba/blackmamba-portfolio-video.mp4',
+      '/assets/images/portfolio/blackmamba/blackmamba-logo-2.jpeg',
+      '/assets/images/portfolio/blackmamba/blackmamba-logo-1.jpeg',
+      '/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.png',
     ],
     description:
       'Blackmamba Real Estate came to us with a bold vision - to position itself as a premium, broker-free real estate brand offering seamless access to luxury furnished residences and short-stay properties in the UAE.',
@@ -114,7 +117,11 @@ export const portfolioItems: PortfolioItem[] = [
       {
         title: 'About the Logo',
         body: 'The Blackmamba logo embodies luxury, precision, and exclusivity, inspired by the agility and elegance of the black mamba snake. Its sleek, minimalist design and black palette reflect sophistication and authority, symbolizing the brand\'s promise of a direct, frictionless, and elite real estate experience in the UAE.',
-        images: ['/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.png'],
+        images: [
+          '/assets/images/portfolio/blackmamba/blackmamba-logo-2.jpeg',
+          '/assets/images/portfolio/blackmamba/blackmamba-logo-1.jpeg',
+          '/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.png',
+        ],
         type: 'logo',
       },
     ],
@@ -195,6 +202,7 @@ export const portfolioItems: PortfolioItem[] = [
     image: '/assets/images/portfolio/signature/signature-portfolio.jpeg',
     images: [
       '/assets/images/portfolio/signature/signature-portfolio.jpeg',
+      '/assets/images/portfolio/signature/signature-socialmedia.jpeg',
     ],
     description:
       'We built Signature Jewellery\'s Instagram from scratch, refining their brand story, tagline, and colors for a premium, cohesive social presence. Within just 4 months, our strategy helped the account reach 30,000 people, showcasing their craftsmanship, bridal collections, and gemstone pieces. The result is a visually elegant feed that amplifies brand awareness and connects with a luxury audience.',
@@ -357,7 +365,7 @@ export const portfolioItems: PortfolioItem[] = [
     image: '/assets/images/portfolio/mac&ro/mac&ro-homepage.jpeg',
     images: [
       '/assets/images/portfolio/mac&ro/mac&ro-homepage.jpeg',
-      // '/assets/images/portfolio/mac&ro/mac&ro-all-collections.jpeg',
+      '/assets/images/portfolio/mac&ro/mac&ro-socialmedia.jpeg',
     ],
     description:
       'Mac N Ro Capital is a financial services firm specializing in gold trading, metal accounts, and related investment services, catering to clients who seek secure and transparent access to precious metal markets.',

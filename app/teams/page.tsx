@@ -167,7 +167,7 @@ function TeamCard({ member, index, isVisible }: { member: TeamMember; index: num
                     </div>
 
                     {/* Decorative line pattern */}
-                    <div className="flex gap-1 items-center opacity-20 group-hover:opacity-40 transition-opacity duration-500">
+                    {/* <div className="flex gap-1 items-center opacity-20 group-hover:opacity-40 transition-opacity duration-500">
                         {[...Array(5)].map((_, i) => (
                             <div
                                 key={i}
@@ -180,7 +180,7 @@ function TeamCard({ member, index, isVisible }: { member: TeamMember; index: num
                                 }}
                             />
                         ))}
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Corner accent */}
@@ -281,7 +281,7 @@ function CEOCard({ member, isVisible }: { member: TeamMember; isVisible: boolean
                         </div>
 
                         {/* Decorative line pattern */}
-                        <div className="flex gap-1.5 items-center opacity-30 group-hover:opacity-50 transition-opacity duration-500 mt-1">
+                        {/* <div className="flex gap-1.5 items-center opacity-30 group-hover:opacity-50 transition-opacity duration-500 mt-1">
                             {[...Array(7)].map((_, i) => (
                                 <div
                                     key={i}
@@ -294,7 +294,7 @@ function CEOCard({ member, isVisible }: { member: TeamMember; isVisible: boolean
                                     }}
                                 />
                             ))}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -358,7 +358,7 @@ export default function TeamPage() {
                     </p>
 
                     {/* Decorative element */}
-                    <div className="flex justify-center gap-1 mt-8">
+                    {/* <div className="flex justify-center gap-1 mt-8">
                         {[...Array(5)].map((_, i) => (
                             <div
                                 key={i}
@@ -370,7 +370,7 @@ export default function TeamPage() {
                                 }}
                             />
                         ))}
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* CEO Card - Full width featured */}

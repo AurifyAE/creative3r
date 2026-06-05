@@ -383,9 +383,15 @@ export default function OurSuperpowers() {
       const targetShape = superpowers[index];
       const config = SHAPE_CONFIG[targetShape.shape];
 
+      const timelineEl = timelineRef.current;
+      if (!timelineEl) {
+        onComplete?.();
+        return;
+      }
+
       const container = shapeContainers[index];
       const rect = container.getBoundingClientRect();
-      const timelineRect = timelineRef.current!.getBoundingClientRect();
+      const timelineRect = timelineEl.getBoundingClientRect();
 
       const morphingSvg = morphingShapeRef.current?.querySelector('svg');
       if (!morphingSvg) {
@@ -483,7 +489,7 @@ export default function OurSuperpowers() {
     // Initialize position and first shape
     const firstContainer = shapeContainers[0];
     const rect = firstContainer.getBoundingClientRect();
-    const timelineRect = timelineRef.current.getBoundingClientRect();
+    const timelineRect = timelineRef.current!.getBoundingClientRect();
 
     gsap.set(morphingShapeRef.current, {
       x: rect.left - timelineRect.left,

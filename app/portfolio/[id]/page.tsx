@@ -138,26 +138,39 @@ function ImpactSection({ section }: { section: ContentSection }) {
 }
 
 function LogoSection({ section }: { section: ContentSection }) {
+  const images = section.images ?? [];
+  const [featured, ...rest] = images;
+
   return (
     <div className="space-y-6">
       <SectionTitle title={section.title} />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <BodyText section={section} />
-        {section.images && section.images.length > 0 && (
-          <div className="grid grid-cols-1 gap-4">
-            {section.images.map((src, i) => (
-              <div key={i} className="relative overflow-hidden rounded-xl border border-white/5 bg-[#161616]" style={{ aspectRatio: '4/3' }}>
-                <PortfolioMedia
-                src={src}
-                alt={`${section.title ?? 'Logo'} image ${i + 1}`}
-                autoPlay={isPortfolioVideo(src)}
-                loop={isPortfolioVideo(src)}
-              />
-              </div>
-            ))}
+      <BodyText section={section} />
+      {images.length > 0 && (
+        <div className={`grid gap-4 mt-2 items-start ${rest.length > 0 ? 'grid-cols-1 md:grid-cols-[2fr_1fr]' : 'grid-cols-1'}`}>
+          <div className="relative overflow-hidden rounded-xl border border-white/5 bg-[#161616]" style={{ aspectRatio: '4/3' }}>
+            <PortfolioMedia
+              src={featured}
+              alt={`${section.title ?? 'Logo'} — main`}
+              autoPlay={isPortfolioVideo(featured)}
+              loop={isPortfolioVideo(featured)}
+            />
           </div>
-        )}
-      </div>
+          {rest.length > 0 && (
+            <div className="grid gap-4">
+              {rest.map((src, i) => (
+                <div key={i} className="relative overflow-hidden rounded-xl border border-white/5 bg-[#161616]" style={{ aspectRatio: '1/1' }}>
+                  <PortfolioMedia
+                    src={src}
+                    alt={`${section.title ?? 'Logo'} image ${i + 2}`}
+                    autoPlay={isPortfolioVideo(src)}
+                    loop={isPortfolioVideo(src)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
