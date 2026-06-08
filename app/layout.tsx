@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import localFont from 'next/font/local';
 import { Poppins } from "next/font/google";
 import "./globals.css";
@@ -87,6 +88,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${ivyOraDisplay.variable} font-poppins antialiased bg-[#1F1E1E]`}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-LDBT899MEC"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-LDBT899MEC');
+          `}
+        </Script>
         <LenisProvider>
           <SplashProvider>
             <CustomCursor />

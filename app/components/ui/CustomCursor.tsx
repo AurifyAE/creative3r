@@ -17,20 +17,18 @@ export default function CustomCursor() {
     // xPercent/yPercent centre the element on the cursor point
     gsap.set([cursor, follower], { xPercent: -50, yPercent: -50 });
 
-    const moveCursor = (e: MouseEvent) => {
-      gsap.to(cursor, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.1,
-        ease: 'power2.out'
-      });
+    // quickTo reuses a single tween per axis instead of spawning a new one on
+    // every mousemove, which keeps fast pointer movement smooth and jank-free
+    const moveCursorX = gsap.quickTo(cursor, 'x', { duration: 0.1, ease: 'power2.out' });
+    const moveCursorY = gsap.quickTo(cursor, 'y', { duration: 0.1, ease: 'power2.out' });
+    const moveFollowerX = gsap.quickTo(follower, 'x', { duration: 0.5, ease: 'power3.out' });
+    const moveFollowerY = gsap.quickTo(follower, 'y', { duration: 0.5, ease: 'power3.out' });
 
-      gsap.to(follower, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
+    const moveCursor = (e: MouseEvent) => {
+      moveCursorX(e.clientX);
+      moveCursorY(e.clientY);
+      moveFollowerX(e.clientX);
+      moveFollowerY(e.clientY);
     };
 
     window.addEventListener('mousemove', moveCursor);
