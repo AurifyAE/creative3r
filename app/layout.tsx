@@ -5,10 +5,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "./components/providers/LenisProvider";
 import SplashProvider from "./components/providers/SplashProvider";
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
 import CustomCursor from "./components/ui/CustomCursor";
-// import CustomCursor from "./components/ui/CustomCursor";
 
 
 const ivyOraDisplay = localFont({
@@ -102,10 +99,8 @@ export default function RootLayout({
         </Script>
         <LenisProvider>
           <SplashProvider>
-            <CustomCursor />
-            <Navbar />
+            <CustomCursor />       
             {children}
-            <Footer />
           </SplashProvider>
         </LenisProvider>
       </body>

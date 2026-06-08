@@ -21,61 +21,61 @@ const services: Service[] = [
   {
     id: 1, number: '01', title: 'Branding & Identity Development',
     description: 'We uncover your true brand essence, craft iconic designs, and build cohesive identities that resonate. From logo creation to full rebranding, we position you to stand out, stay consistent, and connect deeply with your audience.',
-    image: '/assets/images/portfolio/project-1.webp',
+    image: '/assets/images/services/branding.png',
     details: { title: 'Brand Services', items: [{ serviceName: 'Brand reflection', description: 'Unearthing your true brand essence and story' }, { serviceName: 'Brand Guidelines', description: 'Developing consistent visual and verbal identity' }, { serviceName: 'Logo Designing', description: "Timeless logos that reflect brand's identity" }, { serviceName: 'Brand Positioning', description: 'Defining unique place in the market' }, { serviceName: 'Rebranding', description: 'Revitalizing brand feel without losing its soul' }] }
   },
   {
     id: 2, number: '02', title: 'Storytelling and Content Creation',
     description: "At 3RCreative, we turn your brand's voice into powerful stories that captivate and inspire. Through strategic content creation — from words to visuals — we craft narratives that build emotional connections, spark engagement, and drive lasting impact.",
-    image: '/assets/images/portfolio/project-2.webp',
+    image: '/assets/images/services/story-telling.png',
     details: { title: 'Design Process', items: [{ serviceName: 'Story Identification', description: 'Finding your authentic brand narrative' }, { serviceName: 'Story Distribution', description: 'Story for the right audience through right channels' }, { serviceName: 'Content Refinement', description: 'Message is clear, authentic, and engaging' }, { serviceName: 'Visual Storytelling', description: 'Creating visual contents that resonate emotion' }] }
   },
   {
     id: 3, number: '03', title: 'Digital Marketing',
     description: "We amplify your brand's presence across digital landscapes with smart, data-driven strategies. From social media to SEO, we craft campaigns that spark engagement, build loyalty, and drive real growth.",
-    image: '/assets/images/portfolio/project-3.webp',
+    image: '/assets/images/services/digital-marketing.png',
     details: { title: 'Marketing Services', items: [{ serviceName: 'Search Engine Optimization (SEO)', description: 'Making your brand discoverable online.' }, { serviceName: 'Social Media Marketing', description: 'Connecting through authentic, engaging campaigns' }, { serviceName: 'Pay-Per-Click (PPC) Advertising', description: 'Running targeted ads for measurable results.' }, { serviceName: 'Email Campaigns', description: 'Crafting personalized, impactful email journeys.' }, { serviceName: 'Influencer Marketing', description: "Influencers who align with your brand's story." }] }
   },
   {
     id: 4, number: '04', title: 'Web and Digital Experiences',
     description: 'We design seamless digital experiences that are as intuitive as they are impactful. From engaging websites to interactive platforms, we merge design and technology to create user journeys that connect, convert, and delight.',
-    image: '/assets/images/portfolio/project-4.webp',
+    image: '/assets/images/services/web-experience.png',
     details: { title: 'Development Stack', items: [{ serviceName: 'E-Commerce Solutions', description: 'Seamless shopping experiences for your customers.' }, { serviceName: 'Website Design and Development', description: 'Intuitive and visually appealing websites to reflect brand' }, { serviceName: 'UI/UX Design', description: 'Every digital touchpoint is meaningful and intuitive.' }, { serviceName: 'Mobile App Development', description: "Apps that resonate with your audience's needs." }] }
   },
   {
     id: 5, number: '05', title: 'Performance Marketing and Analytics',
     description: "We combine creativity with precision to drive results. Our performance marketing approach ensures every campaign is optimized for real-world impact—whether it's clicks, conversions, or customer loyalty.",
-    image: '/assets/images/portfolio/project-5.webp',
+    image: '/assets/images/services/performance-marketing-analysis.png',
     details: { title: 'Analytics Services', items: [{ serviceName: 'Conversion Rate Optimization (CRO)', description: 'Maximizing the impact of your website and campaigns.' }, { serviceName: 'A/B Testing', description: 'Refining messaging and visuals for best results.' }, { serviceName: 'Performance Dashboards', description: 'Actionable insights through analytics.' }] }
   },
   {
     id: 6, number: '06', title: 'Creative Services',
     description: 'We craft bold, purpose-driven visuals that speak directly to your audience. Whether through striking design, compelling photography, or cinematic videography, our creative work is rooted in clarity and authenticity.',
-    image: '/assets/images/portfolio/project-6.webp',
+    image: '/assets/images/services/creative-services.png',
     details: { title: 'Creative Work', items: [{ serviceName: 'Graphic Design', description: 'We create visuals that stand out.' }, { serviceName: 'Photography', description: 'Capturing the essence of brand, product, or service.' }, { serviceName: 'Video Production', description: 'Crafting compelling videos that tell your story.' }] }
   },
   {
     id: 7, number: '07', title: 'Public Relations and Outreach',
     description: 'We help you craft the right message and get it in front of the right audience—strategically, authentically, and impactfully.',
-    image: '/assets/images/portfolio/project-7.webp',
+    image: '/assets/images/services/public-relations.png',
     details: { title: 'PR Services', items: [{ serviceName: 'Media Relations', description: 'Amplifying your story through press coverage.' }, { serviceName: 'Event Marketing', description: 'Memorable in-person or virtual brand experiences' }, { serviceName: 'Crisis Management', description: "Protecting brand's reputation during challenging times." }] }
   },
   {
     id: 8, number: '08', title: 'Strategy and Consulting',
     description: "We help brands build strong foundations through insight-driven strategy and expert consulting. Whether you're launching, evolving, or repositioning, we craft strategies that align with your mission.",
-    image: '/assets/images/portfolio/project-8.webp',
+    image: '/assets/images/services/strategy-and-consulting.png',
     details: { title: 'Ad Strategies', items: [{ serviceName: 'Market Research', description: 'Understanding your audience and competitors.' }, { serviceName: 'Brand and Digital Strategy', description: 'Developing actionable roadmaps for brand success.' }, { serviceName: 'Competitor Analysis', description: 'Identifying opportunities to set your brand apart.' }] }
   },
   {
     id: 9, number: '09', title: 'Technology Integration',
     description: 'We help brands harness the power of emerging technology to streamline operations, elevate experiences, and unlock smarter engagement.',
-    image: '/assets/images/portfolio/project-8.webp',
+    image: '/assets/images/services/technology-integration.png',
     details: { title: 'Tech Solutions', items: [{ serviceName: 'CRM and Automation', description: 'Implementing tools to streamline customer relationships.' }, { serviceName: 'AR/VR Experiences', description: 'Crafting immersive experiences for brand.' }, { serviceName: 'AI Solutions', description: 'Leveraging AI for personalization and smarter campaigns' }] }
   },
   {
     id: 10, number: '10', title: 'Sustainability and Social Impact Branding',
     description: "We craft purpose-driven campaigns that authentically communicate your brand's commitment to environmental sustainability and social responsibility.",
-    image: '/assets/images/portfolio/project-1.webp',
+    image: '/assets/images/services/sustainability.png',
     details: { title: 'Sustainable Practices', items: [{ serviceName: 'Sustainable Storytelling', description: "Impactful stories that reflect your brand's sustainable purpose." }, { serviceName: 'Impact Reporting & Transparency', description: 'Engage modern consumers where it matters.' }] }
   }
 ];
@@ -407,7 +407,7 @@ export default function ServicesPage() {
                 </div>
 
                 {/* Header image */}
-                <div className="relative h-48 md:h-64 overflow-hidden">
+                <div className="relative h-64 md:h-80 overflow-hidden">
                   <img src={currentService.image} alt={currentService.title} className="w-full h-full object-cover transition-scale duration-700" />
                   <div className="absolute inset-0 bg-linear-to-t from-[#232323] to-transparent opacity-60" />
                   <div className="absolute top-6 left-6 px-4 py-1 rounded-full text-[10px] md:text-xs font-mono font-bold text-white uppercase tracking-widest z-10"
