@@ -1,4 +1,25 @@
+import type { Metadata } from "next";
 import HeroSection from "../components/home/HeroSection";
+
+export const metadata: Metadata = {
+  title: "Luxury Branding & Digital Strategy for Precious Metals & Jewelry in UAE",
+  description: "Best marketing agency empowering jewelry brands, gold refineries, and precious metal businesses in UAE, also Digital marketing Agency in UAE for your business.",
+  keywords: [
+    "Precious metals creative agency",
+    "Jewelry brand strategy",
+    "Gold refinery branding",
+    "Luxury jewelry marketing",
+    "Gold trading digital agency",
+    "Luxury branding for jewelry",
+    "Strategic brand design",
+    "High-conversion digital marketing",
+    "Jewelry industry brand identity",
+    "Creative strategy for refineries",
+    "Creative agency UAE",
+    "Luxury branding Middle East",
+    "Jewelry marketing Dubai",
+  ],
+};
 import WavyLine from "../components/ui/WavyLine";
 import PortfolioSection from "../components/home/PortfolioSection";
 import TeamSection from "../components/home/TeamSection";

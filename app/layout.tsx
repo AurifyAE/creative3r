@@ -73,8 +73,23 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "3R Creative",
-  description: "3R Creative is a creative agency that helps businesses grow their online presence.",
+  title: "Luxury Branding & Digital Strategy for Precious Metals & Jewelry in UAE",
+  description: "Best marketing agency empowering jewelry brands, gold refineries, and precious metal businesses in UAE, also Digital marketing Agency in UAE for your business.",
+  keywords: [
+    "Precious metals creative agency",
+    "Jewelry brand strategy",
+    "Gold refinery branding",
+    "Luxury jewelry marketing",
+    "Gold trading digital agency",
+    "Luxury branding for jewelry",
+    "Strategic brand design",
+    "High-conversion digital marketing",
+    "Jewelry industry brand identity",
+    "Creative strategy for refineries",
+    "Creative agency UAE",
+    "Luxury branding Middle East",
+    "Jewelry marketing Dubai",
+  ],
 };
 
 export default function RootLayout({

@@ -144,7 +144,7 @@ const HeroSection = () => {
         <div className="absolute top-0 right-0 w-full lg:w-2/3 md:left-1/2 md:-translate-x-1/2 z-40">
           <div className="relative w-full overflow-hidden">
             <video
-              src="/assets/videos/home/hero-video.mp4"
+              src="/assets/videos/home/hero-video1.mp4"
               autoPlay
               muted
               loop
@@ -156,8 +156,8 @@ const HeroSection = () => {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background: `
-                  linear-gradient(to bottom, rgba(31, 30, 30, 1) 0%, rgba(31, 30, 30, 0) 15%, rgba(31, 30, 30, 0) 85%, rgba(31, 30, 30, 1) 100%),
-                  linear-gradient(to right, rgba(31, 30, 30, 1) 0%, rgba(31, 30, 30, 0) 15%, rgba(31, 30, 30, 0) 85%, rgba(31, 30, 30, 1) 100%)
+                  linear-gradient(#201e1e 0%, rgba(31, 30, 30, 0) 15%, rgba(31, 30, 30, 0) 85%, rgb(31, 30, 30) 100%),
+                  linear-gradient(to right, #201e1e 0%, rgba(31, 30, 30, 0) 30%, rgba(31, 30, 30, 0) 7%, #201e1e 100%)
                 `
               }}
             />
