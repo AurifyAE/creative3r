@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Phone, Mail, Globe, Share2, Download, MessageCircle } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
+
 
 const PROFILE = {
     name: 'Sabah Shabnam',
@@ -15,7 +17,7 @@ const PROFILE = {
 
 const LINKS: { label: string; href: string; icon: React.ComponentType<{ className?: string }> | string }[] = [
     { label: 'Call', href: PROFILE.phoneHref, icon: Phone },
-    { label: 'WhatsApp', href: PROFILE.whatsappHref, icon: MessageCircle },
+    { label: 'WhatsApp', href: PROFILE.whatsappHref, icon: FaWhatsapp },
     { label: 'E-mail', href: `mailto:${PROFILE.email}`, icon: Mail },
     { label: 'Instagram', href: 'https://www.instagram.com/3r_creative/', icon: '/assets/icon/instagramWhiteFill.svg' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/3rcreative/', icon: '/assets/icon/linkedinWhiteFill.svg' },
@@ -90,7 +92,7 @@ export default function SabahProfilePage() {
                             <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-[#F9844A] to-[#F9C74F] opacity-30 blur-lg" />
                             <div className="relative w-[140px] h-[140px] rounded-full bg-gradient-to-br from-[#F9844A] to-[#F9C74F] p-[3px]">
                                 <div className="relative h-full w-full overflow-hidden rounded-full bg-[#1F1E1E]">
-                                    <Image src="/assets/images/profiles/sabah.png" alt={PROFILE.name} fill sizes="140px" className="object-cover" />
+                                    <Image src="/assets/images/profiles/sabaah.png" alt={PROFILE.name} fill sizes="100px" className="object-cover" />
                                 </div>
                             </div>
                         </div>

@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Phone, Mail, Globe, Share2, Download, MessageCircle } from 'lucide-react';
+import { Phone, Mail, Globe, Share2, Download } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const PROFILE = {
     name: 'Muneeb Cholayil',
@@ -11,12 +12,12 @@ const PROFILE = {
     phoneHref: 'tel:+971567001568',
     whatsappHref: 'https://wa.me/971567001568',
     email: 'muneeb@creative3r.com',
-    avatar: '/assets/images/profiles/muneeb.png',
+    avatar: '/assets/images/profiles/muneeeb.png',
 };
 
 const LINKS: { label: string; href: string; icon: React.ComponentType<{ className?: string }> | string }[] = [
     { label: 'Call', href: PROFILE.phoneHref, icon: Phone },
-    { label: 'WhatsApp', href: PROFILE.whatsappHref, icon: MessageCircle },
+    { label: 'WhatsApp', href: PROFILE.whatsappHref, icon: FaWhatsapp },
     { label: 'E-mail', href: `mailto:${PROFILE.email}`, icon: Mail },
     { label: 'Instagram', href: 'https://www.instagram.com/3r_creative/', icon: '/assets/icon/instagramWhiteFill.svg' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/3rcreative/', icon: '/assets/icon/linkedinWhiteFill.svg' },
