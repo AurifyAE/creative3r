@@ -12,7 +12,7 @@ const PROFILE = {
     phoneHref: 'tel:+971508293033',
     whatsappHref: 'https://wa.me/971508293033',
     email: 'akhil@creative3r.com',
-    avatar: '/assets/images/profiles/akhil.png',
+    avatar: '/assets/images/profiles/aakhil.png',
     initial: 'A',
 };
 
