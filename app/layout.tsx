@@ -4,7 +4,6 @@ import localFont from 'next/font/local';
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "./components/providers/LenisProvider";
-import SplashProvider from "./components/providers/SplashProvider";
 import CustomCursor from "./components/ui/CustomCursor";
 
 
@@ -113,10 +112,8 @@ export default function RootLayout({
           `}
         </Script>
         <LenisProvider>
-          <SplashProvider>
-            <CustomCursor />       
-            {children}
-          </SplashProvider>
+          <CustomCursor />       
+          {children}
         </LenisProvider>
       </body>
     </html>

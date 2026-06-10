@@ -12,7 +12,7 @@ const PROFILE = {
     phoneHref: 'tel:+971567001568',
     whatsappHref: 'https://wa.me/971567001568',
     email: 'muneeb@creative3r.com',
-    avatar: '/assets/images/profiles/muneeeb.png',
+    avatar: '/assets/images/profiles/muneeb.png',
 };
 
 const LINKS: { label: string; href: string; icon: React.ComponentType<{ className?: string }> | string }[] = [
@@ -92,7 +92,7 @@ export default function MuneebProfilePage() {
                             <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-[#F9844A] to-[#F9C74F] opacity-30 blur-lg" />
                             <div className="relative w-[140px] h-[140px] rounded-full bg-gradient-to-br from-[#F9844A] to-[#F9C74F] p-[3px]">
                                 <div className="relative h-full w-full overflow-hidden rounded-full bg-[#1F1E1E]">
-                                    <Image src={PROFILE.avatar} alt={PROFILE.name} fill sizes="140px" className="object-cover" />
+                                    <Image src={PROFILE.avatar} alt={PROFILE.name} fill sizes="140px" loading='eager' className="object-cover" />
                                 </div>
                             </div>
                         </div>
