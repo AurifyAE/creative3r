@@ -51,16 +51,20 @@ export default function LubnaProfilePage() {
     };
 
     const handleSaveContact = () => {
+        const [firstName, ...rest] = PROFILE.name.split(' ');
+        const lastName = rest.join(' ');
+
         const vcard = [
             'BEGIN:VCARD',
             'VERSION:3.0',
+            `N:${lastName};${firstName};;;`,
             `FN:${PROFILE.name}`,
             `TITLE:${PROFILE.title}`,
             `TEL;TYPE=CELL:${PROFILE.phoneDisplay.replace(/\s+/g, '')}`,
             `EMAIL:${PROFILE.email}`,
             'ORG:3R Creative',
             'END:VCARD',
-        ].join('\n');
+        ].join('\r\n');
 
         const blob = new Blob([vcard], { type: 'text/vcard' });
         const link = document.createElement('a');
