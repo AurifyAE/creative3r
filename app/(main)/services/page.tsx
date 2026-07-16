@@ -1,5 +1,5 @@
-import ServicesPage from '@/app/components/services/ServiceSection';
 import type { Metadata } from 'next';
+import ServicesIndex from './ServicesIndex';
 
 export const metadata: Metadata = {
   title: "Digital Marketing | Web Development | Branding | Consultancy Agency in UAE",
@@ -21,5 +21,5 @@ export const metadata: Metadata = {
 };
 
 export default function Services() {
-  return <ServicesPage />;
+  return <ServicesIndex />;
 }

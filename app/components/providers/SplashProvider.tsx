@@ -6,14 +6,12 @@ import SplashScreen from "../ui/SplashScreen";
 export default function SplashProvider({ children }: { children: React.ReactNode }) {
     const [showSplash, setShowSplash] = useState(false);
     const [hidden, setHidden] = useState(true);
-    const [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
         const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
         if (!hasSeenSplash) {
             setShowSplash(true);
             setHidden(false);
         }
-        setIsLoaded(true);
     }, []);
 
     // Prevent body scroll during splash
@@ -34,8 +32,6 @@ export default function SplashProvider({ children }: { children: React.ReactNode
         // Small delay before unmounting so fade-out finishes
         setTimeout(() => setHidden(true), 700);
     };
-
-    if (!isLoaded) return null;
 
     return (
         <>

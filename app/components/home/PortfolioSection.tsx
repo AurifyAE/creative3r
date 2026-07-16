@@ -5,7 +5,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
 import { useHoverSound } from '@/app/hooks/useHoverSound';
-import { useRouter } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +24,7 @@ const portfolioItems: PortfolioItem[] = [
     title: 'Blue Diamond',
     image: '/assets/images/portfolio/bluediamond/blue-diamond-homepage.jpeg',
     description: 'A stunning visual experience combining modern design with innovative functionality.',
-    link: 'portfolio/1',
+    link: '/portfolio/1',
     category: '',
     year: '2024'
   },
@@ -95,15 +94,16 @@ function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
 
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!ref.current) return;
+    // Only left-button drags; middle/right clicks keep native link behavior
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     isDragging.current = true;
     didDrag.current = false;
     startX.current = e.clientX;
     startY.current = e.clientY;
     startTime.current = Date.now();
     scrollLeft.current = ref.current.scrollLeft;
-    ref.current.setPointerCapture(e.pointerId);
-    ref.current.style.cursor = 'grabbing';
-    ref.current.style.userSelect = 'none';
+    // Pointer capture happens lazily in onPointerMove once a real drag starts —
+    // capturing here would retarget the click away from the card links.
   }, [ref]);
 
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
@@ -111,16 +111,23 @@ function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
     const dx = e.clientX - startX.current;
     const dy = e.clientY - startY.current;
     // Only treat as horizontal drag (ignore vertical scroll attempts)
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 4) {
+    if (!didDrag.current && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 4) {
       didDrag.current = true;
+      ref.current.setPointerCapture(e.pointerId);
+      ref.current.style.cursor = 'grabbing';
+      ref.current.style.userSelect = 'none';
     }
-    ref.current.scrollLeft = scrollLeft.current - dx;
+    if (didDrag.current) {
+      ref.current.scrollLeft = scrollLeft.current - dx;
+    }
   }, [ref]);
 
   const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     isDragging.current = false;
-    ref.current.releasePointerCapture(e.pointerId);
+    if (ref.current.hasPointerCapture(e.pointerId)) {
+      ref.current.releasePointerCapture(e.pointerId);
+    }
     ref.current.style.cursor = 'grab';
     ref.current.style.removeProperty('user-select');
   }, [ref]);
@@ -138,21 +145,19 @@ interface CardProps {
 }
 
 const PortfolioCard = ({ item, rowKey, selectedId, onSelect, didDrag }: CardProps) => {
-  const router = useRouter();
   const id = `${rowKey}-${item.id}`;
   const isSelected = selectedId === id;
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    // Only handle left-button / primary touch
-    if (e.button !== 0 && e.pointerType === 'mouse') return;
-    // If the parent drag hook moved more than threshold, ignore
-    if (didDrag.current) return;
-    router.push(item.link);
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // If the parent drag hook moved more than threshold, don't navigate
+    if (didDrag.current) e.preventDefault();
   };
 
   return (
-    <div
-    onPointerUp={handlePointerUp}
+    <Link
+      href={item.link}
+      onClick={handleClick}
+      draggable={false}
       className={`
         group relative aspect-4/4 w-64 md:w-72 lg:w-80 shrink-0 overflow-hidden rounded-3xl shadow-lg
         transition-all duration-300 cursor-pointer
@@ -167,6 +172,7 @@ const PortfolioCard = ({ item, rowKey, selectedId, onSelect, didDrag }: CardProp
         <img
           src={item.image}
           alt={item.title}
+          draggable={false}
           className={`object-cover w-full h-full transition-all duration-500
             ${isSelected ? 'grayscale-0 scale-105' : 'grayscale-75 group-hover:grayscale-0'}`}
         />
@@ -198,7 +204,7 @@ const PortfolioCard = ({ item, rowKey, selectedId, onSelect, didDrag }: CardProp
           Selected
         </div>
       )}
-    </div>
+    </Link>
   );
 };
 

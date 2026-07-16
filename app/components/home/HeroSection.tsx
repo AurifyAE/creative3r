@@ -9,12 +9,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 // [r, g, b] values for the 3D carousel cards
 const services = [
-  { title1: 'BRANDING', title2: '', rgb: '231, 111, 81', icon: '✦' },
-  { title1: 'PHOTO', title2: 'GRAPHY', rgb: '41, 157, 143', icon: '◈' },
-  { title1: 'SOCIAL', title2: 'MEDIA', rgb: '233, 195, 105', icon: '⬡' },
-  { title1: 'CONTENT', title2: 'CREATION', rgb: '244, 162, 97', icon: '❋' },
-  { title1: 'VIDEO', title2: 'GRAPHY', rgb: '41, 157, 143', icon: '▶' },
-  { title1: 'WEB', title2: 'DESIGN', rgb: '231, 111, 81', icon: '⬖' },
+  { title1: 'BRANDING', title2: '', rgb: '231, 111, 81', icon: '✦', href: '/services/branding-identity' },
+  { title1: 'PHOTO', title2: 'GRAPHY', rgb: '41, 157, 143', icon: '◈', href: '/services/creative-services' },
+  { title1: 'SOCIAL', title2: 'MEDIA', rgb: '233, 195, 105', icon: '⬡', href: '/services/digital-marketing' },
+  { title1: 'CONTENT', title2: 'CREATION', rgb: '244, 162, 97', icon: '❋', href: '/services/storytelling-content-creation' },
+  { title1: 'VIDEO', title2: 'GRAPHY', rgb: '41, 157, 143', icon: '▶', href: '/services/creative-services' },
+  { title1: 'WEB', title2: 'DESIGN', rgb: '231, 111, 81', icon: '⬖', href: '/services/web-digital-experiences' },
 ];
 
 const HeroSection = () => {
@@ -218,6 +218,7 @@ const HeroSection = () => {
             transform: translate(-50%, -50%);
             transform-style: preserve-3d;
             animation: c3dSpin 20s linear infinite;
+            will-change: transform;
           }
           /* ≥ 475px  (larger phones) */
           @media (min-width: 475px) {
@@ -275,9 +276,14 @@ const HeroSection = () => {
             from { transform: translate(-50%,-50%) perspective(var(--persp)) rotateX(var(--rx)) rotateY(0deg); }
             to   { transform: translate(-50%,-50%) perspective(var(--persp)) rotateX(var(--rx)) rotateY(360deg); }
           }
+          /* Pause the spin while hovering so cards can be clicked */
+          .carousel-scene:hover {
+            animation-play-state: paused;
+          }
           .carousel-face {
             position: absolute;
             inset: 0;
+            display: block;
             border-radius: 16px;
             overflow: hidden;
             transform: rotateY(calc(360deg / var(--qty) * var(--i))) translateZ(var(--tz));
@@ -285,8 +291,12 @@ const HeroSection = () => {
             -webkit-backface-visibility: hidden;
             border: 1.5px solid rgba(var(--c), 0.55);
             box-shadow: 0 0 28px 4px rgba(var(--c), 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            cursor: pointer;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+          }
+          .carousel-face:hover {
+            border-color: rgba(var(--c), 0.95);
+            box-shadow: 0 0 40px 8px rgba(var(--c), 0.45), inset 0 1px 0 rgba(255,255,255,0.25);
           }
           @media (min-width: 768px) {
             .carousel-face { border-radius: 20px; }
@@ -294,7 +304,10 @@ const HeroSection = () => {
           .carousel-face-bg {
             position: absolute;
             inset: 0;
-            background: linear-gradient(
+            /* Dark tint replaces the old backdrop-filter blur — backdrop
+               filters force low-res rasterization on 3D-transformed layers */
+            background-color: rgba(31, 30, 30, 0.55);
+            background-image: linear-gradient(
               135deg,
               rgba(var(--c), 0.12) 0%,
               rgba(var(--c), 0.42) 60%,
@@ -323,6 +336,24 @@ const HeroSection = () => {
             );
             pointer-events: none;
           }
+          /* Content is laid out at 2x size and scaled down by half so the
+             browser rasterizes the text at double resolution — keeps it sharp
+             when perspective enlarges the front-facing card. */
+          .carousel-face-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            width: 200%;
+            height: 200%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.5) translateZ(0);
+            transform-origin: 0 0;
+            will-change: transform;
+          }
         `}</style>
 
         <div className="absolute bottom-16 md:bottom-24 lg:bottom-40 xl:bottom-64 2xl:bottom-80 z-50 w-full h-60 sm:h-72 md:h-80 lg:h-96">
@@ -332,8 +363,11 @@ const HeroSection = () => {
               style={{ ['--qty' as string]: services.length * 2 } as React.CSSProperties}
             >
               {[...services, ...services].map((service, index) => (
-                <div
+                <Link
                   key={index}
+                  href={service.href}
+                  onMouseEnter={playHoverSound}
+                  aria-label={`${service.title1}${service.title2 ? ` ${service.title2}` : ''} service`}
                   className="carousel-face"
                   style={{
                     ['--i' as string]: index,
@@ -344,21 +378,22 @@ const HeroSection = () => {
                   <div className="carousel-face-bg" />
                   <div className="carousel-face-shine" />
                   <div className="carousel-face-curve" />
-                  <div className="relative z-10 flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-2 sm:px-3 w-full h-full">
+                  {/* Sizes below are 2x the visual size — the container scales them back down */}
+                  <div className="carousel-face-content gap-1 sm:gap-2 px-4 sm:px-6">
                     <span
-                      className="text-lg sm:text-xl md:text-2xl xl:text-3xl leading-none mb-0.5 sm:mb-1"
-                      style={{ color: `rgba(${service.rgb}, 0.9)`, filter: 'drop-shadow(0 0 6px currentColor)' }}
+                      className="text-4xl sm:text-[40px] md:text-5xl xl:text-6xl leading-none mb-1 sm:mb-2"
+                      style={{ color: `rgba(${service.rgb}, 0.9)`, filter: 'drop-shadow(0 0 12px currentColor)' }}
                     >
                       {service.icon}
                     </span>
                     <span
-                      className="text-white font-bold text-[10px] sm:text-xs xl:text-sm tracking-[0.1em] sm:tracking-[0.12em] uppercase text-center leading-tight"
-                      style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+                      className="text-white font-bold text-xl sm:text-2xl xl:text-[28px] tracking-[0.1em] sm:tracking-[0.12em] uppercase text-center leading-tight"
+                      style={{ textShadow: '0 2px 16px rgba(0,0,0,0.6)' }}
                     >
                       {service.title1}{service.title2 && <><br />{service.title2}</>}
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
