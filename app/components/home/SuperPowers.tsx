@@ -3,10 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
 import ShapeSVG from '../ui/ShapeSVG';
 
-gsap.registerPlugin(ScrollTrigger, MorphSVGPlugin);
+gsap.registerPlugin(ScrollTrigger);
 
 type ShapeType =
   | 'circle'
@@ -155,6 +154,7 @@ export default function OurSuperpowers() {
   const currentMobileIndexRef = useRef(0);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const [morphReady, setMorphReady] = useState(false);
 
   // Detect mobile on mount and resize
   useEffect(() => {
@@ -168,9 +168,23 @@ export default function OurSuperpowers() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // MorphSVGPlugin is only needed once this section scrolls into play, so it is
+  // pulled in as its own chunk instead of riding along in the initial bundle.
+  useEffect(() => {
+    let cancelled = false;
+    void import('gsap/MorphSVGPlugin').then(({ MorphSVGPlugin }) => {
+      if (cancelled) return;
+      gsap.registerPlugin(MorphSVGPlugin);
+      setMorphReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // Mobile ScrollTrigger Animation (shape only; content driven by React state)
   useEffect(() => {
-    if (!isMobile || !mobileMorphingShapeRef.current || !mobileTimelineRef.current) return;
+    if (!isMobile || !morphReady || !mobileMorphingShapeRef.current || !mobileTimelineRef.current) return;
 
     const mobileTriggers = document.querySelectorAll('.mobile-trigger-item');
     if (mobileTriggers.length === 0) return;
@@ -301,15 +315,33 @@ export default function OurSuperpowers() {
         mobileTlRef.current = null;
       }
     };
-  }, [isMobile]);
+  }, [isMobile, morphReady]);
 
   useEffect(() => {
     // Desktop GSAP animations
-    if (isMobile || !morphingShapeRef.current || !timelineRef.current) return;
+    if (isMobile || !morphReady || !morphingShapeRef.current || !timelineRef.current) return;
 
     const shapeContainers = document.querySelectorAll('.shape-container');
 
     if (shapeContainers.length === 0) return;
+
+    const staticShapes = document.querySelectorAll('.static-shape');
+
+    // Shape offsets are pure layout, so they are measured up front and on
+    // resize. Reading getBoundingClientRect() inside the scroll callbacks
+    // forced a synchronous layout on every shape transition.
+    let offsets: { x: number; y: number }[] = [];
+    const measure = () => {
+      const timelineEl = timelineRef.current;
+      if (!timelineEl) return;
+      const timelineRect = timelineEl.getBoundingClientRect();
+      offsets = Array.from(shapeContainers).map((container) => {
+        const rect = container.getBoundingClientRect();
+        return { x: rect.left - timelineRect.left, y: rect.top - timelineRect.top };
+      });
+    };
+    measure();
+    window.addEventListener('resize', measure);
 
     // Store only THIS component's triggers
     const myTriggers: ReturnType<typeof ScrollTrigger.create>[] = [];
@@ -384,14 +416,11 @@ export default function OurSuperpowers() {
       const config = SHAPE_CONFIG[targetShape.shape];
 
       const timelineEl = timelineRef.current;
-      if (!timelineEl) {
+      const offset = offsets[index];
+      if (!timelineEl || !offset) {
         onComplete?.();
         return;
       }
-
-      const container = shapeContainers[index];
-      const rect = container.getBoundingClientRect();
-      const timelineRect = timelineEl.getBoundingClientRect();
 
       const morphingSvg = morphingShapeRef.current?.querySelector('svg');
       if (!morphingSvg) {
@@ -412,8 +441,8 @@ export default function OurSuperpowers() {
 
       // 1. Move to new position (synchronized with morph)
       masterTl.to(morphingShapeRef.current, {
-        x: rect.left - timelineRect.left,
-        y: rect.top - timelineRect.top,
+        x: offset.x,
+        y: offset.y,
         duration: 0.6,
         ease: 'power2.inOut'
       }, 0);
@@ -474,7 +503,7 @@ export default function OurSuperpowers() {
       }
 
       // 7. Update static shapes visibility
-      document.querySelectorAll('.static-shape').forEach((shape, i) => {
+      staticShapes.forEach((shape, i) => {
         gsap.to(shape, {
           opacity: i === index ? 0 : 1,
           duration: 0.2,
@@ -487,14 +516,9 @@ export default function OurSuperpowers() {
     }
 
     // Initialize position and first shape
-    const firstContainer = shapeContainers[0];
-    const rect = firstContainer.getBoundingClientRect();
-    const timelineRect = timelineRef.current!.getBoundingClientRect();
-
-    gsap.set(morphingShapeRef.current, {
-      x: rect.left - timelineRect.left,
-      y: rect.top - timelineRect.top
-    });
+    if (offsets[0]) {
+      gsap.set(morphingShapeRef.current, { x: offsets[0].x, y: offsets[0].y });
+    }
 
     // Initialize first shape without animation
     const firstShape = superpowers[0];
@@ -511,16 +535,17 @@ export default function OurSuperpowers() {
     }
 
     // Hide first static shape
-    gsap.set(document.querySelector('.static-shape'), { opacity: 0 });
+    gsap.set(staticShapes[0] ?? null, { opacity: 0 });
 
     return () => {
+      window.removeEventListener('resize', measure);
       // Kill only this component's triggers — not global ones from other sections
       myTriggers.forEach(trigger => trigger.kill());
       if (activeTlRef.current) {
         activeTlRef.current.kill();
       }
     };
-  }, [isMobile]);
+  }, [isMobile, morphReady]);
 
   const firstShape = superpowers[0];
   const firstConfig = SHAPE_CONFIG[firstShape.shape];

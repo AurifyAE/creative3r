@@ -97,7 +97,7 @@ export const portfolioItems: PortfolioItem[] = [
       '/assets/images/portfolio/blackmamba/blackmamba-portfolio-video.mp4',
       '/assets/images/portfolio/blackmamba/blackmamba-logo-2.jpeg',
       '/assets/images/portfolio/blackmamba/blackmamba-logo-1.jpeg',
-      '/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.png',
+      '/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.webp',
     ],
     description:
       'Blackmamba Real Estate came to us with a bold vision - to position itself as a premium, broker-free real estate brand offering seamless access to luxury furnished residences and short-stay properties in the UAE.',
@@ -120,7 +120,7 @@ export const portfolioItems: PortfolioItem[] = [
         images: [
           '/assets/images/portfolio/blackmamba/blackmamba-logo-2.jpeg',
           '/assets/images/portfolio/blackmamba/blackmamba-logo-1.jpeg',
-          '/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.png',
+          '/assets/images/portfolio/blackmamba/blackmamba-logo-mockup.webp',
         ],
         type: 'logo',
       },

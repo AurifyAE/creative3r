@@ -73,7 +73,7 @@ export const services: ServiceItem[] = [
     teaser: 'Iconic identities that help you stand out, stay consistent, and connect deeply.',
     description:
       'We uncover your true brand essence, craft iconic designs, and build cohesive identities that resonate. From logo creation to full rebranding, we position you to stand out, stay consistent, and connect deeply with your audience.',
-    image: '/assets/images/services/branding.png',
+    image: '/assets/images/services/branding.webp',
     color: '#299D8F',
     chips: ['Logo Design', 'Brand Guidelines', 'Rebranding'],
     offeringsTitle: 'Brand Services',
@@ -114,7 +114,7 @@ export const services: ServiceItem[] = [
     teaser: 'Powerful narratives that build emotional connections and lasting impact.',
     description:
       "At 3RCreative, we turn your brand's voice into powerful stories that captivate and inspire. Through strategic content creation — from words to visuals — we craft narratives that build emotional connections, spark engagement, and drive lasting impact.",
-    image: '/assets/images/services/story-telling.png',
+    image: '/assets/images/services/story-telling.webp',
     color: '#E9C369',
     chips: ['Brand Narrative', 'Content Strategy', 'Visual Storytelling'],
     offeringsTitle: 'Design Process',
@@ -153,7 +153,7 @@ export const services: ServiceItem[] = [
     teaser: 'Data-driven campaigns that spark engagement, build loyalty, and drive growth.',
     description:
       "We amplify your brand's presence across digital landscapes with smart, data-driven strategies. From social media to SEO, we craft campaigns that spark engagement, build loyalty, and drive real growth.",
-    image: '/assets/images/services/digital-marketing.png',
+    image: '/assets/images/services/digital-marketing.webp',
     color: '#F4A261',
     chips: ['SEO', 'Social Media', 'PPC'],
     offeringsTitle: 'Marketing Services',
@@ -193,7 +193,7 @@ export const services: ServiceItem[] = [
     teaser: 'Seamless digital experiences that connect, convert, and delight.',
     description:
       'We design seamless digital experiences that are as intuitive as they are impactful. From engaging websites to interactive platforms, we merge design and technology to create user journeys that connect, convert, and delight.',
-    image: '/assets/images/services/web-experience.png',
+    image: '/assets/images/services/web-experience.webp',
     color: '#299D8F',
     chips: ['Web Development', 'UI/UX Design', 'E-Commerce'],
     offeringsTitle: 'Development Stack',
@@ -232,7 +232,7 @@ export const services: ServiceItem[] = [
     teaser: 'Creativity with precision — every campaign optimized for real-world impact.',
     description:
       "We combine creativity with precision to drive results. Our performance marketing approach ensures every campaign is optimized for real-world impact—whether it's clicks, conversions, or customer loyalty.",
-    image: '/assets/images/services/performance-marketing-analysis.png',
+    image: '/assets/images/services/performance-marketing-analysis.webp',
     color: '#E76F51',
     chips: ['CRO', 'A/B Testing', 'Dashboards'],
     offeringsTitle: 'Analytics Services',
@@ -269,7 +269,7 @@ export const services: ServiceItem[] = [
     teaser: 'Bold, purpose-driven visuals rooted in clarity and authenticity.',
     description:
       'We craft bold, purpose-driven visuals that speak directly to your audience. Whether through striking design, compelling photography, or cinematic videography, our creative work is rooted in clarity and authenticity.',
-    image: '/assets/images/services/creative-services.png',
+    image: '/assets/images/services/creative-services.webp',
     color: '#299D8F',
     chips: ['Graphic Design', 'Photography', 'Video Production'],
     offeringsTitle: 'Creative Work',
@@ -306,7 +306,7 @@ export const services: ServiceItem[] = [
     teaser: 'The right message, in front of the right audience — strategically and authentically.',
     description:
       'We help you craft the right message and get it in front of the right audience—strategically, authentically, and impactfully.',
-    image: '/assets/images/services/public-relations.png',
+    image: '/assets/images/services/public-relations.webp',
     color: '#E9C369',
     chips: ['Media Relations', 'Event Marketing', 'Crisis Management'],
     offeringsTitle: 'PR Services',
@@ -343,7 +343,7 @@ export const services: ServiceItem[] = [
     teaser: 'Insight-driven strategy and expert consulting for strong brand foundations.',
     description:
       "We help brands build strong foundations through insight-driven strategy and expert consulting. Whether you're launching, evolving, or repositioning, we craft strategies that align with your mission.",
-    image: '/assets/images/services/strategy-and-consulting.png',
+    image: '/assets/images/services/strategy-and-consulting.webp',
     color: '#F4A261',
     chips: ['Market Research', 'Brand Strategy', 'Competitor Analysis'],
     offeringsTitle: 'Ad Strategies',
@@ -380,7 +380,7 @@ export const services: ServiceItem[] = [
     teaser: 'Emerging technology that streamlines operations and unlocks smarter engagement.',
     description:
       'We help brands harness the power of emerging technology to streamline operations, elevate experiences, and unlock smarter engagement.',
-    image: '/assets/images/services/technology-integration.png',
+    image: '/assets/images/services/technology-integration.webp',
     color: '#299D8F',
     chips: ['CRM & Automation', 'AI Solutions', 'AR/VR'],
     offeringsTitle: 'Tech Solutions',
@@ -417,7 +417,7 @@ export const services: ServiceItem[] = [
     teaser: "Purpose-driven campaigns that communicate your brand's commitment authentically.",
     description:
       "We craft purpose-driven campaigns that authentically communicate your brand's commitment to environmental sustainability and social responsibility.",
-    image: '/assets/images/services/sustainability.png',
+    image: '/assets/images/services/sustainability.webp',
     color: '#E76F51',
     chips: ['Sustainable Storytelling', 'Impact Reporting'],
     offeringsTitle: 'Sustainable Practices',

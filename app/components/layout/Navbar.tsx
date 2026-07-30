@@ -29,11 +29,12 @@ const Navbar = () => {
     const [selected, setSelected] = useState<NavId | null>('home');
     const [hidden, setHidden] = useState(false);
     const [hasBg, setHasBg] = useState(false);
-    const [lastScrollY, setLastScrollY] = useState(0);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
     const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
     const servicesCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const lastScrollY = useRef(0);
+    const scrollTicking = useRef(false);
     const playHoverSound = useHoverSound();
 
     const openServices = () => {
@@ -63,12 +64,16 @@ const Navbar = () => {
     };
 
     useEffect(() => {
-        const handleScroll = () => {
+        // Scroll position lives in a ref and is read inside rAF: keeping it in
+        // state re-rendered the whole nav (and re-subscribed this listener) on
+        // every single scroll event, which under Lenis means ~60x per second.
+        const update = () => {
+            scrollTicking.current = false;
             const currentScrollY = window.scrollY;
 
             setHasBg(currentScrollY > 20);
 
-            if (currentScrollY > lastScrollY && currentScrollY > 80) {
+            if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
                 setHidden(true);
                 setMobileMenuOpen(false); // Close menu when hiding navbar
                 setServicesOpen(false);
@@ -76,12 +81,18 @@ const Navbar = () => {
                 setHidden(false);
             }
 
-            setLastScrollY(currentScrollY);
+            lastScrollY.current = currentScrollY;
+        };
+
+        const handleScroll = () => {
+            if (scrollTicking.current) return;
+            scrollTicking.current = true;
+            requestAnimationFrame(update);
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [lastScrollY]);
+    }, []);
 
     // Prevent body scroll when mobile menu is open
     useEffect(() => {

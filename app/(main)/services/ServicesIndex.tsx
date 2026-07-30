@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
@@ -132,11 +133,13 @@ export default function ServicesIndex() {
         >
           <div className="relative w-72 h-48 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
             {services.map((service, index) => (
-              <img
+              <Image
                 key={service.slug}
                 src={service.image}
                 alt=""
-                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                fill
+                sizes="288px"
+                className="object-cover transition-opacity duration-300"
                 style={{ opacity: activeIndex === index ? 1 : 0 }}
               />
             ))}

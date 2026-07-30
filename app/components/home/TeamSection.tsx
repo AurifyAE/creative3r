@@ -48,7 +48,9 @@ const TeamSection = () => {
             strategies.
           </p>
 
-          <Link href="/teams">
+          {/* inline-block so the anchor's own box matches the button it wraps —
+              an inline <a> collapses to a thin line and fails touch-target sizing */}
+          <Link href="/teams" className="inline-block">
             <button
               onMouseEnter={playHoverSound}
               className="mt-4 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer"

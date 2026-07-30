@@ -15,6 +15,9 @@ type PortfolioMediaProps = {
   muted?: boolean;
   loop?: boolean;
   playsInline?: boolean;
+  /** Still shown before a video is played, so the frame paints without a download. */
+  poster?: string;
+  sizes?: string;
 };
 
 export default function PortfolioMedia({
@@ -29,6 +32,8 @@ export default function PortfolioMedia({
   muted = true,
   loop = false,
   playsInline = true,
+  poster,
+  sizes,
 }: PortfolioMediaProps) {
   const fitClass = objectFit === 'contain' ? 'object-contain' : 'object-cover';
   const sizeClass = fill ? 'absolute inset-0 h-full w-full' : 'h-full w-full';
@@ -37,13 +42,14 @@ export default function PortfolioMedia({
     return (
       <video
         src={src}
+        poster={poster}
         className={`${sizeClass} ${fitClass} ${className}`}
         style={style}
         autoPlay={autoPlay}
         muted={muted}
         loop={loop}
         playsInline={playsInline}
-        preload={autoPlay ? 'auto' : 'metadata'}
+        preload={autoPlay ? 'auto' : poster ? 'none' : 'metadata'}
         aria-label={alt}
       />
     );
@@ -54,6 +60,7 @@ export default function PortfolioMedia({
       src={src}
       alt={alt}
       fill={fill}
+      sizes={sizes ?? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
       className={`${fitClass} ${className}`}
       style={style}
       priority={priority}

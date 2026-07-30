@@ -60,11 +60,12 @@ export default function PortfolioGridCard({ item, cardRef, onClick }: PortfolioG
               <video
                 ref={hoverVideoRef}
                 src={hoverSrc}
+                poster={poster}
                 className="absolute inset-0 h-full w-full object-cover"
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="none"
                 aria-label={`${item.title} preview`}
               />
             ) : (

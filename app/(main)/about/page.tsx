@@ -169,6 +169,8 @@ const AboutHero = () => {
                 <video
                     ref={videoRef}
                     src="/assets/videos/about/aboutus-cover.mp4"
+                    poster="/assets/videos/about/aboutus-poster.webp"
+                    preload="metadata"
                     autoPlay
                     muted={isMuted}
                     loop

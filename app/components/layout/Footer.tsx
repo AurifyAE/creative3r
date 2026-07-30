@@ -8,7 +8,7 @@ const Footer = () => {
         {/* Left nav columns */}
         <div className="grid grid-cols-2 gap-10 sm:flex sm:flex-1 sm:gap-12 text-sm text-neutral-300 text-left">
           <div className="space-y-4">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-500 font-medium">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 font-medium">
               Menu
             </p>
             <nav className="space-y-2">
@@ -28,7 +28,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-500 font-medium">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 font-medium">
               Work with us
             </p>
             <nav className="space-y-2">
@@ -84,13 +84,13 @@ const Footer = () => {
               Support: <Link href="tel:+971508064894" className="hover:text-white/80">+971 50 806 4894</Link>
             </p>
             <p className="text-neutral-400 tracking-wide">info@creative3r.com · creative3r.com</p>
-            <p className="text-neutral-500 max-w-[250px] md:max-w-none">
+            <p className="text-neutral-400 max-w-[250px] md:max-w-none">
               C1 Building, F-1, Ajman Free Zone, Ajman, UAE.
             </p>
           </div>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto flex justify-center md:justify-end text-neutral-600 text-xs gap-4 pb-6 px-6 md:px-8">
+      <div className="max-w-6xl mx-auto flex justify-center md:justify-end text-neutral-400 text-xs gap-4 pb-6 px-6 md:px-8">
         <Link href="/ls-connect/privacy-policy" className="hover:text-white/80">Privacy Policy</Link>
         <Link href="/ls-connect/terms" className="hover:text-white/80">Terms & Conditions</Link>
       </div>

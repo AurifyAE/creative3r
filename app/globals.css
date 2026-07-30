@@ -27,6 +27,222 @@
     }
 }
 
+/* ── Decorative wave divider (WavyLine.tsx) ─────────────────────────────── */
+/* The SVG is drawn two viewBox widths wide; shifting the track by exactly one
+   container width loops seamlessly. Animating the wrapper div (not the SVG)
+   keeps the animation on the compositor. */
+.wavy-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1512 / 240;
+    overflow: hidden;
+}
+
+.wavy-track {
+    position: absolute;
+    inset: 0;
+    width: 200%;
+    animation: wavy-drift 7s linear infinite;
+    will-change: transform;
+}
+
+.wavy-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes wavy-drift {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wavy-track {
+        animation: none;
+    }
+}
+
+/* ── Hero 3D service carousel (HeroSection.tsx) ─────────────────────────── */
+.carousel-scene {
+    --w: 100px;
+    --h: 70px;
+    --tz: 200px;
+    --rx: -10deg;
+    --persp: 920px;
+    position: absolute;
+    width: var(--w);
+    height: var(--h);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-style: preserve-3d;
+    animation: c3dSpin 20s linear infinite;
+    will-change: transform;
+}
+
+/* ≥ 475px  (larger phones) */
+@media (min-width: 475px) {
+    .carousel-scene {
+        --w: 130px;
+        --h: 90px;
+        --tz: 220px;
+        --persp: 900px;
+    }
+}
+
+/* ≥ 640px  (sm - small tablets) */
+@media (min-width: 640px) {
+    .carousel-scene {
+        --w: 150px;
+        --h: 100px;
+        --tz: 300px;
+        --persp: 1000px;
+    }
+}
+
+/* ≥ 768px  (md - tablets) */
+@media (min-width: 768px) {
+    .carousel-scene {
+        --w: 160px;
+        --h: 110px;
+        --tz: 350px;
+        --persp: 1100px;
+    }
+}
+
+/* ≥ 1024px (lg - desktop) */
+@media (min-width: 1024px) {
+    .carousel-scene {
+        --w: 180px;
+        --h: 120px;
+        --tz: 420px;
+        --persp: 1200px;
+    }
+}
+
+/* ≥ 1280px (xl) */
+@media (min-width: 1280px) {
+    .carousel-scene {
+        --w: 220px;
+        --h: 135px;
+        --tz: 480px;
+    }
+}
+
+/* ≥ 1536px (2xl) */
+@media (min-width: 1536px) {
+    .carousel-scene {
+        --w: 260px;
+        --h: 156px;
+        --tz: 720px;
+    }
+}
+
+@keyframes c3dSpin {
+    from {
+        transform: translate(-50%, -50%) perspective(var(--persp)) rotateX(var(--rx)) rotateY(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) perspective(var(--persp)) rotateX(var(--rx)) rotateY(360deg);
+    }
+}
+
+/* Pause the spin while hovering so cards can be clicked */
+.carousel-scene:hover {
+    animation-play-state: paused;
+}
+
+.carousel-face {
+    position: absolute;
+    inset: 0;
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    transform: rotateY(calc(360deg / var(--qty) * var(--i))) translateZ(var(--tz));
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1.5px solid rgba(var(--c), 0.55);
+    box-shadow: 0 0 28px 4px rgba(var(--c), 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-face:hover {
+    border-color: rgba(var(--c), 0.95);
+    box-shadow: 0 0 40px 8px rgba(var(--c), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+@media (min-width: 768px) {
+    .carousel-face {
+        border-radius: 20px;
+    }
+}
+
+.carousel-face-bg {
+    position: absolute;
+    inset: 0;
+    /* Dark tint replaces the old backdrop-filter blur — backdrop
+       filters force low-res rasterization on 3D-transformed layers */
+    background-color: rgba(31, 30, 30, 0.55);
+    background-image: linear-gradient(135deg,
+            rgba(var(--c), 0.12) 0%,
+            rgba(var(--c), 0.42) 60%,
+            rgba(var(--c), 0.68) 100%);
+}
+
+.carousel-face-shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+    border-radius: 16px 16px 0 0;
+}
+
+@media (min-width: 768px) {
+    .carousel-face-shine {
+        border-radius: 20px 20px 0 0;
+    }
+}
+
+.carousel-face-curve {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.38) 0%,
+            transparent 22%,
+            transparent 78%,
+            rgba(0, 0, 0, 0.38) 100%);
+    pointer-events: none;
+}
+
+/* Content is laid out at 2x size and scaled down by half so the
+   browser rasterizes the text at double resolution — keeps it sharp
+   when perspective enlarges the front-facing card. */
+.carousel-face-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 200%;
+    height: 200%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.5) translateZ(0);
+    transform-origin: 0 0;
+    will-change: transform;
+}
+
 /* Hide scrollbar - all browsers */
 .scrollbar-hide::-webkit-scrollbar {
     display: none !important;

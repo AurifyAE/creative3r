@@ -33,18 +33,15 @@ export default function SplashProvider({ children }: { children: React.ReactNode
         setTimeout(() => setHidden(true), 700);
     };
 
+    // The page renders at full opacity underneath the splash overlay. Fading
+    // the children out instead made every element ineligible for Largest
+    // Contentful Paint until the intro finished.
+    // Interactivity comes back the moment the overlay finishes fading, rather
+    // than waiting for the extra unmount delay.
     return (
         <>
             {!hidden && <SplashScreen onComplete={handleComplete} />}
-            <div
-                style={{
-                    opacity: hidden ? 1 : 0,
-                    transition: "opacity 0.5s ease",
-                    pointerEvents: hidden ? "auto" : "none",
-                }}
-            >
-                {children}
-            </div>
+            <div style={{ pointerEvents: showSplash ? "none" : "auto" }}>{children}</div>
         </>
     );
 }

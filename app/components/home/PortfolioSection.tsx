@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useHoverSound } from '@/app/hooks/useHoverSound';
 
@@ -167,13 +168,15 @@ const PortfolioCard = ({ item, rowKey, selectedId, onSelect, didDrag }: CardProp
           : ''}
       `}
     >
-      {/* Image */}
+      {/* Image — decorative: the card's own text already names the project */}
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src={item.image}
-          alt={item.title}
+          alt=""
+          fill
           draggable={false}
-          className={`object-cover w-full h-full transition-all duration-500
+          sizes="(max-width: 767px) 256px, (max-width: 1023px) 288px, 320px"
+          className={`object-cover transition-all duration-500
             ${isSelected ? 'grayscale-0 scale-105' : 'grayscale-75 group-hover:grayscale-0'}`}
         />
         <div className="absolute inset-0 opacity-80 pointer-events-none" />
@@ -344,7 +347,7 @@ const PortfolioSection = () => {
 
           {/* View all */}
           <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 md:bottom-35 md:right-40 md:left-auto md:translate-x-0 flex justify-center">
-            <Link href="/portfolio">
+            <Link href="/portfolio" aria-label="View all portfolio projects" className="inline-block">
               <button
                 onMouseEnter={playHoverSound}
                 className="rounded-full border border-white/40 px-6 py-2 text-xs md:text-sm font-medium tracking-wide transition hover:border-white hover:bg-white hover:text-black cursor-pointer"

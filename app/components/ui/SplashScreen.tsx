@@ -5,16 +5,21 @@ import Image from "next/image";
 import gsap from "gsap";
 import FlipWords from "./FlipWords";
 
-const POINTS = 700;
+// 180 segments across the 1200-unit viewBox is ~7px per segment at full width —
+// visually identical to the old 700, at a quarter of the per-frame path work.
+// `freq` is scaled by the same factor so the wavelength on screen is unchanged.
+const POINTS = 180;
 const WIDTH = 1200;
-const SPLASH_DURATION = 10000;
+const SPLASH_DURATION = 2500;
 const CENTER_Y = 35;
 
+const FREQ = 0.012 * (700 / POINTS);
+
 const WAVE_CONFIGS = [
-    { amplitude: 22, freq: 0.012, phaseOffset: 0, phaseSpeed: 0.022, strokeWidth: 2, color: "#E76F51", opacity: 1, alwaysFull: false },
-    { amplitude: 22, freq: 0.012, phaseOffset: Math.PI, phaseSpeed: 0.022, strokeWidth: 2, color: "#ffffff", opacity: 0.1, alwaysFull: true },
-    { amplitude: 22, freq: 0.012, phaseOffset: Math.PI, phaseSpeed: 0.022, strokeWidth: 2, color: "#E76F51", opacity: 1, alwaysFull: false },
-    { amplitude: 22, freq: 0.012, phaseOffset: 0, phaseSpeed: 0.022, strokeWidth: 2, color: "#ffffff", opacity: 0.1, alwaysFull: true },
+    { amplitude: 22, freq: FREQ, phaseOffset: 0, phaseSpeed: 0.022, strokeWidth: 2, color: "#E76F51", opacity: 1, alwaysFull: false },
+    { amplitude: 22, freq: FREQ, phaseOffset: Math.PI, phaseSpeed: 0.022, strokeWidth: 2, color: "#ffffff", opacity: 0.1, alwaysFull: true },
+    { amplitude: 22, freq: FREQ, phaseOffset: Math.PI, phaseSpeed: 0.022, strokeWidth: 2, color: "#E76F51", opacity: 1, alwaysFull: false },
+    { amplitude: 22, freq: FREQ, phaseOffset: 0, phaseSpeed: 0.022, strokeWidth: 2, color: "#ffffff", opacity: 0.1, alwaysFull: true },
 ];
 
 // Easing function: makes progress jump — fast bursts then brief pauses

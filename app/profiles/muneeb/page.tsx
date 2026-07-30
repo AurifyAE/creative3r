@@ -12,7 +12,7 @@ const PROFILE = {
     phoneHref: 'tel:+971567001568',
     whatsappHref: 'https://wa.me/971567001568',
     email: 'muneeb@creative3r.com',
-    avatar: '/assets/images/profiles/muneeb.png',
+    avatar: '/assets/images/profiles/muneeb.webp',
 };
 
 const LINKS: { label: string; href: string; icon: React.ComponentType<{ className?: string }> | string }[] = [

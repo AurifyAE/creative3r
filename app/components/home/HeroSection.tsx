@@ -1,7 +1,8 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useHoverSound } from '@/app/hooks/useHoverSound';
 
@@ -17,11 +18,59 @@ const services = [
   { title1: 'WEB', title2: 'DESIGN', rgb: '231, 111, 81', icon: '⬖', href: '/services/web-digital-experiences' },
 ];
 
+const POINTER_QUERY = '(hover: hover) and (pointer: fine)';
+
+function subscribeToPointerType(onChange: () => void) {
+  const query = window.matchMedia(POINTER_QUERY);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement | null>(null);
   const whatWeDoRef = useRef<HTMLDivElement | null>(null);
   const agencyDescRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoReady, setVideoReady] = useState(false);
+  // The spinning cards are real links on pointer devices; on touch they collapse
+  // into decoration because the 3D projection makes them tap targets that are
+  // too small and too tightly spaced. The "View All" button carries navigation.
+  const carouselInteractive = useSyncExternalStore(
+    subscribeToPointerType,
+    () => window.matchMedia(POINTER_QUERY).matches,
+    () => true // server render assumes a pointer device, so crawlers see the links
+  );
   const playHoverSound = useHoverSound();
+
+  // Start the hero clip only once the page has settled, so the poster image —
+  // not a multi-megabyte video — is what LCP measures.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (connection?.saveData) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let timer: ReturnType<typeof setTimeout>;
+    const start = () => {
+      timer = setTimeout(() => {
+        video.preload = 'auto';
+        video.load();
+        void video.play().catch(() => {
+          /* autoplay refused — the poster stays, which is a fine fallback */
+        });
+      }, 200);
+    };
+
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start, { once: true });
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('load', start);
+    };
+  }, []);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -142,15 +191,34 @@ const HeroSection = () => {
 
         {/* ── Video ──────────────────────────────────────────────────────────── */}
         <div className="absolute top-0 right-0 w-full lg:w-2/3 md:left-1/2 md:-translate-x-1/2 z-40">
-          <div className="relative w-full overflow-hidden">
-            <video
-              src="/assets/videos/home/hero-video1.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-[520px] md:w-full lg:h-[640px] xl:h-[680px] 2xl:h-[760px] object-cover border-4 border-[#1F1E1E]"
-            />
+          <div className="relative w-full overflow-hidden border-4 border-[#1F1E1E]">
+            <div className="relative w-full h-[520px] md:w-full lg:h-[640px] xl:h-[680px] 2xl:h-[760px]">
+              {/* The poster is the LCP element: preloaded at high priority and
+                  already in the initial HTML, unlike a video's first frame. */}
+              <Image
+                src="/assets/videos/home/hero-poster.webp"
+                alt=""
+                fill
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 1023px) 100vw, 66vw"
+                className="object-cover"
+              />
+              <video
+                ref={videoRef}
+                src="/assets/videos/home/hero-video1.mp4"
+                muted
+                loop
+                playsInline
+                preload="none"
+                aria-hidden="true"
+                tabIndex={-1}
+                onCanPlay={() => setVideoReady(true)}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <track kind="captions" srcLang="en" label="English" src="/assets/videos/home/hero-video1.vtt" />
+              </video>
+            </div>
             {/* Edge blending overlay */}
             <div
               className="absolute inset-0 pointer-events-none"
@@ -203,198 +271,65 @@ const HeroSection = () => {
         </div>
 
         {/* ── 3D Carousel (all breakpoints) ──────────────────────────────── */}
-        <style>{`
-          .carousel-scene {
-            --w: 100px;
-            --h: 70px;
-            --tz: 200px;
-            --rx: -10deg;
-            --persp: 920px;
-            position: absolute;
-            width: var(--w);
-            height: var(--h);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transform-style: preserve-3d;
-            animation: c3dSpin 20s linear infinite;
-            will-change: transform;
-          }
-          /* ≥ 475px  (larger phones) */
-          @media (min-width: 475px) {
-            .carousel-scene {
-              --w: 130px;
-              --h: 90px;
-              --tz: 220px;
-              --persp: 900px;
-            }
-          }
-          /* ≥ 640px  (sm - small tablets) */
-          @media (min-width: 640px) {
-            .carousel-scene {
-              --w: 150px;
-              --h: 100px;
-              --tz: 300px;
-              --persp: 1000px;
-            }
-          }
-          /* ≥ 768px  (md - tablets) */
-          @media (min-width: 768px) {
-            .carousel-scene {
-              --w: 160px;
-              --h: 110px;
-              --tz: 350px;
-              --persp: 1100px;
-            }
-          }
-          /* ≥ 1024px (lg - desktop) */
-          @media (min-width: 1024px) {
-            .carousel-scene {
-              --w: 180px;
-              --h: 120px;
-              --tz: 420px;
-              --persp: 1200px;
-            }
-          }
-          /* ≥ 1280px (xl) */
-          @media (min-width: 1280px) {
-            .carousel-scene {
-              --w: 220px;
-              --h: 135px;
-              --tz: 480px;
-            }
-          }
-          /* ≥ 1536px (2xl) */
-          @media (min-width: 1536px) {
-            .carousel-scene {
-              --w: 260px;
-              --h: 156px;
-              --tz: 720px;
-            }
-          }
-          @keyframes c3dSpin {
-            from { transform: translate(-50%,-50%) perspective(var(--persp)) rotateX(var(--rx)) rotateY(0deg); }
-            to   { transform: translate(-50%,-50%) perspective(var(--persp)) rotateX(var(--rx)) rotateY(360deg); }
-          }
-          /* Pause the spin while hovering so cards can be clicked */
-          .carousel-scene:hover {
-            animation-play-state: paused;
-          }
-          .carousel-face {
-            position: absolute;
-            inset: 0;
-            display: block;
-            border-radius: 16px;
-            overflow: hidden;
-            transform: rotateY(calc(360deg / var(--qty) * var(--i))) translateZ(var(--tz));
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border: 1.5px solid rgba(var(--c), 0.55);
-            box-shadow: 0 0 28px 4px rgba(var(--c), 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
-            cursor: pointer;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-          }
-          .carousel-face:hover {
-            border-color: rgba(var(--c), 0.95);
-            box-shadow: 0 0 40px 8px rgba(var(--c), 0.45), inset 0 1px 0 rgba(255,255,255,0.25);
-          }
-          @media (min-width: 768px) {
-            .carousel-face { border-radius: 20px; }
-          }
-          .carousel-face-bg {
-            position: absolute;
-            inset: 0;
-            /* Dark tint replaces the old backdrop-filter blur — backdrop
-               filters force low-res rasterization on 3D-transformed layers */
-            background-color: rgba(31, 30, 30, 0.55);
-            background-image: linear-gradient(
-              135deg,
-              rgba(var(--c), 0.12) 0%,
-              rgba(var(--c), 0.42) 60%,
-              rgba(var(--c), 0.68) 100%
-            );
-          }
-          .carousel-face-shine {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
-            border-radius: 16px 16px 0 0;
-          }
-          @media (min-width: 768px) {
-            .carousel-face-shine { border-radius: 20px 20px 0 0; }
-          }
-          .carousel-face-curve {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-              180deg,
-              rgba(0,0,0,0.38) 0%,
-              transparent 22%,
-              transparent 78%,
-              rgba(0,0,0,0.38) 100%
-            );
-            pointer-events: none;
-          }
-          /* Content is laid out at 2x size and scaled down by half so the
-             browser rasterizes the text at double resolution — keeps it sharp
-             when perspective enlarges the front-facing card. */
-          .carousel-face-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-            width: 200%;
-            height: 200%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transform: scale(0.5) translateZ(0);
-            transform-origin: 0 0;
-            will-change: transform;
-          }
-        `}</style>
 
         <div className="absolute bottom-16 md:bottom-24 lg:bottom-40 xl:bottom-64 2xl:bottom-80 z-50 w-full h-60 sm:h-72 md:h-80 lg:h-96">
           <div className="relative w-full h-full overflow-visible">
             <div
               className="carousel-scene"
+              aria-hidden={carouselInteractive ? undefined : true}
               style={{ ['--qty' as string]: services.length * 2 } as React.CSSProperties}
             >
-              {[...services, ...services].map((service, index) => (
-                <Link
-                  key={index}
-                  href={service.href}
-                  onMouseEnter={playHoverSound}
-                  aria-label={`${service.title1}${service.title2 ? ` ${service.title2}` : ''} service`}
-                  className="carousel-face"
-                  style={{
-                    ['--i' as string]: index,
-                    ['--c' as string]: service.rgb,
-                    ['--qty' as string]: services.length * 2,
-                  } as React.CSSProperties}
-                >
-                  <div className="carousel-face-bg" />
-                  <div className="carousel-face-shine" />
-                  <div className="carousel-face-curve" />
-                  {/* Sizes below are 2x the visual size — the container scales them back down */}
-                  <div className="carousel-face-content gap-1 sm:gap-2 px-4 sm:px-6">
-                    <span
-                      className="text-4xl sm:text-[40px] md:text-5xl xl:text-6xl leading-none mb-1 sm:mb-2"
-                      style={{ color: `rgba(${service.rgb}, 0.9)`, filter: 'drop-shadow(0 0 12px currentColor)' }}
-                    >
-                      {service.icon}
-                    </span>
-                    <span
-                      className="text-white font-bold text-xl sm:text-2xl xl:text-[28px] tracking-[0.1em] sm:tracking-[0.12em] uppercase text-center leading-tight"
-                      style={{ textShadow: '0 2px 16px rgba(0,0,0,0.6)' }}
-                    >
-                      {service.title1}{service.title2 && <><br />{service.title2}</>}
-                    </span>
-                  </div>
-                </Link>
-              ))}
+              {[...services, ...services].map((service, index) => {
+                const faceStyle = {
+                  ['--i' as string]: index,
+                  ['--c' as string]: service.rgb,
+                  ['--qty' as string]: services.length * 2,
+                } as React.CSSProperties;
+
+                const face = (
+                  <>
+                    <div className="carousel-face-bg" />
+                    <div className="carousel-face-shine" />
+                    <div className="carousel-face-curve" />
+                    {/* Sizes below are 2x the visual size — the container scales them back down */}
+                    <div className="carousel-face-content gap-1 sm:gap-2 px-4 sm:px-6">
+                      <span
+                        className="text-4xl sm:text-[40px] md:text-5xl xl:text-6xl leading-none mb-1 sm:mb-2"
+                        style={{ color: `rgba(${service.rgb}, 0.9)`, filter: 'drop-shadow(0 0 12px currentColor)' }}
+                      >
+                        {service.icon}
+                      </span>
+                      <span
+                        className="text-white font-bold text-xl sm:text-2xl xl:text-[28px] tracking-[0.1em] sm:tracking-[0.12em] uppercase text-center leading-tight"
+                        style={{ textShadow: '0 2px 16px rgba(0,0,0,0.6)' }}
+                      >
+                        {service.title1}{service.title2 && <><br />{service.title2}</>}
+                      </span>
+                    </div>
+                  </>
+                );
+
+                if (!carouselInteractive) {
+                  return (
+                    <div key={index} className="carousel-face" style={faceStyle}>
+                      {face}
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={index}
+                    href={service.href}
+                    onMouseEnter={playHoverSound}
+                    aria-label={`${service.title1}${service.title2 ? ` ${service.title2}` : ''} service`}
+                    className="carousel-face"
+                    style={faceStyle}
+                  >
+                    {face}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -402,7 +337,12 @@ const HeroSection = () => {
 
 
         <div className="absolute w-full bottom-8 md:bottom-0 lg:bottom-16 xl:bottom-24 2xl:-bottom-16 flex justify-center z-50 pointer-events-none">
-          <Link href="/services" onMouseEnter={playHoverSound} className="pointer-events-auto">
+          <Link
+            href="/services"
+            onMouseEnter={playHoverSound}
+            aria-label="View all services"
+            className="pointer-events-auto inline-block"
+          >
             <button className="transition-all duration-300 hover:scale-110 inline-flex items-center rounded-full border border-white/40 px-6 py-2 text-sm font-medium tracking-wide hover:border-white hover:bg-white hover:text-black cursor-pointer hero-ui-content">
               View All
             </button>

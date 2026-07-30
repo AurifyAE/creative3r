@@ -96,8 +96,9 @@ const ContactSection = () => {
           </p>
         </div>
 
-        {/* Card with Glassy Effect */}
-        <div className="w-full rounded-[24px] md:rounded-[32px] bg-white/10 backdrop-blur-xl px-5 py-7 md:px-10 md:py-10 text-left text-white shadow-2xl border border-white/20">
+        {/* Card with Glassy Effect — tinted dark rather than light so the
+            #E76F51 accents on it clear 4.5:1 (they sat at 3.98:1 on white/10) */}
+        <div className="w-full rounded-[24px] md:rounded-[32px] bg-black/20 backdrop-blur-xl px-5 py-7 md:px-10 md:py-10 text-left text-white shadow-2xl border border-white/20">
           {/* Intro copy */}
           <div className="space-y-2 mb-6">
             <p className="text-sm md:text-base font-semibold text-[#E76F51]">
@@ -206,7 +207,7 @@ const ContactSection = () => {
                       type="button"
                       onClick={() => toggleHear(label)}
                       className={`rounded-full backdrop-blur-sm border px-3 py-1 sm:px-4 sm:py-1 text-[10px] sm:text-xs transition-all duration-200 ${form.hearAboutUs === label
-                        ? "bg-[#E76F51] border-[#E76F51] text-white"
+                        ? "bg-[#E76F51] border-[#E76F51] text-[#1F1E1E] font-semibold"
                         : "bg-white/10 border-white/20 text-white/90 hover:bg-white/20 hover:border-[#E76F51] hover:text-white"
                         }`}
                     >
@@ -244,7 +245,7 @@ const ContactSection = () => {
                 type="submit"
                 onMouseEnter={playHoverSound}
                 disabled={status === "loading"}
-                className="w-full sm:w-auto self-center sm:self-start inline-flex items-center justify-center rounded-full bg-[#E76F51] px-10 py-4 text-base font-bold text-white shadow-lg hover:bg-[#d45b3f] hover:shadow-xl hover:shadow-[#E76F51]/20 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                className="w-full sm:w-auto self-center sm:self-start inline-flex items-center justify-center rounded-full bg-[#E76F51] px-10 py-4 text-base font-bold text-[#1F1E1E] shadow-lg hover:bg-[#F2977E] hover:shadow-xl hover:shadow-[#E76F51]/20 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
                 {status === "loading" ? (
                   <span className="flex items-center gap-2">

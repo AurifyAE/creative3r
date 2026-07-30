@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { use, useState, useEffect, useCallback } from 'react';
-import { portfolioItems, ContentSection, ContentItem, getPortfolioMedia, isPortfolioVideo } from '../portfolioData';
+import { portfolioItems, ContentSection, ContentItem, getPortfolioMedia, getPortfolioPoster, isPortfolioVideo } from '../portfolioData';
 import PortfolioMedia from '../PortfolioMedia';
 
 interface Props {
@@ -346,7 +346,7 @@ export default function ProjectPage({ params }: Props) {
                   }`}
                   style={{ width: 90, height: 56 }}
                 >
-                  <PortfolioMedia src={src} alt={`Thumbnail ${i + 1}`} muted playsInline />
+                  <PortfolioMedia src={src} alt={`Thumbnail ${i + 1}`} muted playsInline poster={getPortfolioPoster(item)} sizes="90px" />
                   {isPortfolioVideo(src) && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
                       <div className="w-7 h-7 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
@@ -499,7 +499,7 @@ export default function ProjectPage({ params }: Props) {
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2">
               {allMedia.map((src, i) => (
                 <button key={i} onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }} className={`relative overflow-hidden rounded-md flex-shrink-0 transition-all duration-300 border-2 ${i === lightboxIndex ? 'border-white/80 opacity-100' : 'border-transparent opacity-40 hover:opacity-70'}`} style={{ width: 64, height: 40 }}>
-                  <PortfolioMedia src={src} alt={`Thumbnail ${i + 1}`} muted playsInline />
+                  <PortfolioMedia src={src} alt={`Thumbnail ${i + 1}`} muted playsInline poster={getPortfolioPoster(item)} sizes="90px" />
                   {isPortfolioVideo(src) && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
                       <div className="w-7 h-7 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
