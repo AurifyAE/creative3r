@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import PhoneInput, { PhoneValue } from "../ui/PhoneInput";
 import { useHoverSound } from "@/app/hooks/useHoverSound";
 
@@ -28,6 +29,7 @@ const INITIAL_FORM: FormState = {
 };
 
 const ContactSection = () => {
+  const router = useRouter();
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -68,6 +70,7 @@ const ContactSection = () => {
       setStatus("success");
       setForm(INITIAL_FORM);
       setPhoneKey((prev) => prev + 1);
+      router.push("/contact/thank-you");
     } catch (err: unknown) {
       setStatus("error");
       const message =
