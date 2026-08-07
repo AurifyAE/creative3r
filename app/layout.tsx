@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import localFont from 'next/font/local';
 import { Poppins } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import LenisProvider from "./components/providers/LenisProvider";
 import AnalyticsScripts from "./components/providers/AnalyticsScripts";
 import CustomCursor from "./components/ui/CustomCursor";
+import WhatsAppButton from "./components/ui/WhatsAppButton";
 
 
 const ivyOraDisplay = localFont({
@@ -109,12 +111,35 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Tag Manager */}
+        <Script
+          id="gtm-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N3ZV9456');`,
+          }}
+        />
+        {/* End Google Tag Manager */}
         {/* Analytics origins are contacted after load; warm the connections early. */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://connect.facebook.net" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       </head>
       <body className={`${poppins.variable} ${ivyOraDisplay.variable} font-poppins antialiased bg-[#1F1E1E]`}>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-N3ZV9456"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <AnalyticsScripts />
         <noscript>
           <img
@@ -128,6 +153,7 @@ export default function RootLayout({
         <LenisProvider>
           <CustomCursor />       
           {children}
+          <WhatsAppButton />
         </LenisProvider>
       </body>
     </html>
