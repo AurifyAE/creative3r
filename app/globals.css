@@ -322,3 +322,37 @@
         display: none !important;
     }
 }
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Lenis owns animated scrolling once it has initialized. Keeping native
+   smooth scrolling active at the same time causes doubled easing, delayed
+   wheel input, and route-transition jumps. */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}

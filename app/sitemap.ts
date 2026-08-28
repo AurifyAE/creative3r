@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { services } from "./(main)/services/servicesData";
 import { portfolioItems } from "./(main)/portfolio/portfolioData";
 import { SITE_URL } from "./robots";
+import { blogArticles } from "./(main)/blogs/blogData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -11,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/about", priority: 0.8 },
     { path: "/services", priority: 0.9 },
     { path: "/portfolio", priority: 0.9 },
+    { path: "/blogs", priority: 0.7 },
     { path: "/teams", priority: 0.6 },
     { path: "/contact", priority: 0.8 },
     { path: "/privacy-policy", priority: 0.3 },
@@ -38,6 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    })),
+    ...blogArticles.map((article) => ({
+      url: `${SITE_URL}/blogs/${article.slug}`,
+      lastModified: new Date(article.publishedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
   ];
 }

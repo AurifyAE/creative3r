@@ -190,9 +190,9 @@ const HeroSection = () => {
       <div className="max-w-[1920px] mx-auto relative flex items-start h-[720px] md:h-[800px] lg:h-[900px] xl:h-[1080px]">
 
         {/* ── Video ──────────────────────────────────────────────────────────── */}
-        <div className="absolute top-0 right-0 w-full lg:w-2/3 md:left-1/2 md:-translate-x-1/2 z-40">
-          <div className="relative w-full overflow-hidden border-4 border-[#1F1E1E]">
-            <div className="relative w-full h-[520px] md:w-full lg:h-[640px] xl:h-[680px] 2xl:h-[760px]">
+        <div className="absolute top-0 left-1/2 w-full -translate-x-1/2 lg:w-2/3 z-40">
+          <div className="relative w-full overflow-hidden">
+            <div className="relative border-2 border-[#1F1E1E] w-full h-[520px] md:w-full lg:h-[640px] xl:h-[680px] 2xl:h-[760px]">
               {/* The poster is the LCP element: preloaded at high priority and
                   already in the initial HTML, unlike a video's first frame. */}
               <Image
@@ -221,11 +221,11 @@ const HeroSection = () => {
             </div>
             {/* Edge blending overlay */}
             <div
-              className="absolute inset-0 pointer-events-none"
+              className="absolute -inset-px pointer-events-none"
               style={{
                 background: `
-                  linear-gradient(#201e1e 0%, rgba(31, 30, 30, 0) 15%, rgba(31, 30, 30, 0) 85%, rgb(31, 30, 30) 100%),
-                  linear-gradient(to right, #201e1e 0%, rgba(31, 30, 30, 0) 30%, rgba(31, 30, 30, 0) 7%, #201e1e 100%)
+                  linear-gradient(to bottom, #1F1E1E 0%, rgba(31, 30, 30, 0) 15%, rgba(31, 30, 30, 0) 84%, #1F1E1E 100%),
+                  linear-gradient(to right, #1F1E1E 0%, rgba(31, 30, 30, 0) 28%, rgba(31, 30, 30, 0) 78%, #1F1E1E 100%)
                 `
               }}
             />

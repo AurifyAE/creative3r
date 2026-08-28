@@ -6,7 +6,7 @@ import "./globals.css";
 import LenisProvider from "./components/providers/LenisProvider";
 import AnalyticsScripts from "./components/providers/AnalyticsScripts";
 import CustomCursor from "./components/ui/CustomCursor";
-import WhatsAppButton from "./components/ui/WhatsAppButton";
+import ContactActions from "./components/ui/ContactActions";
 
 
 const ivyOraDisplay = localFont({
@@ -109,7 +109,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         {/* Google Tag Manager */}
         <Script
@@ -153,7 +153,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <LenisProvider>
           <CustomCursor />       
           {children}
-          <WhatsAppButton />
+          <ContactActions />
         </LenisProvider>
       </body>
     </html>

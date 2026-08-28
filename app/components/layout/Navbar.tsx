@@ -7,14 +7,14 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { useHoverSound } from "@/app/hooks/useHoverSound";
 import { services } from "@/app/(main)/services/servicesData";
 
-const navItems = [
+const primaryNavItems = [
     { name: 'Home', href: '/', id: 'home' },
     { name: 'About Us', href: '/about', id: 'about' },
     { name: 'Services', href: '/services', id: 'services' },
     { name: 'Portfolio', href: '/portfolio', id: 'portfolio' },
 ] as const;
 
-type NavId = (typeof navItems)[number]['id'];
+type NavId = (typeof primaryNavItems)[number]['id'];
 
 function getActiveNavId(pathname: string): NavId | null {
     if (pathname === '/') return 'home';
@@ -53,7 +53,7 @@ const Navbar = () => {
     }, [pathname]);
 
     const handleNavClick = (id: string) => {
-        const match = navItems.find((item) => item.id === id);
+        const match = primaryNavItems.find((item) => item.id === id);
         if (match) setSelected(match.id as NavId);
         setMobileMenuOpen(false);
     };
@@ -107,13 +107,6 @@ const Navbar = () => {
         };
     }, [mobileMenuOpen]);
 
-    const navItems = [
-        { name: 'Home', href: '/', id: 'home' },
-        { name: 'About Us', href: '/about', id: 'about' },
-        { name: 'Services', href: '/services', id: 'services' },
-        { name: 'Portfolio', href: '/portfolio', id: 'portfolio' },
-    ];
-
     return (
         <>
             <nav
@@ -127,14 +120,14 @@ const Navbar = () => {
                 `}
             >
                 {/* Desktop Navigation Links - Hidden on mobile */}
-                <div className="hidden lg:flex gap-2 text-sm">
-                    {navItems.map((item) => {
+                <div className="hidden xl:flex gap-2 text-sm">
+                    {primaryNavItems.map((item) => {
                         const pill = (
                             <Link
                                 href={item.href}
                                 onClick={() => { handleNavClick(item.id); setServicesOpen(false); }}
                                 onMouseEnter={playHoverSound}
-                                className={`block w-28 h-8 rounded-2xl relative overflow-hidden group cursor-pointer
+                                className={`block w-24 h-8 rounded-2xl relative overflow-hidden group cursor-pointer
                                     transition-colors duration-300
                                     ${selected === item.id ? 'bg-[#299D8F]' : 'bg-[#1F1E1E]'}
                                     hover:border-2 hover:border-[#299D8F]`}>
@@ -215,7 +208,7 @@ const Navbar = () => {
                 {/* Mobile Menu Button - Visible only on mobile */}
                 <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="lg:hidden flex flex-col gap-1.5 w-8 h-8 justify-center items-center z-50"
+                    className="xl:hidden flex flex-col gap-1.5 w-8 h-8 justify-center items-center z-50"
                     aria-label="Toggle menu"
                 >
                     <span className={`w-6 h-0.5 rounded-full bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
@@ -243,14 +236,14 @@ const Navbar = () => {
                     <Link
                         href="/contact"
                         onMouseEnter={playHoverSound}
-                        className="lg:hidden text-xs font-medium border border-gray-600 px-4 py-1.5 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300 whitespace-nowrap">
+                        className="xl:hidden text-xs font-medium border border-gray-600 px-4 py-1.5 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300 whitespace-nowrap">
                         Let's Chat
                     </Link>
                     {/* Desktop button - hidden on mobile */}
                     <Link
                         href="/contact"
                         onMouseEnter={playHoverSound}
-                        className="hidden lg:block text-sm font-medium border border-gray-600 px-8 py-2 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300">
+                        className="hidden xl:block text-sm font-medium border border-gray-600 px-8 py-2 rounded-full hover:bg-[#299D8F] hover:border-[#299D8F] hover:text-white transition-all duration-300">
                         Let's Chat
                     </Link>
                 </div>
@@ -259,7 +252,7 @@ const Navbar = () => {
             {/* Mobile Menu Overlay */}
             <div
                 className={`
-                    fixed inset-0 bg-[#1F1E1E]/98 backdrop-blur-lg z-60 lg:hidden
+                    fixed inset-0 bg-[#1F1E1E]/98 backdrop-blur-lg z-60 xl:hidden
                     transition-all duration-300 ease-in-out
                     ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
                 `}
@@ -269,7 +262,7 @@ const Navbar = () => {
                     transition-all duration-300 delay-100
                     ${mobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}
                 `}>
-                    {navItems.map((item, index) => (
+                    {primaryNavItems.map((item, index) => (
                         item.id === 'services' ? (
                             <div
                                 key={item.id}
@@ -336,7 +329,7 @@ const Navbar = () => {
                     <Link
                         href="/contact"
                         onClick={() => setMobileMenuOpen(false)}
-                        style={{ transitionDelay: `${navItems.length * 50}ms` }}
+                        style={{ transitionDelay: `${primaryNavItems.length * 50}ms` }}
                         className={`
                             text-xl sm:text-2xl font-medium border-2 border-gray-600 px-10 py-3 rounded-full
                             hover:bg-[#299D8F] hover:border-[#299D8F] text-white

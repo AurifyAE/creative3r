@@ -24,6 +24,9 @@ const Footer = () => {
               <Link href="/portfolio" className="block transition-colors hover:text-white/80">
                 Portfolio
               </Link>
+              <Link href="/blogs" className="block transition-colors hover:text-white/80">
+                Blogs
+              </Link>
             </nav>
           </div>
 
@@ -99,4 +102,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
