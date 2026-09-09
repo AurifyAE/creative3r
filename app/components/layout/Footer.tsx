@@ -88,7 +88,8 @@ const Footer = () => {
             </p>
             <p className="text-neutral-400 tracking-wide">info@creative3r.com · creative3r.com</p>
             <p className="text-neutral-400 max-w-[250px] md:max-w-none">
-              C1 Building, F-1, Ajman Free Zone, Ajman, UAE.
+              <span className="block">Head Office: Suite 1006, Al Rayyan Building, Block A, Al Nahda, Sharjah, United Arab Emirates</span>
+              <span className="block mt-2">Branch Office: F-1, C1 Building, Ajman Free Zone, Ajman, United Arab Emirates</span>
             </p>
           </div>
         </div>

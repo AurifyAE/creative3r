@@ -38,12 +38,22 @@ const organizationJsonLd = {
   description:
     'Creative agency focusing on the precious metals and jewellery industry — branding, digital marketing and web experiences for jewelry brands, gold refineries and precious metal businesses in the UAE.',
   slogan: 'Reflect. Refine. Resonate.',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'C1 Building, F-1, Ajman Free Zone',
-    addressLocality: 'Ajman',
-    addressCountry: 'AE',
-  },
+  address: [
+    {
+      '@type': 'PostalAddress',
+      name: 'Head Office',
+      streetAddress: 'Suite 1006, Al Rayyan Building, Block A, Al Nahda',
+      addressLocality: 'Sharjah',
+      addressCountry: 'AE',
+    },
+    {
+      '@type': 'PostalAddress',
+      name: 'Branch Office',
+      streetAddress: 'F-1, C1 Building, Ajman Free Zone',
+      addressLocality: 'Ajman',
+      addressCountry: 'AE',
+    },
+  ],
   contactPoint: [
     {
       '@type': 'ContactPoint',

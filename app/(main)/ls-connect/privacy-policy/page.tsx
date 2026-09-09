@@ -427,7 +427,9 @@ export default function LSConnectPrivacyPolicyPage() {
                             </ContactCard>
                             <ContactCard label="Company">3R Creative (F.Z.E.)</ContactCard>
                             <ContactCard label="Address">
-                                C1 Building, 1-F, Ajman Free Zone, Ajman, UAE
+                                Head Office: Suite 1006, Al Rayyan Building, Block A, Al Nahda, Sharjah, United Arab Emirates
+                                <br />
+                                Branch Office: F-1, C1 Building, Ajman Free Zone, Ajman, United Arab Emirates
                             </ContactCard>
                         </div>
                         <p className="mt-8 text-xs text-white/35 leading-relaxed">
@@ -435,7 +437,9 @@ export default function LSConnectPrivacyPolicyPage() {
                             <br />
                             © 2026 3R Creative (F.Z.E.). All rights reserved.
                             <br />
-                            C1 Building, 1-F, Ajman Free Zone, Ajman, UAE.
+                            Head Office: Suite 1006, Al Rayyan Building, Block A, Al Nahda, Sharjah, United Arab Emirates.
+                            <br />
+                            Branch Office: F-1, C1 Building, Ajman Free Zone, Ajman, United Arab Emirates.
                         </p>
                     </section>
 
