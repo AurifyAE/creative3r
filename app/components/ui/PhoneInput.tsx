@@ -408,13 +408,13 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
             setSelected(country);
             setOpen(false);
             setSearch("");
-            onChange?.({ country, number, fullNumber: `${country.dialCode}${number}` });
+            onChange?.({ country, number, fullNumber: number ? `${country.dialCode}${number}` : "" });
         };
 
         const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const raw = e.target.value.replace(/[^\d\s\-().+]/g, "");
             setNumber(raw);
-            onChange?.({ country: selected, number: raw, fullNumber: `${selected.dialCode}${raw}` });
+            onChange?.({ country: selected, number: raw, fullNumber: raw ? `${selected.dialCode}${raw}` : "" });
         };
 
         // Matches ContactSection inputClass exactly:
@@ -494,6 +494,7 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
                         disabled={disabled}
                         readOnly={readOnly}
                         autoFocus={autoFocus}
+                        required={required}
                         autoComplete="tel"
                         aria-invalid={!!error}
                         aria-required={required}

@@ -144,17 +144,28 @@ export default async function ServicePage({ params }: Props) {
           <h2 className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-gray-500 mb-8 md:mb-10">
             Our Process
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6 lg:gap-8">
-            {service.process.map((step, index) => (
-              <div key={step.step} className="relative">
-                <span className="block font-mono text-4xl md:text-5xl font-bold text-white/10 mb-3">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <div className="h-px w-10 mb-4" style={{ backgroundColor: service.color }} />
-                <h3 className="text-base md:text-lg font-semibold text-gray-100 mb-2">{step.step}</h3>
-                <p className="text-xs md:text-sm text-gray-400 leading-relaxed">{step.description}</p>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
+            {service.process.map((step, index) => {
+              return (
+                <div key={step.step} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 md:p-6 transition-colors duration-300 hover:bg-white/[0.06]">
+                  <div
+                    className="mb-6 flex items-center gap-1.5"
+                    aria-label={`Process stage ${index + 1} of ${service.process.length}`}
+                  >
+                    {service.process.map((_, stageIndex) => (
+                      <span
+                        key={stageIndex}
+                        aria-hidden="true"
+                        className="h-1.5 flex-1 rounded-full transition-colors duration-300"
+                        style={{ backgroundColor: stageIndex <= index ? service.color : 'rgba(255,255,255,0.1)' }}
+                      />
+                    ))}
+                  </div>
+                  <h3 className="text-base md:text-lg font-semibold text-gray-100 mb-2">{step.step}</h3>
+                  <p className="text-xs md:text-sm text-gray-400 leading-relaxed">{step.description}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
 

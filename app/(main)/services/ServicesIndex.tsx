@@ -68,10 +68,9 @@ export default function ServicesIndex() {
               Crafting premium digital experiences through strategy, design, and technology.
             </p>
           </div>
-          <span className="font-mono text-xs text-gray-500 shrink-0">( {String(services.length).padStart(2, '0')} services )</span>
         </div>
 
-        {/* Numbered index rows */}
+        {/* Service rows */}
         <div ref={listRef} onMouseMove={handleMouseMove} onMouseLeave={() => setActiveIndex(null)}>
           {services.map((service, index) => {
             const isActive = activeIndex === index;
@@ -83,14 +82,7 @@ export default function ServicesIndex() {
                 onMouseEnter={() => setActiveIndex(index)}
                 className={`group block border-t border-white/10 ${index === services.length - 1 ? 'border-b' : ''} transition-colors duration-300 ${isActive ? 'bg-white/[0.03]' : ''}`}
               >
-                <div className="py-7 md:py-9 px-1 md:px-4 flex items-start md:items-center gap-5 md:gap-10">
-                  <span
-                    className="font-mono text-xs md:text-sm pt-1.5 md:pt-0 transition-colors duration-300 shrink-0"
-                    style={{ color: isActive ? service.color : '#6B7280' }}
-                  >
-                    {service.number}
-                  </span>
-
+                <div className="py-7 md:py-9 px-1 md:px-4 flex items-start md:items-center gap-5 md:gap-6">
                   <div className="flex-1 min-w-0">
                     <h2 className={`text-xl md:text-3xl lg:text-4xl font-medium leading-tight transition-all duration-300 ${isActive ? 'translate-x-2 text-white' : 'text-gray-200'}`}>
                       {service.title}

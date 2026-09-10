@@ -4,19 +4,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PhoneInput, { PhoneValue } from "../ui/PhoneInput";
 import { useHoverSound } from "@/app/hooks/useHoverSound";
+import {
+  CONTACT_LIMITS,
+  hasContactErrors,
+  HEAR_OPTIONS,
+  validateContactForm,
+  type ContactFormErrors,
+  type ContactFormData,
+  type HearOption,
+} from "@/app/lib/contactValidation";
 
-type HearOption = "Social Media" | "Friends & Colleagues" | "Word of mouth";
 type FormStatus = "idle" | "loading" | "success" | "error";
 
-interface FormState {
-  name: string;
-  email: string;
-  phone: string;
-  phoneCountry: string;
-  company: string;
-  hearAboutUs: HearOption | "";
-  projectDetails: string;
-}
+type FormState = ContactFormData;
 
 const INITIAL_FORM: FormState = {
   name: "",
@@ -26,20 +26,34 @@ const INITIAL_FORM: FormState = {
   company: "",
   hearAboutUs: "",
   projectDetails: "",
+  website: "",
 };
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p id={id} role="alert" className="text-[11px] font-medium text-red-400 pl-1">
+      {message}
+    </p>
+  );
+}
 
 const ContactSection = () => {
   const router = useRouter();
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [errors, setErrors] = useState<ContactFormErrors>({});
   const [phoneKey, setPhoneKey] = useState(0);
   const playHoverSound = useHoverSound();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+    if (status === "error") setStatus("idle");
   };
 
   const toggleHear = (label: HearOption) => {
@@ -47,10 +61,29 @@ const ContactSection = () => {
       ...prev,
       hearAboutUs: prev.hearAboutUs === label ? "" : label,
     }));
+    setErrors((prev) => ({ ...prev, hearAboutUs: undefined }));
+  };
+
+  const handlePhoneChange = ({ fullNumber, country }: PhoneValue) => {
+    setForm((prev) => ({
+      ...prev,
+      phone: fullNumber,
+      phoneCountry: country.code,
+    }));
+    setErrors((prev) => ({ ...prev, phone: undefined, phoneCountry: undefined }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validation = validateContactForm(form);
+    if (hasContactErrors(validation.errors)) {
+      setErrors(validation.errors);
+      setStatus("error");
+      setErrorMsg("Please correct the highlighted fields.");
+      return;
+    }
+
     setStatus("loading");
     setErrorMsg("");
 
@@ -58,16 +91,23 @@ const ContactSection = () => {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(validation.data),
       });
 
-      const data = await res.json();
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: unknown;
+        errors?: ContactFormErrors;
+      };
 
       if (!res.ok) {
-        throw new Error(data.error ?? "Something went wrong.");
+        if (data.errors) setErrors(data.errors);
+        throw new Error(
+          typeof data.error === "string" ? data.error : "Something went wrong."
+        );
       }
 
       setStatus("success");
+      setErrors({});
       setForm(INITIAL_FORM);
       setPhoneKey((prev) => prev + 1);
       router.push("/contact/thank-you");
@@ -85,6 +125,8 @@ const ContactSection = () => {
 
   const inputClass =
     "backdrop-blur-sm border-b border-white/20 rounded-xl px-4 py-2 text-sm text-white placeholder:text-white/40 outline-none hover:bg-white/10 hover:border-white/30 focus:bg-white/10 focus:border-[#E76F51] focus:ring focus:ring-[#E76F51]/30 transition-all duration-200 bg-transparent";
+
+  const invalidInputClass = "border-red-400/80 focus:border-red-400 focus:ring-red-400/30";
 
   return (
     <section className="bg-[#1F1E1E] text-white py-20 md:py-28">
@@ -120,68 +162,96 @@ const ContactSection = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+            {/* Honeypot for simple automated submissions. */}
+            <div aria-hidden="true" className="absolute h-px w-px overflow-hidden opacity-0">
+              <label htmlFor="contact-website">Website</label>
+              <input
+                id="contact-website"
+                name="website"
+                type="text"
+                value={form.website}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             {/* Row 1 */}
             <div className="grid gap-4 md:grid-cols-2">
               <div className="flex flex-col gap-1">
-                <label className="text-xs md:text-sm font-medium text-white/80">
+                <label htmlFor="contact-name" className="text-xs md:text-sm font-medium text-white/80">
                   Your Name <span className="text-[#E76F51]">*</span>
                 </label>
                 <input
+                  id="contact-name"
                   type="text"
                   name="name"
                   value={form.name}
                   onChange={handleChange}
                   placeholder="What should we call you?"
                   required
-                  className={inputClass}
+                  maxLength={CONTACT_LIMITS.name}
+                  autoComplete="name"
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? "contact-name-error" : undefined}
+                  className={`${inputClass} ${errors.name ? invalidInputClass : ""}`}
                 />
+                <FieldError id="contact-name-error" message={errors.name} />
               </div>
               <div className="flex flex-col gap-1">
-                <label className="text-xs md:text-sm font-medium text-white/80">
+                <label htmlFor="contact-email" className="text-xs md:text-sm font-medium text-white/80">
                   Email <span className="text-[#E76F51]">*</span>
                 </label>
                 <input
+                  id="contact-email"
                   type="email"
                   name="email"
                   value={form.email}
                   onChange={handleChange}
                   placeholder="you@example.com"
                   required
-                  className={inputClass}
+                  maxLength={CONTACT_LIMITS.email}
+                  autoComplete="email"
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? "contact-email-error" : undefined}
+                  className={`${inputClass} ${errors.email ? invalidInputClass : ""}`}
                 />
+                <FieldError id="contact-email-error" message={errors.email} />
               </div>
             </div>
 
             {/* Row 2 */}
             <div className="grid gap-4 md:grid-cols-2">
               <div className="flex flex-col gap-1">
-                <PhoneInput
-                  label="Phone Number"
-                  defaultCountry="AE"
+                  <PhoneInput
+                    label="Phone Number"
+                    required
+                    defaultCountry="AE"
                   placeholder="50 123 4567"
                   preferredCountries={["AE", "SA", "GB", "US", "IN"]}
                   key={phoneKey}
-                  onChange={({ fullNumber, country }: PhoneValue) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      phone: fullNumber,
-                      phoneCountry: country.code,
-                    }))
-                  }
+                  error={errors.phone ?? errors.phoneCountry}
+                  onChange={handlePhoneChange}
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <label className="text-xs md:text-sm font-medium text-white/80">
+                <label htmlFor="contact-company" className="text-xs md:text-sm font-medium text-white/80">
                   Company Name
                 </label>
                 <input
+                  id="contact-company"
                   type="text"
                   name="company"
                   value={form.company}
                   onChange={handleChange}
                   placeholder="Who do you represent?"
-                  className={inputClass}
+                  maxLength={CONTACT_LIMITS.company}
+                  autoComplete="organization"
+                  aria-invalid={Boolean(errors.company)}
+                  aria-describedby={errors.company ? "contact-company-error" : undefined}
+                  className={`${inputClass} ${errors.company ? invalidInputClass : ""}`}
                 />
+                <FieldError id="contact-company-error" message={errors.company} />
               </div>
             </div>
 
@@ -198,13 +268,7 @@ const ContactSection = () => {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {(
-                    [
-                      "Social Media",
-                      "Friends & Colleagues",
-                      "Word of mouth",
-                    ] as HearOption[]
-                  ).map((label) => (
+                  {HEAR_OPTIONS.map((label) => (
                     <button
                       key={label}
                       type="button"
@@ -218,20 +282,26 @@ const ContactSection = () => {
                     </button>
                   ))}
                 </div>
+                <FieldError id="contact-hear-about-error" message={errors.hearAboutUs} />
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs md:text-sm font-medium text-white/80">
+                <label htmlFor="contact-project-details" className="text-xs md:text-sm font-medium text-white/80">
                   Project Details
                 </label>
                 <textarea
+                  id="contact-project-details"
                   rows={4}
                   name="projectDetails"
                   value={form.projectDetails}
                   onChange={handleChange}
                   placeholder="Tell us a little about your brand, your goals, and what you'd like to create together."
-                  className={`${inputClass} resize-none`}
+                  maxLength={CONTACT_LIMITS.projectDetails}
+                  aria-invalid={Boolean(errors.projectDetails)}
+                  aria-describedby={errors.projectDetails ? "contact-project-details-error" : undefined}
+                  className={`${inputClass} resize-none ${errors.projectDetails ? invalidInputClass : ""}`}
                 />
+                <FieldError id="contact-project-details-error" message={errors.projectDetails} />
               </div>
             </div>
 
@@ -239,7 +309,7 @@ const ContactSection = () => {
             <div className="flex flex-col gap-4 pt-4">
               {/* Error banner */}
               {status === "error" && (
-                <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+                <p role="alert" className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
                   {errorMsg}
                 </p>
               )}
