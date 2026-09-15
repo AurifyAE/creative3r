@@ -13,8 +13,9 @@ import {
 import { useHoverSound } from '@/app/hooks/useHoverSound';
 
 const phoneNumber = '+971585023411';
+const whatsappNumber = '+971509503916';
 const whatsappMessage = 'Hello! I would like to inquire about your services.';
-const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
+const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
 
 const actionClassName =
   'group flex min-h-12 w-max items-center gap-3 whitespace-nowrap rounded-full border border-white/10 bg-[#1F1E1E]/95 py-2 pl-2 pr-4 text-white shadow-xl shadow-black/35 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#299D8F]/70 hover:bg-[#252424] hover:shadow-[#299D8F]/15 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E9C46A]';
