@@ -84,6 +84,9 @@ export const metadata: Metadata = {
     // Resolved against the current route, so every page gets its own canonical.
     canonical: "./",
   },
+  verification: {
+    google: "8FQSVsUXaTc_E3kVrhlDN_FtdGvWIRbu8rsH9L8O2CQ",
+  },
   title: "Digital Marketing Agency for Jewellery | 3R Creative",
   description: "UAE branding and digital marketing agency for jewellery brands, gold refineries and bullion traders. Branding, SEO, social media, PPC and web design.",
   keywords: [
