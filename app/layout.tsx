@@ -84,8 +84,8 @@ export const metadata: Metadata = {
     // Resolved against the current route, so every page gets its own canonical.
     canonical: "./",
   },
-  title: "Luxury Branding & Digital Strategy for Precious Metals & Jewelry in UAE",
-  description: "Best marketing agency empowering jewelry brands, gold refineries, and precious metal businesses in UAE, also Digital marketing Agency in UAE for your business.",
+  title: "Digital Marketing Agency for Jewellery | 3R Creative",
+  description: "UAE branding and digital marketing agency for jewellery brands, gold refineries and bullion traders. Branding, SEO, social media, PPC and web design.",
   keywords: [
     "Precious metals creative agency",
     "Jewelry brand strategy",

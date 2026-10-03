@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Precious Metals, Gold Refinery Branding Consultancy Agency in UAE",
-  description: "Best and Result-oriented branding, marketing consultancy agency in UAE. Luxury Watch, Precious metals, Gold refinery branding, marketing consultancy in UAE for your business.",
+  title: "Creative agency for jewellery industry UAE",
+  description: "Creative agency for the jewellery industry, delivering branding, creative design, digital marketing, content, and innovative solutions to grow your jewellery business.",
   keywords: [
     "Precious metals branding agency",
     "Gold refinery brand consultancy",

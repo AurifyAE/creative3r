@@ -92,9 +92,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: ['Branding'],
     meta: {
-      title: 'Branding & Identity Design Agency in UAE | 3R Creative',
+      title: 'Jewellery Branding Service UAE | Logo design and Brand Guidelines',
       description:
-        'Luxury branding and identity design in UAE — logo design, brand guidelines, positioning, and rebranding for jewelry, gold refinery, and precious metal businesses.',
+        'Build a distinctive jewellery brand with expert branding, logo design & brand guidelines in Sharjah & UAE. From strategy to creative identity. Get a quote.',
       keywords: [
         'Brand identity design services',
         'Brand strategy agency',
@@ -132,9 +132,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: ['Branding', 'SMM'],
     meta: {
-      title: 'Brand Storytelling & Content Creation Agency in UAE | 3R Creative',
+      title: 'Brand Storytelling & Content Creation Services UAE',
       description:
-        'Strategic storytelling and content creation in UAE — brand narratives, content strategy, and visual storytelling that spark engagement and drive lasting impact.',
+        'Create compelling brand stories with strategic content creation services that build engagement, strengthen brand identity, and drive visibility.',
       keywords: [
         'Strategic storytelling for businesses',
         'Content creation agency UAE',
@@ -172,9 +172,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: ['SMM'],
     meta: {
-      title: 'Digital Marketing Agency in UAE | SEO, Social Media & PPC | 3R Creative',
+      title: 'Jewellery & Bullion Digital Marketing UAE | 3R Creative',
       description:
-        'Data-driven digital marketing in UAE — SEO, social media marketing, PPC, email, and influencer campaigns for luxury jewelry and precious metal brands.',
+        'SEO, social media, PPC, email and influencer marketing for jewellery brands and bullion dealers in the UAE. Grow visibility, leads and sales.',
       keywords: [
         'Digital marketing agency UAE',
         'SEO services Dubai',
@@ -211,9 +211,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: ['Web Design', 'Web Development'],
     meta: {
-      title: 'Website Design & Development Agency in UAE | 3R Creative',
+      title: 'Website Development & Bullion Ecommerce Site Development Agency UAE',
       description:
-        'Web design and development in UAE — luxury websites, e-commerce, UI/UX design, and mobile apps that turn digital experiences into conversions.',
+        'Professional website development and Bullion ecommerce site development services to build responsive, secure, user-friendly websites that drive growth.',
       keywords: [
         'Web design and development',
         'Digital experience design',
@@ -249,9 +249,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: ['SMM'],
     meta: {
-      title: 'Performance Marketing & Analytics Services in UAE | 3R Creative',
+      title: 'Jewellery Performance Marketing & CRO UAE | 3R Creative',
       description:
-        'Performance marketing in UAE — conversion rate optimization, A/B testing, and analytics dashboards that turn campaigns into measurable growth.',
+        'Conversion rate optimisation, A/B testing and analytics dashboards that turn jewellery and gold marketing campaigns into measurable sales and ROI.',
       keywords: [
         'Performance marketing services',
         'Marketing analytics agency',
@@ -286,9 +286,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: ['Branding', 'SMM'],
     meta: {
-      title: 'Graphic Design, Photography & Video Production in UAE | 3R Creative',
+      title: 'Graphic Design, Photography & Video Production in UAE',
       description:
-        'Creative services in UAE — graphic design, product photography, and cinematic video production for luxury jewelry and precious metal brands.',
+        'Professional graphic design, photography, and video production services in UAE, creating engaging visuals, brand content, and videos for businesses.',
       keywords: [
         'Graphic design agency UAE',
         'Product photography Dubai',
@@ -323,9 +323,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: [],
     meta: {
-      title: 'Public Relations & Outreach Agency in UAE | 3R Creative',
+      title: 'Public Relations and Outreach Services UAE',
       description:
-        'PR and outreach in UAE — media relations, event marketing, and crisis management that put your brand story in front of the right audience.',
+        'Build brand visibility with strategic public relations and outreach services designed for the precious metals and jewellery industry.',
       keywords: [
         'Public relations agency UAE',
         'Media relations Dubai',
@@ -397,9 +397,9 @@ export const services: ServiceItem[] = [
     ],
     portfolioCategories: ['Web Development'],
     meta: {
-      title: 'CRM, AI & Technology Integration Services in UAE | 3R Creative',
+      title: 'CRM, AI & Technology Integration Services in UAE',
       description:
-        'Technology integration in UAE — CRM and automation, AI solutions, and AR/VR experiences that streamline operations and elevate engagement.',
+        'Enhance business efficiency with CRM, AI & technology integration services in UAE, streamlining customer management, automation, and operations.',
       keywords: [
         'CRM implementation UAE',
         'Marketing automation services',
