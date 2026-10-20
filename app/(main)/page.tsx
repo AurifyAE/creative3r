@@ -57,7 +57,7 @@ const organizationJsonLd = {
   contactPoint: [
     {
       '@type': 'ContactPoint',
-      telephone: '+971-58-502-3411',
+      telephone: '+971-50-806-4894',
       contactType: 'sales',
       email: 'info@creative3r.com',
       areaServed: 'AE',

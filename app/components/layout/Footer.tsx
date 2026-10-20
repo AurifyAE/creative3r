@@ -83,7 +83,6 @@ const Footer = () => {
 
           <div className="space-y-2 text-xs md:text-sm">
             <p className="font-semibold text-white leading-relaxed">
-              Official: <Link href="tel:+971585023411" className="hover:text-white/80">+971 58 502 3411</Link><br />
               Support: <Link href="tel:+971508064894" className="hover:text-white/80">+971 50 806 4894</Link>
             </p>
             <p className="text-neutral-400 tracking-wide">info@creative3r.com · creative3r.com</p>

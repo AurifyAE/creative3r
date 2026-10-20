@@ -64,7 +64,7 @@ export default function ThankYouPage() {
         {/* Direct Call / Contact option */}
         <div className="pt-6 border-t border-white/10 text-xs text-neutral-400 flex items-center justify-center gap-2 relative z-10">
           <PhoneCall className="w-3.5 h-3.5 text-[#299D8F]" />
-          <span>Need immediate assistance? Call us at <a href="tel:+971585023411" className="text-white underline hover:text-[#E9C369] transition-colors">+971 58 502 3411</a></span>
+          <span>Need immediate assistance? Call us at <a href="tel:+971508064894" className="text-white underline hover:text-[#E9C369] transition-colors">+971 50 806 4894</a></span>
         </div>
       </div>
     </div>
