@@ -114,7 +114,7 @@ const HeroSection = () => {
           // the swept area, not the box, is what has to clear its neighbours.
           // 1. primary vertical drift
           gsap.to(whatWeDoBox, {
-            y: -8,
+            y: -4,
             duration: 2.8,
             repeat: -1,
             yoyo: true,
@@ -122,7 +122,7 @@ const HeroSection = () => {
           });
           // 2. subtle horizontal sway (offset phase)
           gsap.to(whatWeDoBox, {
-            x: 3,
+            x: 1.5,
             duration: 3.4,
             repeat: -1,
             yoyo: true,
@@ -131,7 +131,7 @@ const HeroSection = () => {
           });
           // 3. micro rotation
           gsap.to(whatWeDoBox, {
-            rotation: 0.8,
+            rotation: 0.4,
             duration: 3.8,
             repeat: -1,
             yoyo: true,
@@ -140,7 +140,7 @@ const HeroSection = () => {
           });
           // 4. soft scale pulse (breathe)
           gsap.to(whatWeDoBox, {
-            scale: 1.012,
+            scale: 1.006,
             duration: 2.2,
             repeat: -1,
             yoyo: true,
