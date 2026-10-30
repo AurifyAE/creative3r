@@ -1,12 +1,9 @@
 'use client';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useHoverSound } from '@/app/hooks/useHoverSound';
-
-gsap.registerPlugin(ScrollTrigger);
 
 // [r, g, b] values for the 3D carousel cards
 const services = [
@@ -78,10 +75,16 @@ const HeroSection = () => {
     const agencyDescBox = agencyDescRef.current;
 
     if (!hero) return;
+    // Reduced motion: CSS leaves the hero visible, so there is nothing to do.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const mm = gsap.matchMedia();
+    // Scoped to the hero so the selectors below cannot reach the rest of the
+    // page, and so revert() kills the intro and every infinite float tween.
+    const ctx = gsap.context(() => {
 
     // ─── Page-load sequence ─────────────────────────────────────────────────
+    // The hidden start state is also in CSS, so the hero is never painted
+    // visible before this runs.
     gsap.set('.hero-ui-content', { opacity: 0, y: 30 });
     gsap.set('.hero-main-text', { opacity: 0, y: 50 });
 
@@ -178,14 +181,13 @@ const HeroSection = () => {
           });
         },
       }, '-=0.8');
+    }, hero);
 
-    return () => {
-      mm.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={heroRef} className="relative bg-[#1F1E1E] text-white">
+    <div ref={heroRef} className="hero-animate relative bg-[#1F1E1E] text-white">
       {/* Hero */}
       <div className="max-w-[1920px] mx-auto relative flex items-start h-[720px] md:h-[800px] lg:h-[900px] xl:h-[1080px]">
 
@@ -215,9 +217,7 @@ const HeroSection = () => {
                 tabIndex={-1}
                 onCanPlay={() => setVideoReady(true)}
                 className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
-              >
-                <track kind="captions" srcLang="en" label="English" src="/assets/videos/home/hero-video1.vtt" />
-              </video>
+              />
             </div>
             {/* Edge blending overlay */}
             <div
@@ -257,14 +257,18 @@ const HeroSection = () => {
 
         {/* ── Hero headline ───────────────────────────────────────────────── */}
         <div className="relative flex flex-col justify-end md:justify-center z-40 pl-8 md:pl-20 lg:pl-14 xl:pl-28 2xl:pl-52 pt-70 md:pt-64 lg:pt-44 xl:pt-52 2xl:pt-72">
-          <div className="hero-main-text flex items-end gap-2">
-            <h1 className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-light">We Build</h1>
-            <h2 className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-normal italic">Brands</h2>
-          </div>
-          <div className="hero-main-text flex items-end gap-2">
-            <h3 className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-light">That</h3>
-            <h2 className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-normal italic">Resonates</h2>
-          </div>
+          {/* One heading, not four — the size changes are styling, so screen
+              readers announce the whole line as a unit. */}
+          <h1>
+            <span className="hero-main-text flex items-end gap-2">
+              <span className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-light">We Build</span>
+              <span className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-normal italic">Brands</span>
+            </span>
+            <span className="hero-main-text flex items-end gap-2">
+              <span className="text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-light">That</span>
+              <span className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-normal italic">Resonates</span>
+            </span>
+          </h1>
           <p className="hero-main-text text-xs lg:text-sm xl:text-base 2xl:text-lg font-normal mt-1">
             Uncovering your real brand story.
           </p>

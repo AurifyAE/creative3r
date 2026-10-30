@@ -68,6 +68,23 @@
     }
 }
 
+/* ── Hero intro start state (HeroSection.tsx) ────────────────────── */
+/* GSAP animates these in on load. Setting opacity in the effect alone paints
+   them visible for one frame first, so the start state belongs here. */
+.hero-animate .hero-ui-content,
+.hero-animate .hero-main-text {
+    opacity: 0;
+}
+
+/* No intro runs under reduced motion, so the hero must start visible. */
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-animate .hero-ui-content,
+    .hero-animate .hero-main-text {
+        opacity: 1;
+    }
+}
+
 /* ── Hero 3D service carousel (HeroSection.tsx) ─────────────────────────── */
 .carousel-scene {
     --w: 100px;
@@ -157,6 +174,16 @@
 /* Pause the spin while hovering so cards can be clicked */
 .carousel-scene:hover {
     animation-play-state: paused;
+}
+
+/* Hold the ring still. The transform repeats the keyframe start value because
+   the perspective and tilt live in the keyframes, not the base rule — without
+   it the faces lose their 3D projection and stack flat on top of each other. */
+@media (prefers-reduced-motion: reduce) {
+    .carousel-scene {
+        animation: none;
+        transform: translate(-50%, -50%) perspective(var(--persp)) rotateX(var(--rx)) rotateY(0deg);
+    }
 }
 
 .carousel-face {
