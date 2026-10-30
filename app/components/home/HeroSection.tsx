@@ -25,7 +25,6 @@ function subscribeToPointerType(onChange: () => void) {
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement | null>(null);
-  const whatWeDoRef = useRef<HTMLDivElement | null>(null);
   const agencyDescRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoReady, setVideoReady] = useState(false);
@@ -71,7 +70,6 @@ const HeroSection = () => {
 
   useEffect(() => {
     const hero = heroRef.current;
-    const whatWeDoBox = whatWeDoRef.current;
     const agencyDescBox = agencyDescRef.current;
 
     if (!hero) return;
@@ -107,48 +105,9 @@ const HeroSection = () => {
 
         // ─── Floating / bounce animations kick off after load ──────────────
         onComplete: () => {
-          if (!whatWeDoBox || !agencyDescBox) return;
+          if (!agencyDescBox) return;
 
-          // ── "What We Do" box — lively multi-axis float ────────────────────
-          // Amplitudes compound across the four tweens, so keep them small:
-          // the swept area, not the box, is what has to clear its neighbours.
-          // 1. primary vertical drift
-          gsap.to(whatWeDoBox, {
-            y: -4,
-            duration: 2.8,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-          });
-          // 2. subtle horizontal sway (offset phase)
-          gsap.to(whatWeDoBox, {
-            x: 1.5,
-            duration: 3.4,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            delay: 0.6,
-          });
-          // 3. micro rotation
-          gsap.to(whatWeDoBox, {
-            rotation: 0.4,
-            duration: 3.8,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            delay: 0.2,
-          });
-          // 4. soft scale pulse (breathe)
-          gsap.to(whatWeDoBox, {
-            scale: 1.006,
-            duration: 2.2,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            delay: 1.1,
-          });
-
-          // ── Agency desc box — slower, contrasting phase ───────────────────
+          // ── Agency desc box — the only box that floats ────────────────────
           gsap.to(agencyDescBox, {
             y: 14,
             duration: 3.2,
@@ -234,12 +193,10 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* ── "What We Do" floating box ───────────────────────────────────── */}
+        {/* ── "What We Do" box ───────────────────────────────────── */}
         <div
           id="what-we-do-box"
-          ref={whatWeDoRef}
-          className="hidden lg:block absolute left-1/2 -translate-x-1/2 bottom-90 md:bottom-90 lg:bottom-90 xl:bottom-120 2xl:bottom-110 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 text-center will-change-transform"
-          style={{ transformOrigin: 'center center' }}
+          className="hidden lg:block absolute left-1/2 -translate-x-1/2 bottom-90 md:bottom-90 lg:bottom-90 xl:bottom-120 2xl:bottom-110 z-40 hero-ui-content p-5 lg:p-6 xl:p-7 rounded-2xl backdrop-blur-md bg-black/20 border border-white/5 text-center"
         >
           <h2 className="text-base md:text-lg lg:text-xl xl:text-2xl font-normal">What We Do</h2>
         </div>
