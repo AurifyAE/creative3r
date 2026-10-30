@@ -110,9 +110,11 @@ const HeroSection = () => {
           if (!whatWeDoBox || !agencyDescBox) return;
 
           // ── "What We Do" box — lively multi-axis float ────────────────────
+          // Amplitudes compound across the four tweens, so keep them small:
+          // the swept area, not the box, is what has to clear its neighbours.
           // 1. primary vertical drift
           gsap.to(whatWeDoBox, {
-            y: -18,
+            y: -8,
             duration: 2.8,
             repeat: -1,
             yoyo: true,
@@ -120,7 +122,7 @@ const HeroSection = () => {
           });
           // 2. subtle horizontal sway (offset phase)
           gsap.to(whatWeDoBox, {
-            x: 6,
+            x: 3,
             duration: 3.4,
             repeat: -1,
             yoyo: true,
@@ -129,7 +131,7 @@ const HeroSection = () => {
           });
           // 3. micro rotation
           gsap.to(whatWeDoBox, {
-            rotation: 1.5,
+            rotation: 0.8,
             duration: 3.8,
             repeat: -1,
             yoyo: true,
@@ -138,7 +140,7 @@ const HeroSection = () => {
           });
           // 4. soft scale pulse (breathe)
           gsap.to(whatWeDoBox, {
-            scale: 1.025,
+            scale: 1.012,
             duration: 2.2,
             repeat: -1,
             yoyo: true,
