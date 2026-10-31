@@ -94,7 +94,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="max-w-6xl mx-auto flex justify-center md:justify-end text-neutral-400 text-xs gap-4 pb-6 px-6 md:px-8">
-        <Link href="/ls-connect/privacy-policy" className="hover:text-white/80">Privacy Policy</Link>
+        <Link href="/privacy-policy" className="hover:text-white/80">Privacy Policy</Link>
         <Link href="/ls-connect/terms" className="hover:text-white/80">Terms & Conditions</Link>
       </div>
     </footer>

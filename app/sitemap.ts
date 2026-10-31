@@ -20,6 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/ls-connect/privacy-policy", priority: 0.2 },
     { path: "/ls-connect/terms", priority: 0.2 },
     { path: "/ls-connect/data-deletion", priority: 0.2 },
+    { path: "/luxury-shoppe/security-incident-response", priority: 0.2 },
+    { path: "/luxury-shoppe/data-access-logging", priority: 0.2 },
   ];
 
   return [

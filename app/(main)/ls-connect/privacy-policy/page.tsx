@@ -1,5 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import {
+    ContactCard,
+    Divider,
+    List,
+    Prose,
+    SectionHeading,
+    SectionNumber,
+    SubHeading,
+} from "@/app/components/legal/PolicyPage";
 
 export const metadata: Metadata = {
     title: 'Privacy Policy | LS Connect — 3R Creative',
@@ -454,61 +463,5 @@ export default function LSConnectPrivacyPolicyPage() {
                 </article>
             </div>
         </main>
-    );
-}
-
-function SectionNumber({ children }: { children: React.ReactNode }) {
-    return (
-        <span className="text-[11px] tracking-[0.25em] uppercase text-[#E9C369] mb-1 block">
-            Section {children}
-        </span>
-    );
-}
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-    return (
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-5 leading-snug">
-            {children}
-        </h2>
-    );
-}
-
-function SubHeading({ children }: { children: React.ReactNode }) {
-    return (
-        <h3 className="text-sm font-semibold text-white mt-7 mb-2 uppercase tracking-wide">
-            {children}
-        </h3>
-    );
-}
-
-function Prose({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="space-y-3 text-white/70 leading-relaxed text-[0.97rem]">{children}</div>
-    );
-}
-
-function List({ items }: { items: React.ReactNode[] }) {
-    return (
-        <ul className="mt-3 space-y-2">
-            {items.map((item, i) => (
-                <li key={i} className="flex gap-3 text-white/70 text-[0.97rem] leading-relaxed">
-                    <span className="mt-[0.4rem] shrink-0 w-1.5 h-1.5 rounded-full bg-[#E9C369]" />
-                    <span>{item}</span>
-                </li>
-            ))}
-        </ul>
-    );
-}
-
-function Divider() {
-    return <hr className="border-white/10" />;
-}
-
-function ContactCard({ label, children }: { label: string; children: React.ReactNode }) {
-    return (
-        <div className="bg-[#E9C369]/8 border border-[#E9C369]/25 rounded-xl p-5">
-            <p className="text-[10px] tracking-[0.2em] uppercase text-white/40 mb-2">{label}</p>
-            <p className="text-[#E9C369] text-sm font-medium leading-relaxed">{children}</p>
-        </div>
     );
 }

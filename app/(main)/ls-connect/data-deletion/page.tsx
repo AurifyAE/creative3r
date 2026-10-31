@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Divider, Prose } from "@/app/components/legal/PolicyPage";
 
 export const metadata: Metadata = {
     title: 'Data Deletion | LS Connect — 3R Creative',
@@ -231,14 +232,4 @@ export default function LSConnectDataDeletionPage() {
             </div>
         </main>
     );
-}
-
-function Prose({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="space-y-3 text-white/70 leading-relaxed text-[0.97rem]">{children}</div>
-    );
-}
-
-function Divider() {
-    return <hr className="border-white/10" />;
 }
