@@ -39,8 +39,15 @@ function getMailConfig() {
 }
 
 function getClientKey(req: NextRequest): string {
-    const forwardedFor = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-    return forwardedFor || req.headers.get("x-real-ip")?.trim() || "unknown";
+    // Only a value a proxy wrote can be trusted. A client can send its own
+    // x-forwarded-for, and the proxy appends to it, so the leftmost entry is
+    // attacker-controlled and would let one caller mint a fresh rate-limit
+    // bucket per request. The rightmost entry is the one the nearest proxy
+    // appended, so use that, then x-real-ip for proxies that set only it.
+    // Direct, un-proxied requests share the "unknown" bucket on purpose.
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    const nearestHop = forwardedFor?.split(",").pop()?.trim();
+    return nearestHop || req.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
 function isRateLimited(key: string): boolean {
